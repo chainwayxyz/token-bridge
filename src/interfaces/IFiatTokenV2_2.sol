@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 // Generated with `cast interface -o IFiatTokenV2_2.sol 0x43506849D7C04F9138D1A2050bbF3A0c054402dd`.
 // 0x43506849D7C04F9138D1A2050bbF3A0c054402dd is the current implementation address of USDC on Ethereum as of 27/05/2025.
