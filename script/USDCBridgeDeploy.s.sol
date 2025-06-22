@@ -5,16 +5,12 @@ import "forge-std/Script.sol";
 import "forge-std/console.sol";
 import { USDCBridgeToCitrea } from "../src/EthereumUSDCBridgeToCitrea.sol";
 import { USDCBridgeFromEthereum } from "../src/CitreaUSDCBridgeFromEthereum.sol";
+import { MasterMinter } from "../src/interfaces/IMasterMinter.sol";
 import "openzeppelin-contracts/contracts/proxy/transparent/TransparentUpgradeableProxy.sol";
 import "openzeppelin-contracts/contracts/proxy/transparent/ProxyAdmin.sol";
 
 interface IERC20 {
     function approve(address spender, uint256 amount) external returns (bool);
-}
-
-interface MasterMinter {
-    function configureController(address _controller, address _worker) external;
-    function configureMinter(uint256 _newAllowance) external;
 }
 
 contract USDCBridgeDeploy is Script {
@@ -83,7 +79,7 @@ contract USDCBridgeDeploy is Script {
         );
         console.log("Citrea USDC Bridge Proxy:", address(citreaBridgeProxy));
         MasterMinter(citreaMM).configureController(
-            msg.sender, // TODO: Resolve if this is correct
+            msg.sender,
             address(citreaBridgeProxy)
         );
         MasterMinter(citreaMM).configureMinter(type(uint256).max);

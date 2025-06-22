@@ -2,16 +2,22 @@
 pragma solidity ^0.8.22;
 
 import "openzeppelin-contracts/contracts/access/Ownable.sol";
-import "../interfaces/IFiatTokenV2_2.sol";
+import "../src/interfaces/IFiatTokenV2_2.sol";
 
 contract USDCRolesHolder is Ownable {
-    IFiatTokenV2_2 public usdc;
+    FiatTokenV2_2 public usdc;
+    address public circle;
 
     event CircleSet(address circle);
     event USDCRolesTransferred(address newOwner);
 
+    modifier onlyCircle() {
+        require(msg.sender == circle, "USDCRolesHolder: Caller is not Circle");
+        _;
+    }
+
     constructor (address _owner, address usdcProxy) Ownable(_owner) {
-        usdc = IFiatTokenV2_2(usdcProxy);
+        usdc = FiatTokenV2_2(usdcProxy);
     }
 
     function setCircle(address _circle) external onlyOwner {
@@ -23,6 +29,5 @@ contract USDCRolesHolder is Ownable {
     function transferUSDCRoles(address _owner) external onlyCircle {
         usdc.transferOwnership(_owner);
         emit USDCRolesTransferred(_owner);
-        // TODO: Additionally, the partner is expected to remove all configured minters prior to (or concurrently with) transferring the roles to Circle.
     }
 }

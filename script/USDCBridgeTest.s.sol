@@ -2,43 +2,33 @@
 pragma solidity ^0.8.0;
 
 import "forge-std/Script.sol";
+import { USDCBridgeToCitrea } from "../src/EthereumUSDCBridgeToCitrea.sol";
+import "openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
+import { MessagingFee } from "@layerzerolabs/oapp-evm/contracts/oapp/OApp.sol";
+import { SendParam } from "@layerzerolabs/oft-evm/contracts/interfaces/IOFT.sol";
+import { OptionsBuilder } from "@layerzerolabs/oapp-evm/contracts/oapp/libs/OptionsBuilder.sol";
 
 contract USDCBridgeTest is Script {
-    address public citreaUSDCBridge;
-    address public citreaUSDC;
-    uint32 public citreaEID;
-    string public citreaRPC;
+    using OptionsBuilder for bytes;
 
-    address public ethUSDCBridge;
-    address public ethUSDC;
-    uint32 public ethEID;
+    USDCBridgeToCitrea public ethUSDCBridge;
     string public ethRPC;
-    address public ethBridgeOwner;
-    address public ethProxyAdminOwner;
+    uint32 public citreaEID;
 
     function setUp() public {
-        citreaUSDC = vm.envAddress("CITREA_USDC");
-        citreaLzEndpoint = vm.envAddress("CITREA_LZ_ENDPOINT");
-        citreaRPC = vm.envString("CITREA_RPC");
-        citreaBridgeOwner = vm.envAddress("CITREA_BRIDGE_OWNER");
-        citreaProxyAdminOwner = vm.envAddress("CITREA_PROXY_ADMIN_OWNER");
-
-        ethUSDC = vm.envAddress("ETH_USDC");
-        ethEID = uint32(vm.envUint("ETH_EID"));
-        ethLzEndpoint = vm.envAddress("ETH_LZ_ENDPOINT");
+        ethUSDCBridge = USDCBridgeToCitrea(vm.envAddress("ETH_USDC_BRIDGE_PROXY"));
         ethRPC = vm.envString("ETH_RPC");
-        ethBridgeOwner = vm.envAddress("ETH_BRIDGE_OWNER");
-        ethProxyAdminOwner = vm.envAddress("ETH_PROXY_ADMIN_OWNER");
+        citreaEID = uint32(vm.envUint("CITREA_EID"));
     }
 
     function run() public {
         vm.createSelectFork(ethRPC);
         vm.startBroadcast();
         uint amount = 1 * 10**6;
-        IERC20(otherAdapter.token()).approve(address(otherAdapter), amount);
+        IERC20(ethUSDCBridge.token()).approve(address(ethUSDCBridge), amount);
         bytes memory _extraOptions = OptionsBuilder.newOptions().addExecutorLzReceiveOption(650000, 0);
         SendParam memory sendParam = SendParam({
-            dstEid: CITREA_EID,
+            dstEid: citreaEID,
             to: bytes32(uint256(uint160(msg.sender))),
             amountLD: amount,
             minAmountLD: amount * 9 / 10,
@@ -47,8 +37,8 @@ contract USDCBridgeTest is Script {
             oftCmd: ""
         });
 
-        MessagingFee memory fee = otherAdapter.quoteSend(sendParam, false);
-        otherAdapter.send{value: fee.nativeFee}(sendParam, fee, msg.sender);
+        MessagingFee memory fee = ethUSDCBridge.quoteSend(sendParam, false);
+        ethUSDCBridge.send{value: fee.nativeFee}(sendParam, fee, msg.sender);
 
         vm.stopBroadcast();
     }
