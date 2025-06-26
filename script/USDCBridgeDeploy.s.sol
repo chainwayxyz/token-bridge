@@ -20,36 +20,37 @@ contract USDCBridgeDeploy is Script {
     uint32 public citreaEID;
     string public citreaRPC;
     address public citreaBridgeOwner;
-    address public citreaProxyAdminOwner;
+    address public citreaBridgeProxyAdminOwner;
 
     address public ethUSDC;
     address public ethLzEndpoint;
     uint32 public ethEID;
     string public ethRPC;
     address public ethBridgeOwner;
-    address public ethProxyAdminOwner;
+    address public ethBridgeProxyAdminOwner;
     
     function setUp() public {
         citreaUSDC = vm.envAddress("CITREA_USDC");
+        citreaEID = uint32(vm.envUint("CITREA_EID"));
         citreaMM = vm.envAddress("CITREA_MM");
         citreaLzEndpoint = vm.envAddress("CITREA_LZ_ENDPOINT");
         citreaRPC = vm.envString("CITREA_RPC");
         citreaBridgeOwner = vm.envAddress("CITREA_BRIDGE_OWNER");
-        citreaProxyAdminOwner = vm.envAddress("CITREA_PROXY_ADMIN_OWNER");
+        citreaBridgeProxyAdminOwner = vm.envAddress("CITREA_BRIDGE_PROXY_ADMIN_OWNER");
 
         ethUSDC = vm.envAddress("ETH_USDC");
         ethEID = uint32(vm.envUint("ETH_EID"));
         ethLzEndpoint = vm.envAddress("ETH_LZ_ENDPOINT");
         ethRPC = vm.envString("ETH_RPC");
         ethBridgeOwner = vm.envAddress("ETH_BRIDGE_OWNER");
-        ethProxyAdminOwner = vm.envAddress("ETH_PROXY_ADMIN_OWNER");
+        ethBridgeProxyAdminOwner = vm.envAddress("ETH_BRIDGE_PROXY_ADMIN_OWNER");
     }
 
     function run() public {
         uint256 ethForkId = vm.createSelectFork(ethRPC);
         vm.startBroadcast();
-        ProxyAdmin ethProxyAdmin = new ProxyAdmin(ethProxyAdminOwner);
-        console.log("Ethereum ProxyAdmin:", address(ethProxyAdmin));
+        ProxyAdmin ethBridgeProxyAdmin = new ProxyAdmin(ethBridgeProxyAdminOwner);
+        console.log("Ethereum USDC Bridge ProxyAdmin:", address(ethBridgeProxyAdmin));
         USDCBridgeToCitrea ethBridgeImpl = new USDCBridgeToCitrea(
             ethUSDC,
             ethLzEndpoint
@@ -57,7 +58,7 @@ contract USDCBridgeDeploy is Script {
         console.log("Ethereum USDC Bridge Implementation:", address(ethBridgeImpl));
         TransparentUpgradeableProxy ethBridgeProxy = new TransparentUpgradeableProxy(
             address(ethBridgeImpl),
-            address(ethProxyAdmin),
+            address(ethBridgeProxyAdmin),
             abi.encodeWithSignature("initialize(address)", ethBridgeOwner)
         );
         console.log("Ethereum USDC Bridge Proxy:", address(ethBridgeProxy));
@@ -65,8 +66,8 @@ contract USDCBridgeDeploy is Script {
 
         vm.createSelectFork(citreaRPC);
         vm.startBroadcast();
-        ProxyAdmin citreaProxyAdmin = new ProxyAdmin(citreaProxyAdminOwner);
-        console.log("Citrea ProxyAdmin:", address(citreaProxyAdmin));
+        ProxyAdmin citreaProxyAdmin = new ProxyAdmin(citreaBridgeProxyAdminOwner);
+        console.log("Citrea USDC Bridge ProxyAdmin:", address(citreaProxyAdmin));
         USDCBridgeFromEthereum citreaBridgeImpl = new USDCBridgeFromEthereum(
             citreaUSDC,
             citreaLzEndpoint

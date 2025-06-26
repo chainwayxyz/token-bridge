@@ -5,17 +5,11 @@ import "forge-std/Script.sol";
 import "openzeppelin-contracts/contracts/proxy/transparent/ProxyAdmin.sol";
 
 contract USDCProxyAdminTransferOwner is Script {
-    address public citreaProxyAdmin;
-    string public citreaRPC;
-    address public circleProxyAdminOwner;
-
-    function setUp() public {
-        citreaProxyAdmin = vm.envAddress("CITREA_PROXY_ADMIN");
-        citreaRPC = vm.envString("CITREA_RPC");
-        circleProxyAdminOwner = vm.envAddress("CIRCLE_PROXY_ADMIN_OWNER");
-    }
-
     function run() public {
+        address citreaProxyAdmin = vm.envAddress("CITREA_BRIDGE_PROXY_ADMIN");
+        string memory citreaRPC = vm.envString("CITREA_RPC");
+        address circleProxyAdminOwner = vm.envAddress("CIRCLE_PROXY_ADMIN_OWNER");
+
         vm.createSelectFork(citreaRPC);
         vm.startBroadcast();
 

@@ -8,23 +8,17 @@ import { MessagingFee } from "@layerzerolabs/oapp-evm/contracts/oapp/OApp.sol";
 import { SendParam } from "@layerzerolabs/oft-evm/contracts/interfaces/IOFT.sol";
 import { OptionsBuilder } from "@layerzerolabs/oapp-evm/contracts/oapp/libs/OptionsBuilder.sol";
 
-contract USDCBridgeTest is Script {
+contract USDCBridgeMintTest is Script {
     using OptionsBuilder for bytes;
 
-    USDCBridgeToCitrea public ethUSDCBridge;
-    string public ethRPC;
-    uint32 public citreaEID;
-
-    function setUp() public {
-        ethUSDCBridge = USDCBridgeToCitrea(vm.envAddress("ETH_USDC_BRIDGE_PROXY"));
-        ethRPC = vm.envString("ETH_RPC");
-        citreaEID = uint32(vm.envUint("CITREA_EID"));
-    }
-
     function run() public {
+        USDCBridgeToCitrea ethUSDCBridge = USDCBridgeToCitrea(vm.envAddress("ETH_BRIDGE_PROXY"));
+        string memory ethRPC = vm.envString("ETH_RPC");
+        uint32 citreaEID = uint32(vm.envUint("CITREA_EID"));
+
         vm.createSelectFork(ethRPC);
         vm.startBroadcast();
-        uint amount = 1 * 10**6;
+        uint256 amount = 1 * 10**4; // 1 cent
         IERC20(ethUSDCBridge.token()).approve(address(ethUSDCBridge), amount);
         bytes memory _extraOptions = OptionsBuilder.newOptions().addExecutorLzReceiveOption(650000, 0);
         SendParam memory sendParam = SendParam({

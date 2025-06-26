@@ -8,38 +8,24 @@ import "openzeppelin-contracts/contracts/proxy/transparent/ProxyAdmin.sol";
 import "openzeppelin-contracts/contracts/proxy/transparent/TransparentUpgradeableProxy.sol";
 
 contract USDCBridgePrepareTakeover is Script {
-    address public ethProxyAdmin;
-    address public ethBridgeProxy;
-    address public ethUSDC;
-    address public ethLzEndpoint;
-    string public ethRPC;
-
-    address public citreaProxyAdmin;
-    address public citreaBridgeProxy;
-    address public citreaUSDC;
-    address public citreaLzEndpoint;
-    string public citreaRPC;
-    
-    function setUp() public {
-        ethProxyAdmin = vm.envAddress("ETH_PROXY_ADMIN");
-        ethBridgeProxy = vm.envAddress("ETH_BRIDGE_PROXY");
-        ethUSDC = vm.envAddress("ETH_USDC");
-        ethLzEndpoint = vm.envAddress("ETH_LZ_ENDPOINT");
-        ethRPC = vm.envString("ETH_RPC");
-
-        citreaProxyAdmin = vm.envAddress("CITREA_PROXY_ADMIN");
-        citreaBridgeProxy = vm.envAddress("CITREA_BRIDGE_PROXY");
-        citreaUSDC = vm.envAddress("CITREA_USDC");
-        citreaLzEndpoint = vm.envAddress("CITREA_LZ_ENDPOINT");
-        citreaRPC = vm.envString("CITREA_RPC");
-    }
-
     function run() public {
+        address ethBridgeProxyAdmin = vm.envAddress("ETH_BRIDGE_PROXY_ADMIN");
+        address ethBridgeProxy = vm.envAddress("ETH_BRIDGE_PROXY");
+        address ethUSDC = vm.envAddress("ETH_USDC");
+        address ethLzEndpoint = vm.envAddress("ETH_LZ_ENDPOINT");
+        string memory ethRPC = vm.envString("ETH_RPC");
+
+        address citreaProxyAdmin = vm.envAddress("CITREA_BRIDGE_PROXY_ADMIN");
+        address citreaBridgeProxy = vm.envAddress("CITREA_BRIDGE_PROXY");
+        address citreaUSDC = vm.envAddress("CITREA_USDC");
+        address citreaLzEndpoint = vm.envAddress("CITREA_LZ_ENDPOINT");
+        string memory citreaRPC = vm.envString("CITREA_RPC");
+
         vm.createSelectFork(ethRPC);
         vm.startBroadcast();
 
         address newEthBridgeImpl = address(new USDCBridgeToCitrea(ethUSDC, ethLzEndpoint));
-        ProxyAdmin(ethProxyAdmin).upgradeAndCall(ITransparentUpgradeableProxy(ethBridgeProxy), newEthBridgeImpl, "");
+        ProxyAdmin(ethBridgeProxyAdmin).upgradeAndCall(ITransparentUpgradeableProxy(ethBridgeProxy), newEthBridgeImpl, "");
         
         vm.stopBroadcast();
 
