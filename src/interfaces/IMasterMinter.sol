@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.4;
-
+// Generated with running `cast interface MasterMinter` in `stablecoin-evm` repo.
 interface MasterMinter {
     event ControllerConfigured(address indexed _controller, address indexed _worker);
     event ControllerRemoved(address indexed _controller);
