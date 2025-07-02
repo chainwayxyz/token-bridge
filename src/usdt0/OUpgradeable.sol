@@ -3,10 +3,10 @@ pragma solidity ^0.8.22;
 
 import { OFTCoreUpgradeable } from "@layerzerolabs/oft-evm-upgradeable/contracts/oft/OFTCoreUpgradeable.sol";
 import { IERC20Metadata } from "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol";
+import { IERC7802 } from "./interfaces/IERC7802.sol";
 
-interface IOFTToken is IERC20Metadata {
-    function mint(address _destination, uint256 _amount) external;
-    function burn(address from, uint256 _amount) external;
+interface IOFTToken is IERC20Metadata, IERC7802 {
+
 }
 
 contract OUpgradeable is OFTCoreUpgradeable {
@@ -60,7 +60,7 @@ contract OUpgradeable is OFTCoreUpgradeable {
         // therefore amountSentLD CAN differ from amountReceivedLD.
 
         // @dev Default OFT burns on src.
-        token_.burn(_from, amountSentLD);
+        token_.crosschainBurn(_from, amountSentLD);
     }
 
     /**
@@ -77,7 +77,7 @@ contract OUpgradeable is OFTCoreUpgradeable {
     ) internal virtual override returns (uint256 amountReceivedLD) {
         if (_to == address(0x0)) _to = address(0xdead); // _mint(...) does not support address(0x0)
         // @dev Default OFT mints on dst.
-        token_.mint(_to, _amountLD);
+        token_.crosschainMint(_to, _amountLD);
         // @dev In the case of NON-default OFT, the _amountLD MIGHT not be == amountReceivedLD.
         return _amountLD;
     }
