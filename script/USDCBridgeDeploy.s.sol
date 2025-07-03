@@ -3,9 +3,9 @@ pragma solidity ^0.8.0;
 
 import "forge-std/Script.sol";
 import "forge-std/console.sol";
-import { USDCBridgeToCitrea } from "../src/EthereumUSDCBridgeToCitrea.sol";
-import { USDCBridgeFromEthereum } from "../src/CitreaUSDCBridgeFromEthereum.sol";
-import { MasterMinter } from "../src/interfaces/IMasterMinter.sol";
+import {SourceOFTAdapter} from "../src/SourceOFTAdapter.sol";
+import {DestinationOUSDC} from "../src/CitreaUSDCBridgeFromEthereum.sol";
+import {MasterMinter} from "../src/interfaces/IMasterMinter.sol";
 import "openzeppelin-contracts/contracts/proxy/transparent/TransparentUpgradeableProxy.sol";
 import "openzeppelin-contracts/contracts/proxy/transparent/ProxyAdmin.sol";
 
@@ -28,7 +28,7 @@ contract USDCBridgeDeploy is Script {
     string public ethRPC;
     address public ethBridgeOwner;
     address public ethBridgeProxyAdminOwner;
-    
+
     function setUp() public {
         citreaUSDC = vm.envAddress("CITREA_USDC");
         citreaEID = uint32(vm.envUint("CITREA_EID"));
@@ -51,10 +51,7 @@ contract USDCBridgeDeploy is Script {
         vm.startBroadcast();
         ProxyAdmin ethBridgeProxyAdmin = new ProxyAdmin(ethBridgeProxyAdminOwner);
         console.log("Ethereum USDC Bridge ProxyAdmin:", address(ethBridgeProxyAdmin));
-        USDCBridgeToCitrea ethBridgeImpl = new USDCBridgeToCitrea(
-            ethUSDC,
-            ethLzEndpoint
-        );
+        SourceOFTAdapter ethBridgeImpl = new SourceOFTAdapter(ethUSDC, ethLzEndpoint);
         console.log("Ethereum USDC Bridge Implementation:", address(ethBridgeImpl));
         TransparentUpgradeableProxy ethBridgeProxy = new TransparentUpgradeableProxy(
             address(ethBridgeImpl),
@@ -68,10 +65,7 @@ contract USDCBridgeDeploy is Script {
         vm.startBroadcast();
         ProxyAdmin citreaProxyAdmin = new ProxyAdmin(citreaBridgeProxyAdminOwner);
         console.log("Citrea USDC Bridge ProxyAdmin:", address(citreaProxyAdmin));
-        USDCBridgeFromEthereum citreaBridgeImpl = new USDCBridgeFromEthereum(
-            citreaUSDC,
-            citreaLzEndpoint
-        );
+        DestinationOUSDC citreaBridgeImpl = new DestinationOUSDC(citreaUSDC, citreaLzEndpoint);
         console.log("Citrea USDC Bridge Implementation:", address(citreaBridgeImpl));
         TransparentUpgradeableProxy citreaBridgeProxy = new TransparentUpgradeableProxy(
             address(citreaBridgeImpl),
@@ -79,23 +73,14 @@ contract USDCBridgeDeploy is Script {
             abi.encodeWithSignature("initialize(address)", citreaBridgeOwner)
         );
         console.log("Citrea USDC Bridge Proxy:", address(citreaBridgeProxy));
-        MasterMinter(citreaMM).configureController(
-            msg.sender,
-            address(citreaBridgeProxy)
-        );
+        MasterMinter(citreaMM).configureController(msg.sender, address(citreaBridgeProxy));
         MasterMinter(citreaMM).configureMinter(type(uint256).max);
-        USDCBridgeFromEthereum(address(citreaBridgeProxy)).setPeer(
-            ethEID, 
-            addressToPeer(address(ethBridgeProxy))
-        );
+        DestinationOUSDC(address(citreaBridgeProxy)).setPeer(ethEID, addressToPeer(address(ethBridgeProxy)));
         vm.stopBroadcast();
 
         vm.selectFork(ethForkId);
         vm.startBroadcast();
-        USDCBridgeToCitrea(address(ethBridgeProxy)).setPeer(
-            citreaEID,
-            addressToPeer(address(citreaBridgeProxy))
-        );
+        SourceOFTAdapter(address(ethBridgeProxy)).setPeer(citreaEID, addressToPeer(address(citreaBridgeProxy)));
         vm.stopBroadcast();
     }
 

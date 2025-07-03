@@ -1,25 +1,20 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.22;
 
-import { OFTCoreUpgradeable } from "@layerzerolabs/oft-evm-upgradeable/contracts/oft/OFTCoreUpgradeable.sol";
-import { IERC20Metadata } from "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol";
-import { IERC7802 } from "./interfaces/IERC7802.sol";
+import {OFTCoreUpgradeable} from "@layerzerolabs/oft-evm-upgradeable/contracts/oft/OFTCoreUpgradeable.sol";
+import {IERC20Metadata} from "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol";
+import {IERC7802} from "./usdt0/wrappers/interfaces/IERC7802.sol";
 
-interface IOFTToken is IERC20Metadata, IERC7802 {
+interface IOFTToken is IERC20Metadata, IERC7802 {}
 
-}
-
-contract OUpgradeable is OFTCoreUpgradeable {
+contract DestinationOUSDT is OFTCoreUpgradeable {
     IOFTToken internal immutable token_;
 
     function token() external view returns (address) {
         return address(token_);
     }
 
-    constructor(
-        address _lzEndpoint,
-        IOFTToken _token
-    ) OFTCoreUpgradeable(_token.decimals(), _lzEndpoint) {
+    constructor(address _lzEndpoint, IOFTToken _token) OFTCoreUpgradeable(_token.decimals(), _lzEndpoint) {
         token_ = _token;
         _disableInitializers();
     }
@@ -48,16 +43,13 @@ contract OUpgradeable is OFTCoreUpgradeable {
      * @return amountSentLD The amount sent in local decimals.
      * @return amountReceivedLD The amount received in local decimals on the remote.
      */
-    function _debit(
-        address _from,
-        uint256 _amountLD,
-        uint256 _minAmountLD,
-        uint32 _dstEid
-    ) internal virtual override returns (uint256 amountSentLD, uint256 amountReceivedLD) {
+    function _debit(address _from, uint256 _amountLD, uint256 _minAmountLD, uint32 _dstEid)
+        internal
+        virtual
+        override
+        returns (uint256 amountSentLD, uint256 amountReceivedLD)
+    {
         (amountSentLD, amountReceivedLD) = _debitView(_amountLD, _minAmountLD, _dstEid);
-
-        // @dev In NON-default OFT, amountSentLD could be 100, with a 10% fee, the amountReceivedLD amount is 90,
-        // therefore amountSentLD CAN differ from amountReceivedLD.
 
         // @dev Default OFT burns on src.
         token_.crosschainBurn(_from, amountSentLD);
@@ -70,15 +62,15 @@ contract OUpgradeable is OFTCoreUpgradeable {
      * @dev _srcEid The source chain ID.
      * @return amountReceivedLD The amount of tokens ACTUALLY received in local decimals.
      */
-    function _credit(
-        address _to,
-        uint256 _amountLD,
-        uint32 /*_srcEid*/
-    ) internal virtual override returns (uint256 amountReceivedLD) {
+    function _credit(address _to, uint256 _amountLD, uint32 /*_srcEid*/ )
+        internal
+        virtual
+        override
+        returns (uint256 amountReceivedLD)
+    {
         if (_to == address(0x0)) _to = address(0xdead); // _mint(...) does not support address(0x0)
         // @dev Default OFT mints on dst.
         token_.crosschainMint(_to, _amountLD);
-        // @dev In the case of NON-default OFT, the _amountLD MIGHT not be == amountReceivedLD.
         return _amountLD;
     }
 }

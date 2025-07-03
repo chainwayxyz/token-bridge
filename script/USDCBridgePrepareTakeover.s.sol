@@ -2,8 +2,8 @@
 pragma solidity ^0.8.0;
 
 import "forge-std/Script.sol";
-import { USDCBridgeFromEthereum } from "../src/upgrade_to_before_circle_takeover/CitreaUSDCBridgeFromEthereumForTakeover.sol";
-import { USDCBridgeToCitrea } from "../src/upgrade_to_before_circle_takeover/EthereumUSDCBridgeToCitreaForTakeover.sol";
+import {DestinationOUSDC} from "../src/upgrade_to_before_circle_takeover/CitreaUSDCBridgeFromEthereumForTakeover.sol";
+import {SourceOFTAdapter} from "../src/upgrade_to_before_circle_takeover/EthereumUSDCBridgeToCitreaForTakeover.sol";
 import "openzeppelin-contracts/contracts/proxy/transparent/ProxyAdmin.sol";
 import "openzeppelin-contracts/contracts/proxy/transparent/TransparentUpgradeableProxy.sol";
 
@@ -24,16 +24,20 @@ contract USDCBridgePrepareTakeover is Script {
         vm.createSelectFork(ethRPC);
         vm.startBroadcast();
 
-        address newEthBridgeImpl = address(new USDCBridgeToCitrea(ethUSDC, ethLzEndpoint));
-        ProxyAdmin(ethBridgeProxyAdmin).upgradeAndCall(ITransparentUpgradeableProxy(ethBridgeProxy), newEthBridgeImpl, "");
-        
+        address newEthBridgeImpl = address(new SourceOFTAdapter(ethUSDC, ethLzEndpoint));
+        ProxyAdmin(ethBridgeProxyAdmin).upgradeAndCall(
+            ITransparentUpgradeableProxy(ethBridgeProxy), newEthBridgeImpl, ""
+        );
+
         vm.stopBroadcast();
 
         vm.createSelectFork(citreaRPC);
         vm.startBroadcast();
 
-        address newCitreaBridgeImpl = address(new USDCBridgeFromEthereum(citreaUSDC, citreaLzEndpoint));
-        ProxyAdmin(citreaProxyAdmin).upgradeAndCall(ITransparentUpgradeableProxy(citreaBridgeProxy), newCitreaBridgeImpl, "");
+        address newCitreaBridgeImpl = address(new DestinationOUSDC(citreaUSDC, citreaLzEndpoint));
+        ProxyAdmin(citreaProxyAdmin).upgradeAndCall(
+            ITransparentUpgradeableProxy(citreaBridgeProxy), newCitreaBridgeImpl, ""
+        );
 
         vm.stopBroadcast();
     }

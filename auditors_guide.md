@@ -8,8 +8,8 @@
 
 - This code tries to achieve a similar objective as [USDT0](https://usdt0.to) as both uses LayerZero to bridge stablecoins, only with USDC instead of USDT. However, the LayerZero integration is almost exactly the same as USDT0, thus the auditors are advised to also review the USDT0 code and compare it with this code. See the [deployments of USDT0 here](https://docs.usdt0.to/technical-documentation/developer). 
 
-    - Use the implementation of [`OAdapterUpgradeable`](https://etherscan.io/address/0xcd979b10a55fcdac23ec785ce3066c6ef8a479a4#code) on Ethereum mainnet as a reference for this codebase's `EthereumUSDCBridgeToCitrea` contract.
+    - Use the implementation of [`OAdapterUpgradeable`](https://etherscan.io/address/0xcd979b10a55fcdac23ec785ce3066c6ef8a479a4#code) on Ethereum mainnet as a reference for this codebase's `SourceOFTAdapter` contract.
 
-    - Use the implementation of [`OUpgradeable`](https://arbiscan.io/address/0x00678fdaab0d5c91b843a22fa38e08af1bbda85e#code) on Arbitrum as a reference for this codebase's `CitreaUSDCBridgeToEthereum` contract.
+    - Use the implementation of [`DestinationOUSDT`](https://arbiscan.io/address/0x00678fdaab0d5c91b843a22fa38e08af1bbda85e#code) on Arbitrum as a reference for this codebase's `CitreaUSDCBridgeToEthereum` contract.
 
     - You may be confused by the USDT0 extensions such as `ArbitrumExtensionV2` and `TetherTokenOFTExtension`. This is due to USDT0 handles minting and burning of USDT differently than this codebase by extending the USDT contract with extra functions. This codebase does not do that and uses the regular USDC contract and does the usual `transferFrom` and `burn`.
