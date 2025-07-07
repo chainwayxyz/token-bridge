@@ -4,8 +4,9 @@ pragma solidity ^0.8.0;
 import "forge-std/Script.sol";
 import "forge-std/console.sol";
 import {SourceOFTAdapter} from "../src/SourceOFTAdapter.sol";
-import {DestinationOUSDC} from "../src/CitreaUSDCBridgeFromEthereum.sol";
+import {DestinationOUSDC} from "../src/DestinationOUSDC.sol";
 import {MasterMinter} from "../src/interfaces/IMasterMinter.sol";
+import {FiatTokenV2_2} from "../src/interfaces/IFiatTokenV2_2.sol";
 import "openzeppelin-contracts/contracts/proxy/transparent/TransparentUpgradeableProxy.sol";
 import "openzeppelin-contracts/contracts/proxy/transparent/ProxyAdmin.sol";
 
@@ -14,7 +15,7 @@ interface IERC20 {
 }
 
 contract USDCBridgeDeploy is Script {
-    address public citreaUSDC;
+    FiatTokenV2_2 public citreaUSDC;
     address public citreaMM;
     address public citreaLzEndpoint;
     uint32 public citreaEID;
@@ -30,7 +31,7 @@ contract USDCBridgeDeploy is Script {
     address public ethBridgeProxyAdminOwner;
 
     function setUp() public {
-        citreaUSDC = vm.envAddress("CITREA_USDC");
+        citreaUSDC = FiatTokenV2_2(vm.envAddress("CITREA_USDC"));
         citreaEID = uint32(vm.envUint("CITREA_EID"));
         citreaMM = vm.envAddress("CITREA_MM");
         citreaLzEndpoint = vm.envAddress("CITREA_LZ_ENDPOINT");
@@ -65,7 +66,7 @@ contract USDCBridgeDeploy is Script {
         vm.startBroadcast();
         ProxyAdmin citreaProxyAdmin = new ProxyAdmin(citreaBridgeProxyAdminOwner);
         console.log("Citrea USDC Bridge ProxyAdmin:", address(citreaProxyAdmin));
-        DestinationOUSDC citreaBridgeImpl = new DestinationOUSDC(citreaUSDC, citreaLzEndpoint);
+        DestinationOUSDC citreaBridgeImpl = new DestinationOUSDC(citreaLzEndpoint, citreaUSDC);
         console.log("Citrea USDC Bridge Implementation:", address(citreaBridgeImpl));
         TransparentUpgradeableProxy citreaBridgeProxy = new TransparentUpgradeableProxy(
             address(citreaBridgeImpl),

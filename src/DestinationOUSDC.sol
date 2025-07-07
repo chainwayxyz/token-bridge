@@ -2,10 +2,12 @@
 pragma solidity ^0.8.22;
 
 import {OFTCoreUpgradeable} from "@layerzerolabs/oft-evm-upgradeable/contracts/oft/OFTCoreUpgradeable.sol";
-
+import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {FiatTokenV2_2} from "./interfaces/IFiatTokenV2_2.sol";
 
 contract DestinationOUSDC is OFTCoreUpgradeable {
+    using SafeERC20 for IERC20;
     FiatTokenV2_2 internal immutable token_;
 
     function token() external view returns (address) {
@@ -50,7 +52,7 @@ contract DestinationOUSDC is OFTCoreUpgradeable {
         (amountSentLD, amountReceivedLD) = _debitView(_amountLD, _minAmountLD, _dstEid);
 
         // @dev Default OFT transfers and burns on src.
-        token_.safeTransferFrom(_from, address(this), amountSentLD);
+        IERC20(address(token_)).safeTransferFrom(_from, address(this), amountSentLD);
         token_.burn(amountSentLD);
     }
 

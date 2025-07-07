@@ -2,8 +2,8 @@
 pragma solidity ^0.8.0;
 
 import "forge-std/Script.sol";
-import {DestinationOUSDC} from "../src/upgrade_to_before_circle_takeover/CitreaUSDCBridgeFromEthereumForTakeover.sol";
-import {SourceOFTAdapter} from "../src/upgrade_to_before_circle_takeover/EthereumUSDCBridgeToCitreaForTakeover.sol";
+import {DestinationOUSDC} from "../src/upgrade_to_before_circle_takeover/DestinationOUSDCForTakeover.sol";
+import {SourceOFTAdapter} from "../src/upgrade_to_before_circle_takeover/SourceOFTAdapterForTakeover.sol";
 import "openzeppelin-contracts/contracts/proxy/transparent/ProxyAdmin.sol";
 import "openzeppelin-contracts/contracts/proxy/transparent/TransparentUpgradeableProxy.sol";
 
