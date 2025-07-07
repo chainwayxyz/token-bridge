@@ -4,16 +4,20 @@ pragma solidity ^0.8.0;
 import "forge-std/Script.sol";
 import "openzeppelin-contracts/contracts/proxy/transparent/ProxyAdmin.sol";
 
+// Taken from https://github.com/circlefin/stablecoin-evm/blob/master/contracts/upgradeability/AdminUpgradeabilityProxy.sol
+interface IAdminUpgradeabilityProxy {
+    function changeAdmin(address newAdmin) external;
+}
+
 contract USDCProxyAdminTransferOwner is Script {
     function run() public {
-        address citreaProxyAdmin = vm.envAddress("CITREA_BRIDGE_PROXY_ADMIN");
+        address citreaUSDCProxy = vm.envAddress("CITREA_USDC");
         string memory citreaRPC = vm.envString("CITREA_RPC");
-        address circleProxyAdminOwner = vm.envAddress("CIRCLE_PROXY_ADMIN_OWNER");
 
         vm.createSelectFork(citreaRPC);
         vm.startBroadcast();
 
-        ProxyAdmin(citreaProxyAdmin).transferOwnership(circleProxyAdminOwner);
+        IAdminUpgradeabilityProxy(citreaUSDCProxy).changeAdmin(vm.envAddress("CIRCLE_USDC_PROXY_ADMIN"));
 
         vm.stopBroadcast();
     }
