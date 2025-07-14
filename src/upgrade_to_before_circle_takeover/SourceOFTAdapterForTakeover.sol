@@ -1,18 +1,18 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.22;
 
-import { OFTAdapterUpgradeable } from "@layerzerolabs/oft-evm-upgradeable/contracts/oft/OFTAdapterUpgradeable.sol";
-import { PausableUpgradeable } from "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol";
-import { FiatTokenV2_2 } from "../interfaces/IFiatTokenV2_2.sol";
+import {OFTAdapterUpgradeable} from "@layerzerolabs/oft-evm-upgradeable/contracts/oft/OFTAdapterUpgradeable.sol";
+import {PausableUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol";
+import {FiatTokenV2_2} from "../interfaces/IFiatTokenV2_2.sol";
 
-contract USDCBridgeToCitrea is OFTAdapterUpgradeable, PausableUpgradeable {
+contract SourceOFTAdapter is OFTAdapterUpgradeable, PausableUpgradeable {
     address public circle;
 
     event CircleSet(address circle);
     event BurnedLockedUSDC(address circle, uint256 amount);
 
     modifier onlyCircle() {
-        require(msg.sender == circle, "USDCBridgeToCitrea: Caller is not Circle");
+        require(msg.sender == circle, "SourceOFTAdapter: Caller is not Circle");
         _;
     }
 
@@ -25,20 +25,21 @@ contract USDCBridgeToCitrea is OFTAdapterUpgradeable, PausableUpgradeable {
         __Ownable_init(_delegate);
     }
 
-    function _debit(
-        address _from,
-        uint256 _amountLD,
-        uint256 _minAmountLD,
-        uint32 _dstEid
-    ) internal override whenNotPaused returns (uint256 amountSentLD, uint256 amountReceivedLD) {
+    function _debit(address _from, uint256 _amountLD, uint256 _minAmountLD, uint32 _dstEid)
+        internal
+        override
+        whenNotPaused
+        returns (uint256 amountSentLD, uint256 amountReceivedLD)
+    {
         (amountSentLD, amountReceivedLD) = super._debit(_from, _amountLD, _minAmountLD, _dstEid);
     }
 
-    function _credit(
-        address _to,
-        uint256 _amountLD,
-        uint32 _srcEid
-    ) internal override whenNotPaused returns (uint256 amountReceivedLD) {
+    function _credit(address _to, uint256 _amountLD, uint32 _srcEid)
+        internal
+        override
+        whenNotPaused
+        returns (uint256 amountReceivedLD)
+    {
         amountReceivedLD = super._credit(_to, _amountLD, _srcEid);
     }
 
@@ -49,7 +50,7 @@ contract USDCBridgeToCitrea is OFTAdapterUpgradeable, PausableUpgradeable {
     }
 
     function setCircle(address _circle) external onlyOwner {
-        require(_circle != address(0), "USDCBridgeToCitrea: Circle address cannot be zero");
+        require(_circle != address(0), "SourceOFTAdapter: Circle address cannot be zero");
         circle = _circle;
         emit CircleSet(_circle);
     }
@@ -57,7 +58,7 @@ contract USDCBridgeToCitrea is OFTAdapterUpgradeable, PausableUpgradeable {
     function pause() external onlyOwner {
         _pause();
     }
-    
+
     function unpause() external onlyOwner {
         _unpause();
     }

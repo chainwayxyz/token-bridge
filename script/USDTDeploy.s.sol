@@ -1,0 +1,35 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+import {ConfigSetup} from "./ConfigSetup.s.sol";
+import "forge-std/console.sol";
+import "openzeppelin-contracts/contracts/access/Ownable.sol";
+import "openzeppelin-contracts/contracts/proxy/transparent/TransparentUpgradeableProxy.sol";
+import "openzeppelin-contracts/contracts/proxy/transparent/ProxyAdmin.sol";
+
+contract USDTDeploy is ConfigSetup {
+    function setUp() public {
+        loadUSDTConfig({isUSDTDeployed: false, isBridgeDeployed: false});
+    }
+
+    function run() public {
+        vm.createSelectFork(citreaRPC);
+        vm.startBroadcast();
+        ProxyAdmin citreaProxyAdmin = new ProxyAdmin(citreaUSDTProxyAdminOwner);
+        console.log("Citrea USDT ProxyAdmin:", address(citreaProxyAdmin));
+        // Hack to stop Foundry from complaining about versioning
+        bytes memory bytecode = vm.getCode("TetherTokenOFTExtension");
+        address citreaUSDTImpl;
+        assembly {
+            citreaUSDTImpl := create(0, add(bytecode, 0x20), mload(bytecode))
+        }
+        console.log("Citrea USDT Implementation:", address(citreaUSDTImpl));
+        TransparentUpgradeableProxy citreaUSDTProxy = new TransparentUpgradeableProxy(
+            citreaUSDTImpl,
+            address(citreaProxyAdmin),
+            abi.encodeWithSignature("initialize(string,string,uint8)", "Bridged USDT (Citrea)", "USDT.e", 6)
+        );
+        console.log("Citrea USDT Proxy:", address(citreaUSDTProxy));
+        Ownable(address(citreaUSDTProxy)).transferOwnership(citreaUSDTOwner);
+    }
+}

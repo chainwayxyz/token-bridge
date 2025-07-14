@@ -13,3 +13,7 @@
 [submodule "lib/solidity-bytes-utils"]
 	path = lib/solidity-bytes-utils
 	url = https://github.com/GNSPS/solidity-bytes-utils
+[submodule "lib/openzeppelin-contracts-upgradeable-4.2"]
+	path = lib/openzeppelin-contracts-upgradeable-4.2
+	url = https://github.com/openzeppelin/openzeppelin-contracts-upgradeable
+	branch = release-v4.2

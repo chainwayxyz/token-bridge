@@ -1,14 +1,15 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "forge-std/Script.sol";
+import {ConfigSetup} from "./ConfigSetup.s.sol";
 import { MasterMinter } from "../src/interfaces/IMasterMinter.sol";
 
-contract USDCRemoveBridgeAsMinter is Script {
-    function run() public {
-        address citreaMM = vm.envAddress("CITREA_MM");
-        string memory citreaRPC = vm.envString("CITREA_RPC");
+contract USDCRemoveBridgeAsMinter is ConfigSetup {
+    function setUp() public {
+        loadUSDCConfig({isBridgeDeployed: true});
+    }
 
+    function run() public {
         vm.createSelectFork(citreaRPC);
         vm.startBroadcast();
 

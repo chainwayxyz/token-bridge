@@ -1,0 +1,76 @@
+[citrea]
+rpc = "https://rpc.mainnet.citrea.xyz"
+
+    [citrea.lz]
+    endpoint = ""
+    eid =
+
+    [citrea.usdc]
+    proxy = ""
+    masterMinter = ""
+
+        [citrea.usdc.bridge]
+
+        [citrea.usdc.bridge.init]
+        owner = ""
+        proxyAdminOwner = ""
+        
+        [citrea.usdc.bridge.deployment]
+        proxyAdmin = ""
+        implementation = ""
+        proxy = ""
+
+    [citrea.usdt]
+
+    [citrea.usdt.init]
+    owner = ""
+    proxyAdminOwner = ""
+
+    [citrea.usdt.deployment]
+    proxy = ""
+    # Also used for bridge
+    proxyAdmin = ""
+
+        [citrea.usdt.bridge]
+
+        [citrea.usdt.bridge.init]
+        owner = ""
+
+        [citrea.usdt.bridge.deployment]
+        implementation = ""
+        proxy = ""
+        
+[eth]
+rpc = "https://eth.drpc.org"
+
+    [eth.lz]
+    endpoint = "0x1a44076050125825900e736c501f859c50fE728c"
+    eid = 30101
+
+    [eth.usdc]
+    proxy = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+
+        [eth.usdc.bridge]
+
+        [eth.usdc.bridge.init]
+        owner = ""
+        proxyAdminOwner = ""
+        
+        [eth.usdc.bridge.deployment]
+        proxyAdmin = ""
+        implementation = ""
+        proxy = ""
+
+    [eth.usdt]
+    contract = "0xdAC17F958D2ee523a2206206994597C13D831ec7"
+
+        [eth.usdt.bridge]
+
+        [eth.usdt.bridge.init]
+        owner = ""
+        proxyAdminOwner = ""
+
+        [eth.usdt.bridge.deployment]
+        proxyAdmin = ""
+        implementation = ""
+        proxy = ""

@@ -4,12 +4,12 @@
 
 - Any on-chain actions described in the bridged USDC standard should have a corresponding script in the `/script` directory. So if you encounter such an action without a script, no matter how trivial it seems, please notify the author(s).
 
-- Annotations are provided for the bridged USDC standard that point to relevant code sections. These annotations can be found in the form of comments to the commit that adds a copy of the standard to the repository. First of these annotations can be accessed [here](https://github.com/chainwayxyz/bridged-usdc-citrea/commit/f4ef250b402cfccbd3254fdd3362fdd291d78196#r160416214). These annotations are to be exhaustive, but if you find any part of the standard that is not annotated with a code section but it should, please notify the author(s).
+- Annotations are provided for the bridged USDC standard that point to relevant code sections. These annotations can be found in the form of comments to the commit that adds a copy of the standard to the repository. First of these annotations can be accessed [here](https://github.com/chainwayxyz/stablecoin-bridge/commit/f4ef250b402cfccbd3254fdd3362fdd291d78196#r160416214). These annotations are to be exhaustive, but if you find any part of the standard that is not annotated with a code section but it should, please notify the author(s).
 
 - This code tries to achieve a similar objective as [USDT0](https://usdt0.to) as both uses LayerZero to bridge stablecoins, only with USDC instead of USDT. However, the LayerZero integration is almost exactly the same as USDT0, thus the auditors are advised to also review the USDT0 code and compare it with this code. See the [deployments of USDT0 here](https://docs.usdt0.to/technical-documentation/developer). 
 
-    - Use the implementation of [`OAdapterUpgradeable`](https://etherscan.io/address/0xcd979b10a55fcdac23ec785ce3066c6ef8a479a4#code) on Ethereum mainnet as a reference for this codebase's `EthereumUSDCBridgeToCitrea` contract.
+    - Use the implementation of [`OAdapterUpgradeable`](https://etherscan.io/address/0xcd979b10a55fcdac23ec785ce3066c6ef8a479a4#code) on Ethereum mainnet as a reference for this codebase's `SourceOFTAdapter` contract.
 
-    - Use the implementation of [`OUpgradeable`](https://arbiscan.io/address/0x00678fdaab0d5c91b843a22fa38e08af1bbda85e#code) on Arbitrum as a reference for this codebase's `CitreaUSDCBridgeToEthereum` contract.
+    - Use the implementation of [`DestinationOUSDT`](https://arbiscan.io/address/0x00678fdaab0d5c91b843a22fa38e08af1bbda85e#code) on Arbitrum as a reference for this codebase's `CitreaUSDCBridgeToEthereum` contract.
 
     - You may be confused by the USDT0 extensions such as `ArbitrumExtensionV2` and `TetherTokenOFTExtension`. This is due to USDT0 handles minting and burning of USDT differently than this codebase by extending the USDT contract with extra functions. This codebase does not do that and uses the regular USDC contract and does the usual `transferFrom` and `burn`.
