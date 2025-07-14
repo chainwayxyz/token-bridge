@@ -4,6 +4,7 @@ out = "out"
 libs = ["lib"]
 optimizer=true
 optimizer_runs=100000
+fs_permissions = [{ access = "read", path = "./"}]
 remappings = [
     "@layerzerolabs/oapp-evm/=lib/devtools/packages/oapp-evm/",
     "@layerzerolabs/lz-evm-protocol-v2/=lib/layerzero-v2/packages/layerzero-v2/evm/protocol/",

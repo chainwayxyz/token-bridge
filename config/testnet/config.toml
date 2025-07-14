@@ -1,0 +1,76 @@
+[citrea]
+rpc = "https://rpc.testnet.citrea.xyz"
+
+    [citrea.lz]
+    endpoint = "0x6C7Ab2202C98C4227C5c46f1417D81144DA716Ff"
+    eid = 40344
+
+    [citrea.usdc]
+    proxy = "0xcA871f9F3cc88bDe9e6c4F755C35568ae218892c"
+    masterMinter = "0x5819723F2278ff0766C5a93b123017527540C3f3"
+
+        [citrea.usdc.bridge]
+
+        [citrea.usdc.bridge.init]
+        owner = "0xDc94F4e8F84180C1E807fC4d6b43d65cb459b510"
+        proxyAdminOwner = "0xDc94F4e8F84180C1E807fC4d6b43d65cb459b510"
+        
+        [citrea.usdc.bridge.deployment]
+        proxyAdmin = "0x841f28E9e7B88817A1dD5442837515807544f1E3"
+        implementation = "0x36A32aa0d170F1cC4d229620C46D8a54323427Ab"
+        proxy = "0xCF158AD656afbcfD7446e981FAE899FEBBE43c5f"
+
+    [citrea.usdt]
+
+    [citrea.usdt.init]
+    owner = "0xDc94F4e8F84180C1E807fC4d6b43d65cb459b510"
+    proxyAdminOwner = "0xDc94F4e8F84180C1E807fC4d6b43d65cb459b510"
+
+    [citrea.usdt.deployment]
+    proxy = "0x4759629aEEE0a6aAe62496FAE299f6Fbb208673F"
+    # Also used for bridge
+    proxyAdmin = "0xEc13D76A9F101F9991792328B6aA9163dFdE89E1"
+
+        [citrea.usdt.bridge]
+
+        [citrea.usdt.bridge.init]
+        owner = "0xDc94F4e8F84180C1E807fC4d6b43d65cb459b510"
+
+        [citrea.usdt.bridge.deployment]
+        implementation = "0xD1feec7a5FBB859cBCA579b50743bA2A6bBc9618"
+        proxy = "0xAa13965d8A0BD9088547d0adB5EC387245Dc0Fc0"
+        
+[eth]
+rpc = "https://sepolia.drpc.org"
+
+    [eth.lz]
+    endpoint = "0x6EDCE65403992e310A62460808c4b910D972f10f"
+    eid = 40161
+
+    [eth.usdc]
+    proxy = "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238"
+
+        [eth.usdc.bridge]
+
+        [eth.usdc.bridge.init]
+        owner = "0xDc94F4e8F84180C1E807fC4d6b43d65cb459b510"
+        proxyAdminOwner = "0xDc94F4e8F84180C1E807fC4d6b43d65cb459b510"
+        
+        [eth.usdc.bridge.deployment]
+        proxyAdmin = "0x80Bcf5FdABf0C83eB96e7Af4f5eaf09ae20feb83"
+        implementation = "0x19258981a0B00b23A2E0Bb66D2d780C6599B735A"
+        proxy = "0x4b7Bb013106C8b9A6dCE3acE69717ec309e829C0"
+
+    [eth.usdt]
+    contract = "0x7169D38820dfd117C3FA1f22a697dBA58d90BA06"
+
+        [eth.usdt.bridge]
+
+        [eth.usdt.bridge.init]
+        owner = "0xDc94F4e8F84180C1E807fC4d6b43d65cb459b510"
+        proxyAdminOwner = "0xDc94F4e8F84180C1E807fC4d6b43d65cb459b510"
+
+        [eth.usdt.bridge.deployment]
+        proxyAdmin = "0xc82E3CE620fC1568F90F4F54a41fa18bAfC90876"
+        implementation = "0x16E8B79450415385Cc4Aeb5B0822eb93d7873E02"
+        proxy = "0x2EECE5A94b86dfAeeEBC567ada2e610B24db949d"
