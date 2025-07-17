@@ -26,7 +26,6 @@ echo "[]" > blacklist.remote.json
 yarn install
 yarn forge:simulate scripts/deploy/deploy-fiat-token.s.sol --rpc-url <testnet OR mainnet>
 yarn forge:broadcast scripts/deploy/deploy-fiat-token.s.sol --rpc-url <testnet OR mainnet>
-yarn forge:verify scripts/deploy/deploy-fiat-token.s.sol --rpc-url <testnet OR mainnet>
 cd ../stablecoin-bridge
 ```
 
@@ -40,23 +39,14 @@ citrea.usdc.masterMinter=<MasterMinter in previous step>
 4. Save the compilation output for verification. Copy the compilation outputs of the relevant contracts to this repository if canonical deployment. This step is not critical since the deployment of USDC is done through official Circle scripts, and Blockscout can automatically verify the contracts due to bytecode equivalence.
 
 ### 2. Deploying USDC Bridge
-1. Fill the fields of the following tables in `config/<mainnet or testnet>/config.toml`:
-```
-[citrea.usdc.bridge.init]
-[eth.usdc.bridge.init]
-```
+1. Fill the fields of `[citrea.usdc.bridge.init]` and `[eth.usdc.bridge.init]` in `config/<mainnet or testnet>/config.toml`.
 
 2. Run the bridge deployment script:
 ```
 forge script ./script/USDCBridgeDeploy.s.sol --private-key <YOUR_PRIVATE_KEY> --broadcast
 ```
 
-3. Fill the fields of the following tables in `config/<mainnet or testnet>/config.toml`:
-
-```
-[citrea.usdc.bridge.deployment]
-[eth.usdc.bridge.deployment]
-```
+3. Fill the fields of `[citrea.usdc.bridge.deployment]` and `[eth.usdc.bridge.deployment]` in `config/<mainnet or testnet>/config.toml`.
 
 ### 3. Testing USDC Bridge
 1. Test the deployment by running the test script which sends 1 cent from Ethereum to Citrea, you need to have some USDC on Ethereum for this:
@@ -76,6 +66,7 @@ forge script ./script/test/USDCBridgeBurnTest.s.sol --private-key <YOUR_PRIVATE_
 
 ### 4. Upgrading the USDC Bridge for Circle takeover
 
+
 ## USDT
 ### 1. Deploying USDT
 
@@ -87,22 +78,18 @@ forge script ./script/USDTDeploy.s.sol --private-key <YOUR_PRIVATE_KEY> --broadc
 2. Fill the fields of `[citrea.usdt.deployment]` in `config/<mainnet or testnet>/config.toml`.
 
 ### 2. Deploying USDT Bridge
-1. Fill the fields of the following tables in `config/<mainnet or testnet>/config.toml`:
-```
-[citrea.usdt.bridge.init]
-[eth.usdt.bridge.init]
-```
+1. Fill the fields of `[citrea.usdt.bridge.init]` and `[eth.usdt.bridge.init]` in `config/<mainnet or testnet>/config.toml`.
 
 2. Run the bridge deployment script:
 ```
 forge script ./script/USDTBridgeDeploy.s.sol --private-key <YOUR_PRIVATE_KEY> --broadcast
 ```
 
-3. Fill the fields of the following tables in `config/<mainnet or testnet>/config.toml`:
+3. Fill the fields of `[citrea.usdt.bridge.deployment]` and `[eth.usdt.bridge.deployment]` in `config/<mainnet or testnet>/config.toml`.
 
+4. Set the bridge as a minter for USDT:
 ```
-[citrea.usdt.bridge.deployment]
-[eth.usdt.bridge.deployment]
+forge script ./script/USDTSetBridgeAsMinter.s.sol --private-key <YOUR_PRIVATE_KEY> --broadcast
 ```
 
 ### 3. Testing USDT Bridge

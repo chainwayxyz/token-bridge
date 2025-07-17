@@ -1,34 +1,27 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import {ConfigSetup} from "./ConfigSetup.s.sol";
-import {DestinationOUSDC} from "../src/upgrade_to_before_circle_takeover/DestinationOUSDCForTakeover.sol";
-import {SourceOFTAdapter} from "../src/upgrade_to_before_circle_takeover/SourceOFTAdapterForTakeover.sol";
+import {ConfigSetup} from "../../ConfigSetup.s.sol";
+import {SourceOFTAdapter} from "../../../src/upgrade_to_before_circle_takeover/SourceOFTAdapterForTakeover.sol";
 import "openzeppelin-contracts/contracts/proxy/transparent/ProxyAdmin.sol";
 import "openzeppelin-contracts/contracts/proxy/transparent/TransparentUpgradeableProxy.sol";
+import {ERC1967Utils} from "openzeppelin-contracts/contracts/proxy/ERC1967/ERC1967Utils.sol";
 
-contract USDCBridgePrepareTakeover is ConfigSetup {
+contract USDCSrcBridgePrepareTakeover is ConfigSetup {
     function setUp() public {
         loadUSDCConfig({isBridgeDeployed: true});
     }
 
+    // Should be called by `eth.usdc.bridge.deployment.init.proxyAdminOwner` address
     function run() public {
         vm.createSelectFork(ethRPC);
         vm.startBroadcast();
 
         address newEthUSDCBridgeImpl = address(new SourceOFTAdapter(ethUSDC, ethLzEndpoint));
+        bytes32 ethAdminSlot = vm.load(ethUSDCBridgeProxy, ERC1967Utils.ADMIN_SLOT);
+        address ethUSDCBridgeProxyAdmin = address(uint160(uint256(ethAdminSlot)));
         ProxyAdmin(ethUSDCBridgeProxyAdmin).upgradeAndCall(
             ITransparentUpgradeableProxy(ethUSDCBridgeProxy), newEthUSDCBridgeImpl, ""
-        );
-
-        vm.stopBroadcast();
-
-        vm.createSelectFork(citreaRPC);
-        vm.startBroadcast();
-
-        address newCitreaUSDCBridgeImpl = address(new DestinationOUSDC(citreaUSDC, citreaLzEndpoint));
-        ProxyAdmin(citreaUSDCBridgeProxyAdmin).upgradeAndCall(
-            ITransparentUpgradeableProxy(citreaUSDCBridgeProxy), newCitreaUSDCBridgeImpl, ""
         );
 
         vm.stopBroadcast();

@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import {ConfigSetup} from "./ConfigSetup.s.sol";
-import {DestinationOUSDC} from "../src/DestinationOUSDC.sol";
+import {ConfigSetup} from "../ConfigSetup.s.sol";
+import {DestinationOUSDC} from "../../src/DestinationOUSDC.sol";
 import "openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
 import {MessagingFee} from "@layerzerolabs/oapp-evm/contracts/oapp/OApp.sol";
 import {SendParam} from "@layerzerolabs/oft-evm/contracts/interfaces/IOFT.sol";

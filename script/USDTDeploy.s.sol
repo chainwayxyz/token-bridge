@@ -15,8 +15,6 @@ contract USDTDeploy is ConfigSetup {
     function run() public {
         vm.createSelectFork(citreaRPC);
         vm.startBroadcast();
-        ProxyAdmin citreaProxyAdmin = new ProxyAdmin(citreaUSDTProxyAdminOwner);
-        console.log("Citrea USDT ProxyAdmin:", address(citreaProxyAdmin));
         // Hack to stop Foundry from complaining about versioning
         bytes memory bytecode = vm.getCode("TetherTokenOFTExtension");
         address citreaUSDTImpl;
@@ -26,7 +24,7 @@ contract USDTDeploy is ConfigSetup {
         console.log("Citrea USDT Implementation:", address(citreaUSDTImpl));
         TransparentUpgradeableProxy citreaUSDTProxy = new TransparentUpgradeableProxy(
             citreaUSDTImpl,
-            address(citreaProxyAdmin),
+            citreaUSDTProxyAdminOwner,
             abi.encodeWithSignature("initialize(string,string,uint8)", "Bridged USDT (Citrea)", "USDT.e", 6)
         );
         console.log("Citrea USDT Proxy:", address(citreaUSDTProxy));

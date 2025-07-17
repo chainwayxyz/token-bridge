@@ -18,13 +18,11 @@ contract USDCBridgeDeploy is ConfigSetup {
     function run() public {
         uint256 ethForkId = vm.createSelectFork(ethRPC);
         vm.startBroadcast();
-        ProxyAdmin ethBridgeProxyAdmin = new ProxyAdmin(ethUSDCBridgeProxyAdminOwner);
-        console.log("Ethereum USDC Bridge ProxyAdmin:", address(ethBridgeProxyAdmin));
         SourceOFTAdapter ethBridgeImpl = new SourceOFTAdapter(ethUSDC, ethLzEndpoint);
         console.log("Ethereum USDC Bridge Implementation:", address(ethBridgeImpl));
         TransparentUpgradeableProxy ethBridgeProxy = new TransparentUpgradeableProxy(
             address(ethBridgeImpl),
-            address(ethBridgeProxyAdmin),
+            ethUSDCBridgeProxyAdminOwner,
             abi.encodeWithSignature("initialize(address)", ethUSDCBridgeOwner)
         );
         console.log("Ethereum USDC Bridge Proxy:", address(ethBridgeProxy));
@@ -32,13 +30,11 @@ contract USDCBridgeDeploy is ConfigSetup {
 
         vm.createSelectFork(citreaRPC);
         vm.startBroadcast();
-        ProxyAdmin citreaProxyAdmin = new ProxyAdmin(citreaUSDCBridgeProxyAdminOwner);
-        console.log("Citrea USDC Bridge ProxyAdmin:", address(citreaProxyAdmin));
         DestinationOUSDC citreaBridgeImpl = new DestinationOUSDC(citreaLzEndpoint, citreaUSDC);
         console.log("Citrea USDC Bridge Implementation:", address(citreaBridgeImpl));
         TransparentUpgradeableProxy citreaBridgeProxy = new TransparentUpgradeableProxy(
             address(citreaBridgeImpl),
-            address(citreaProxyAdmin),
+            citreaUSDCBridgeProxyAdminOwner,
             abi.encodeWithSignature("initialize(address)", citreaUSDCBridgeOwner)
         );
         console.log("Citrea USDC Bridge Proxy:", address(citreaBridgeProxy));

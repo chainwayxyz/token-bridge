@@ -7,34 +7,40 @@ contract ConfigSetup is Script {
     string public citreaRPC;
     address public citreaLzEndpoint;
     uint32 public citreaEID;
+
     FiatTokenV2_2 public citreaUSDC;
     address public citreaMM;
+
     address public citreaUSDCBridgeOwner;
     address public citreaUSDCBridgeProxyAdminOwner;
-    address public citreaUSDCBridgeProxyAdmin;
     address public citreaUSDCBridgeImplementation;
     address public citreaUSDCBridgeProxy;
+
     address public citreaUSDTOwner;
     address public citreaUSDTProxyAdminOwner;
     address public citreaUSDT;
-    address public citreaUSDTProxyAdmin;
+    
     address public citreaUSDTBridgeOwner;
+    address public citreaUSDTBridgeProxyAdminOwner;
     address public citreaUSDTBridgeImplementation;
     address public citreaUSDTBridgeProxy;
+
 
     string public ethRPC;
     address public ethLzEndpoint;
     uint32 public ethEID;
+
     address public ethUSDC;
+
     address public ethUSDCBridgeOwner;
     address public ethUSDCBridgeProxyAdminOwner;
-    address public ethUSDCBridgeProxyAdmin;
     address public ethUSDCBridgeImplementation;
     address public ethUSDCBridgeProxy;
+
     address public ethUSDT;
+
     address public ethUSDTBridgeOwner;
     address public ethUSDTBridgeProxyAdminOwner;
-    address public ethUSDTBridgeProxyAdmin;
     address public ethUSDTBridgeImplementation;
     address public ethUSDTBridgeProxy;
 
@@ -51,8 +57,6 @@ contract ConfigSetup is Script {
         require(citreaUSDCBridgeProxyAdminOwner != address(0), "Citrea USDC Bridge Proxy Admin Owner is not set in the config file");
 
         if (isBridgeDeployed) {
-            citreaUSDCBridgeProxyAdmin = vm.parseTomlAddress(tomlContent, ".citrea.usdc.bridge.deployment.proxyAdmin");
-            require(citreaUSDCBridgeProxyAdmin != address(0), "Citrea USDC Bridge Proxy Admin is not set in the config file");
             citreaUSDCBridgeImplementation = vm.parseTomlAddress(tomlContent, ".citrea.usdc.bridge.deployment.implementation");
             require(citreaUSDCBridgeImplementation != address(0), "Citrea USDC Bridge Implementation is not set in the config file");
             citreaUSDCBridgeProxy = vm.parseTomlAddress(tomlContent, ".citrea.usdc.bridge.deployment.proxy");
@@ -67,8 +71,6 @@ contract ConfigSetup is Script {
         require(ethUSDCBridgeProxyAdminOwner != address(0), "Ethereum USDC Bridge Proxy Admin Owner is not set in the config file");
 
         if (isBridgeDeployed) {
-            ethUSDCBridgeProxyAdmin = vm.parseTomlAddress(tomlContent, ".eth.usdc.bridge.deployment.proxyAdmin");
-            require(ethUSDCBridgeProxyAdmin != address(0), "Ethereum USDC Bridge Proxy Admin is not set in the config file");
             ethUSDCBridgeImplementation = vm.parseTomlAddress(tomlContent, ".eth.usdc.bridge.deployment.implementation");
             require(ethUSDCBridgeImplementation != address(0), "Ethereum USDC Bridge Implementation is not set in the config file");
             ethUSDCBridgeProxy = vm.parseTomlAddress(tomlContent, ".eth.usdc.bridge.deployment.proxy");
@@ -87,8 +89,7 @@ contract ConfigSetup is Script {
         if (isUSDTDeployed) {
             citreaUSDT = vm.parseTomlAddress(tomlContent, ".citrea.usdt.deployment.proxy");
             require(citreaUSDT != address(0), "Citrea USDT Proxy is not set in the config file");
-            citreaUSDTProxyAdmin = vm.parseTomlAddress(tomlContent, ".citrea.usdt.deployment.proxyAdmin");
-            require(citreaUSDTProxyAdmin != address(0), "Citrea USDT Proxy Admin is not set in the config file");
+
             citreaUSDTBridgeOwner = vm.parseTomlAddress(tomlContent, ".citrea.usdt.bridge.init.owner");
             require(citreaUSDTBridgeOwner != address(0), "Citrea USDT Bridge Owner is not set in the config file");
 
@@ -106,8 +107,6 @@ contract ConfigSetup is Script {
             citreaUSDTBridgeProxy = vm.parseTomlAddress(tomlContent, ".citrea.usdt.bridge.deployment.proxy");
             require(citreaUSDTBridgeProxy != address(0), "Citrea USDT Bridge Proxy is not set in the config file");
 
-            ethUSDTBridgeProxyAdmin = vm.parseTomlAddress(tomlContent, ".eth.usdt.bridge.deployment.proxyAdmin");
-            require(ethUSDTBridgeProxyAdmin != address(0), "Ethereum USDT Bridge Proxy Admin is not set in the config file");
             ethUSDTBridgeImplementation = vm.parseTomlAddress(tomlContent, ".eth.usdt.bridge.deployment.implementation");
             require(ethUSDTBridgeImplementation != address(0), "Ethereum USDT Bridge Implementation is not set in the config file");
             ethUSDTBridgeProxy = vm.parseTomlAddress(tomlContent, ".eth.usdt.bridge.deployment.proxy");

@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import {ConfigSetup} from "./ConfigSetup.s.sol";
-import { MasterMinter } from "../src/interfaces/IMasterMinter.sol";
+import {ConfigSetup} from "../ConfigSetup.s.sol";
+import { MasterMinter } from "../../src/interfaces/IMasterMinter.sol";
 
 contract USDCRemoveBridgeAsMinter is ConfigSetup {
     function setUp() public {
