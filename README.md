@@ -66,6 +66,49 @@ forge script ./script/test/USDCBridgeBurnTest.s.sol --private-key <YOUR_PRIVATE_
 
 ### 4. Upgrading the USDC Bridge for Circle takeover
 
+1. Upgrade the USDC bridge contracts to the Circle takeover version by running the upgrade script from respective proxy admin owners:
+
+```
+forge script ./script/for_circle_takeover/prepare_takeover/USDCDestBridgePrepareTakeover.s.sol --private-key <YOUR_PRIVATE_KEY> --broadcast
+forge script ./script/for_circle_takeover/prepare_takeover/USDCSrcBridgePrepareTakeover.s.sol --private-key <YOUR_PRIVATE_KEY> --broadcast
+```
+
+2. Set Circle's address so they can perform the USDC burn action on Ethereum end of the bridge:
+
+```
+SRC_BRIDGE_CIRCLE_ADDRESS=<ADDRESS_GIVEN_BY_CIRCLE> forge script ./script/for_circle_takeover/USDCSrcBridgeSetCircle.s.sol --private-key <YOUR_PRIVATE_KEY> --broadcast
+```
+
+3. Pause both ends of the bridge, should be called by respective bridge owners:
+
+```
+forge script ./script/for_circle_takeover/pause/USDCDestBridgePause.s.sol --private-key <YOUR_PRIVATE_KEY> --broadcast
+forge script ./script/for_circle_takeover/pause/USDCSrcBridgePause.s.sol --private-key <YOUR_PRIVATE_KEY> --broadcast
+```
+
+4. Transfer the proxy admin of USDC to Circle's given address:
+
+```
+CIRCLE_USDC_PROXY_ADMIN=<ADDRESS_GIVEN_BY_CIRCLE> forge script ./script/for_circle_takeover/USDCProxyAdminTransfer.s.sol --private-key <YOUR_PRIVATE_KEY> --broadcast
+```
+
+5. Transfer USDC's ownership to a contract that Circle can later use to retrieve the ownership of USDC, `USDC_ROLES_HOLDER_OWNER` should be in our control:
+
+```
+USDC_ROLES_HOLDER_OWNER=<OWNER_ADDRESS> forge script ./script/for_circle_takeover/USDCTransferOwner.s.sol --private-key <YOUR_PRIVATE_KEY> --broadcast
+```
+
+6. Set the Circle's address in `USDCRolesHolder` contract:
+
+```
+USDC_ROLES_HOLDER_CIRCLE_ADDRESS=<ADDRESS_GIVEN_BY_CIRCLE> forge script ./script/for_circle_takeover/USDCRolesHolderSetCircle.s.sol --private-key <YOUR_PRIVATE_KEY> --broadcast
+```
+
+7. Remove bridge's minter role from USDC, should be called by `MasterMinter`'s owner:
+
+```
+forge script ./script/for_circle_takeover/USDCRemoveBridgeAsMinter.s.sol --private-key <YOUR_PRIVATE_KEY> --broadcast
+```
 
 ## USDT
 ### 1. Deploying USDT
