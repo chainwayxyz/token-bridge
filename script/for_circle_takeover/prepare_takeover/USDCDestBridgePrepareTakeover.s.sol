@@ -17,7 +17,7 @@ contract USDCDestBridgePrepareTakeover is ConfigSetup {
         vm.createSelectFork(citreaRPC);
         vm.startBroadcast();
 
-        address newCitreaUSDCBridgeImpl = address(new DestinationOUSDC(address(citreaUSDC), citreaLzEndpoint));
+        address newCitreaUSDCBridgeImpl = address(new DestinationOUSDC(citreaLzEndpoint, citreaUSDC));
         bytes32 citreaAdminSlot = vm.load(citreaUSDCBridgeProxy, ERC1967Utils.ADMIN_SLOT);
         address citreaUSDCBridgeProxyAdmin = address(uint160(uint256(citreaAdminSlot)));
         ProxyAdmin(citreaUSDCBridgeProxyAdmin).upgradeAndCall(

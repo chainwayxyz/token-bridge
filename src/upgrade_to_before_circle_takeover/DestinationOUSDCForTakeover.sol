@@ -4,7 +4,7 @@ pragma solidity ^0.8.22;
 import {OFTCoreUpgradeable} from "@layerzerolabs/oft-evm-upgradeable/contracts/oft/OFTCoreUpgradeable.sol";
 import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import {FiatTokenV2_2} from "./interfaces/IFiatTokenV2_2.sol";
+import {FiatTokenV2_2} from "../interfaces/IFiatTokenV2_2.sol";
 import {PausableUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol";
 
 contract DestinationOUSDC is OFTCoreUpgradeable, PausableUpgradeable {

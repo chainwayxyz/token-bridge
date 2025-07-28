@@ -12,7 +12,7 @@ contract USDCRolesHolderSetCircle is ConfigSetup {
 
     // Should be called by `owner` of `USDC_ROLES_HOLDER` address
     function run() public {
-        vm.createSelectFork(ethRPC);
+        vm.createSelectFork(citreaRPC);
         vm.startBroadcast();
 
         USDCRolesHolder usdcRolesHolder = USDCRolesHolder(FiatTokenV2_2(citreaUSDC).owner());
