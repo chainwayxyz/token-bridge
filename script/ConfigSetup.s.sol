@@ -89,9 +89,10 @@ contract ConfigSetup is Script {
         if (isUSDTDeployed) {
             citreaUSDT = vm.parseTomlAddress(tomlContent, ".citrea.usdt.deployment.proxy");
             require(citreaUSDT != address(0), "Citrea USDT Proxy is not set in the config file");
-
             citreaUSDTBridgeOwner = vm.parseTomlAddress(tomlContent, ".citrea.usdt.bridge.init.owner");
             require(citreaUSDTBridgeOwner != address(0), "Citrea USDT Bridge Owner is not set in the config file");
+            citreaUSDTBridgeProxyAdminOwner = vm.parseTomlAddress(tomlContent, ".citrea.usdt.bridge.init.proxyAdminOwner");
+            require(citreaUSDTBridgeProxyAdminOwner != address(0), "Citrea USDT Bridge Proxy Admin Owner is not set in the config file");
 
             ethUSDT = vm.parseTomlAddress(tomlContent, ".eth.usdt.contract");
             require(ethUSDT != address(0), "Ethereum USDT Contract is not set in the config file");
