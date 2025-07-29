@@ -15,6 +15,7 @@ contract USDCBridgeMintTest is ConfigSetup {
         loadUSDCConfig({isBridgeDeployed: true});
     }
 
+    // Can be called by anyone with >= 1 cent Ethereum USDC balance
     function run() public {
         SourceOFTAdapter ethUSDCBridge = SourceOFTAdapter(ethUSDCBridgeProxy);
 

@@ -11,6 +11,7 @@ contract USDCTransferOwner is ConfigSetup {
         loadUSDCConfig({isBridgeDeployed: true});
     }
 
+    // Should be called by `citrea.usdc.bridge.init.owner` address
     function run() public {
         address usdcRolesHolderOwner = vm.envAddress("USDC_ROLES_HOLDER_OWNER");
 

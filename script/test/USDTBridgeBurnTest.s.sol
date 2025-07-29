@@ -15,6 +15,7 @@ contract USDCBridgeBurnTest is ConfigSetup {
         loadUSDTConfig({isUSDTDeployed: true, isBridgeDeployed: true});
     }
 
+    // Can be called by anyone with >= 1 cent Citrea USDT balance
     function run() public {
         DestinationOUSDT citreaUSDTBridge = DestinationOUSDT(citreaUSDTBridgeProxy);
 

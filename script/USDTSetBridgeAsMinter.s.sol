@@ -13,7 +13,7 @@ contract USDTSetBridgeAsMinter is ConfigSetup {
         loadUSDTConfig({isUSDTDeployed: true, isBridgeDeployed: true});
     }
 
-    // This script should be called by the owner of Citrea USDT (`citreaUSDTOwner`)
+    // Should be called by the owner of Citrea USDT (`citreaUSDTOwner`)
     function run() public {
         vm.createSelectFork(citreaRPC);
         vm.startBroadcast();

@@ -9,6 +9,7 @@ contract USDCRemoveBridgeAsMinter is ConfigSetup {
         loadUSDCConfig({isBridgeDeployed: true});
     }
 
+    // Should be called by `MASTER_MINTER_OWNER_ADDRESS` in `.env.citrea-usdc`
     function run() public {
         vm.createSelectFork(citreaRPC);
         vm.startBroadcast();

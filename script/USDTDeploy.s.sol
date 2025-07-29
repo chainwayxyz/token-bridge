@@ -12,6 +12,7 @@ contract USDTDeploy is ConfigSetup {
         loadUSDTConfig({isUSDTDeployed: false, isBridgeDeployed: false});
     }
 
+    // Can be called by anyone
     function run() public {
         vm.createSelectFork(citreaRPC);
         vm.startBroadcast();

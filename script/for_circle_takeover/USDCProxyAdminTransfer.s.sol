@@ -14,6 +14,7 @@ contract USDCProxyAdminTransferOwner is ConfigSetup {
         loadUSDCConfig({isBridgeDeployed: true});
     }
 
+    // Should be called by `citrea.usdc.bridge.init.proxyAdminOwner` address
     function run() public {
         vm.createSelectFork(citreaRPC);
         vm.startBroadcast();
