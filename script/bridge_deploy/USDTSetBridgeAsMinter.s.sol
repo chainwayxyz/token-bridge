@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import {ConfigSetup} from "./ConfigSetup.s.sol";
+import {ConfigSetup} from "../ConfigSetup.s.sol";
 import "forge-std/console.sol";
 
 interface IOFTExtension {
@@ -13,7 +13,7 @@ contract USDTSetBridgeAsMinter is ConfigSetup {
         loadUSDTConfig({isUSDTDeployed: true, isBridgeDeployed: true});
     }
 
-    // Should be called by the owner of Citrea USDT (`citreaUSDTOwner`)
+    // Should be called by `citrea.usdt.init.owner` address
     function run() public {
         vm.createSelectFork(citreaRPC);
         vm.startBroadcast();

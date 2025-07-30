@@ -45,7 +45,7 @@ contract ConfigSetup is Script {
     address public ethUSDTBridgeProxy;
 
     function loadUSDCConfig(bool isBridgeDeployed) public {
-        string memory tomlContent = loadCommonConfig();
+        string memory tomlContent = _loadCommonConfig();
                 
         citreaUSDC = FiatTokenV2_2(vm.parseTomlAddress(tomlContent, ".citrea.usdc.proxy"));
         require(address(citreaUSDC) != address(0), "Citrea USDC Proxy is not set in the config file");
@@ -79,7 +79,7 @@ contract ConfigSetup is Script {
     }
 
     function loadUSDTConfig(bool isUSDTDeployed, bool isBridgeDeployed) public {
-        string memory tomlContent = loadCommonConfig();
+        string memory tomlContent = _loadCommonConfig();
 
         citreaUSDTOwner = vm.parseTomlAddress(tomlContent, ".citrea.usdt.init.owner");
         require(citreaUSDTOwner != address(0), "Citrea USDT Owner is not set in the config file");
@@ -115,7 +115,7 @@ contract ConfigSetup is Script {
         }
     }
 
-    function loadCommonConfig() internal returns (string memory tomlContent){
+    function _loadCommonConfig() internal returns (string memory tomlContent){
         string memory testnetConfigPath = "./config/testnet/config.toml";
         string memory tomlPath = vm.envOr("CONFIG_PATH", testnetConfigPath);
         tomlContent = vm.readFile(tomlPath);
