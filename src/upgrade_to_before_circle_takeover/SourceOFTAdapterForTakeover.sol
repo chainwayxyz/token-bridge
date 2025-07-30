@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.22;
 
-import {OFTAdapterUpgradeable} from "@layerzerolabs/oft-evm-upgradeable/contracts/oft/OFTAdapterUpgradeable.sol";
-import {PausableUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol";
-import {FiatTokenV2_2} from "../interfaces/IFiatTokenV2_2.sol";
+import { OFTAdapterUpgradeable } from "@layerzerolabs/oft-evm-upgradeable/contracts/oft/OFTAdapterUpgradeable.sol";
+import { PausableUpgradeable } from "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol";
+import { FiatTokenV2_2 } from "../interfaces/IFiatTokenV2_2.sol";
 
 contract SourceOFTAdapter is OFTAdapterUpgradeable, PausableUpgradeable {
     address public circle;
@@ -25,21 +25,20 @@ contract SourceOFTAdapter is OFTAdapterUpgradeable, PausableUpgradeable {
         __Ownable_init(_delegate);
     }
 
-    function _debit(address _from, uint256 _amountLD, uint256 _minAmountLD, uint32 _dstEid)
-        internal
-        override
-        whenNotPaused
-        returns (uint256 amountSentLD, uint256 amountReceivedLD)
-    {
+    function _debit(
+        address _from,
+        uint256 _amountLD,
+        uint256 _minAmountLD,
+        uint32 _dstEid
+    ) internal virtual override whenNotPaused returns (uint256 amountSentLD, uint256 amountReceivedLD) {
         (amountSentLD, amountReceivedLD) = super._debit(_from, _amountLD, _minAmountLD, _dstEid);
     }
 
-    function _credit(address _to, uint256 _amountLD, uint32 _srcEid)
-        internal
-        override
-        whenNotPaused
-        returns (uint256 amountReceivedLD)
-    {
+    function _credit(
+        address _to,
+        uint256 _amountLD,
+        uint32 _srcEid
+    ) internal virtual override whenNotPaused returns (uint256 amountReceivedLD) {
         amountReceivedLD = super._credit(_to, _amountLD, _srcEid);
     }
 

@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.22;
 
-import {OFTCoreUpgradeable} from "@layerzerolabs/oft-evm-upgradeable/contracts/oft/OFTCoreUpgradeable.sol";
-import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import {FiatTokenV2_2} from "./interfaces/IFiatTokenV2_2.sol";
+import { OFTCoreUpgradeable } from "@layerzerolabs/oft-evm-upgradeable/contracts/oft/OFTCoreUpgradeable.sol";
+import { SafeERC20 } from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import { FiatTokenV2_2 } from "./interfaces/IFiatTokenV2_2.sol";
 
 contract DestinationOUSDC is OFTCoreUpgradeable {
     using SafeERC20 for IERC20;
@@ -14,7 +14,10 @@ contract DestinationOUSDC is OFTCoreUpgradeable {
         return address(token_);
     }
 
-    constructor(address _lzEndpoint, FiatTokenV2_2 _token) OFTCoreUpgradeable(_token.decimals(), _lzEndpoint) {
+    constructor(
+        address _lzEndpoint,
+        FiatTokenV2_2 _token
+    ) OFTCoreUpgradeable(_token.decimals(), _lzEndpoint) {
         token_ = _token;
         _disableInitializers();
     }
@@ -43,12 +46,12 @@ contract DestinationOUSDC is OFTCoreUpgradeable {
      * @return amountSentLD The amount sent in local decimals.
      * @return amountReceivedLD The amount received in local decimals on the remote.
      */
-    function _debit(address _from, uint256 _amountLD, uint256 _minAmountLD, uint32 _dstEid)
-        internal
-        virtual
-        override
-        returns (uint256 amountSentLD, uint256 amountReceivedLD)
-    {
+    function _debit(
+        address _from,
+        uint256 _amountLD,
+        uint256 _minAmountLD,
+        uint32 _dstEid
+    ) internal virtual override returns (uint256 amountSentLD, uint256 amountReceivedLD) {
         (amountSentLD, amountReceivedLD) = _debitView(_amountLD, _minAmountLD, _dstEid);
 
         // @dev Default OFT transfers and burns on src.
@@ -63,12 +66,11 @@ contract DestinationOUSDC is OFTCoreUpgradeable {
      * @dev _srcEid The source chain ID.
      * @return amountReceivedLD The amount of tokens ACTUALLY received in local decimals.
      */
-    function _credit(address _to, uint256 _amountLD, uint32 /*_srcEid*/ )
-        internal
-        virtual
-        override
-        returns (uint256 amountReceivedLD)
-    {
+    function _credit(
+        address _to,
+        uint256 _amountLD,
+        uint32 /*_srcEid*/
+    ) internal virtual override returns (uint256 amountReceivedLD) {
         // @dev Default OFT mints on dst.
         token_.mint(_to, _amountLD);
         return _amountLD;
