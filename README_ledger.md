@@ -54,6 +54,18 @@ forge script ./script/USDCBridgeDeploy.s.sol --ledger --hd-paths $HD_PATHS --bro
 
 3. Fill the fields of `[citrea.usdc.bridge.deployment]` and `[eth.usdc.bridge.deployment]` in `config/<mainnet or testnet>/config.toml`.
 
+4. Set the bridge as a minter for USDC:
+```
+forge script ./script/bridge_deploy/USDCSetBridgeAsMinter.s.sol --ledger --hd-paths $HD_PATHS --broadcast
+```
+
+5. Set the peers for both ends of the bridge:
+```
+forge script ./script/bridge_deploy/USDCSrcBridgeSetPeer.s.sol --ledger --hd-paths $HD_PATHS --broadcast
+
+forge script ./script/bridge_deploy/USDCDestBridgeSetPeer.s.sol --ledger --hd-paths $HD_PATHS --broadcast
+```
+
 ### 3. Testing USDC Bridge
 1. Test the deployment by running the test script which sends 1 cent from Ethereum to Citrea, you need to have some USDC on Ethereum for this:
 ```
@@ -139,6 +151,13 @@ forge script ./script/USDTBridgeDeploy.s.sol --ledger --hd-paths $HD_PATHS --bro
 4. Set the bridge as a minter for USDT:
 ```
 forge script ./script/USDTSetBridgeAsMinter.s.sol --ledger --hd-paths $HD_PATHS --broadcast
+```
+
+5. Set the peers for both ends of the bridge:
+```
+forge script ./script/bridge_deploy/USDTSrcBridgeSetPeer.s.sol --ledger --hd-paths $HD_PATHS --broadcast
+
+forge script ./script/bridge_deploy/USDTBridgeSetPeer.s.sol --ledger --hd-paths $HD_PATHS --broadcast
 ```
 
 ### 3. Testing USDT Bridge
