@@ -27,6 +27,7 @@ MASTER_MINTER_OWNER_ADDRESS=
 cd ..
 git clone https://github.com/circlefin/stablecoin-evm.git
 cd stablecoin-evm
+git checkout c8c31b2
 cp ../stablecoin-bridge/stablecoin-evm_env/.env.citrea-usdc .env
 echo "[]" > blacklist.remote.json
 yarn install
@@ -157,7 +158,7 @@ forge script ./script/USDTSetBridgeAsMinter.s.sol --ledger --hd-paths $HD_PATHS 
 ```
 forge script ./script/bridge_deploy/USDTSrcBridgeSetPeer.s.sol --ledger --hd-paths $HD_PATHS --broadcast
 
-forge script ./script/bridge_deploy/USDTBridgeSetPeer.s.sol --ledger --hd-paths $HD_PATHS --broadcast
+forge script ./script/bridge_deploy/USDTDestBridgeSetPeer.s.sol --ledger --hd-paths $HD_PATHS --broadcast
 ```
 
 ### 3. Testing USDT Bridge
