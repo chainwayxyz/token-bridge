@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import {ConfigSetup} from "./ConfigSetup.s.sol";
+import {ConfigSetup} from "../ConfigSetup.s.sol";
 import "forge-std/console.sol";
-import {SourceOFTAdapter} from "../src/SourceOFTAdapter.sol";
-import {DestinationOUSDT, IOFTToken} from "../src/DestinationOUSDT.sol";
+import {SourceOFTAdapter} from "../../src/SourceOFTAdapter.sol";
+import {DestinationOUSDT, IOFTToken} from "../../src/DestinationOUSDT.sol";
 import "openzeppelin-contracts/contracts/proxy/transparent/TransparentUpgradeableProxy.sol";
 import "openzeppelin-contracts/contracts/proxy/transparent/ProxyAdmin.sol";
 
@@ -13,8 +13,9 @@ contract USDTBridgeDeploy is ConfigSetup {
         loadUSDTConfig({isUSDTDeployed: true, isBridgeDeployed: false});
     }
 
+    // Can be called by any address
     function run() public {
-        uint256 ethForkId = vm.createSelectFork(ethRPC);
+        vm.createSelectFork(ethRPC);
         vm.startBroadcast();
         SourceOFTAdapter ethBridgeImpl = new SourceOFTAdapter(ethUSDT, ethLzEndpoint);
         console.log("Ethereum USDT Bridge Implementation:", address(ethBridgeImpl));
@@ -36,16 +37,6 @@ contract USDTBridgeDeploy is ConfigSetup {
             abi.encodeWithSignature("initialize(address)", citreaUSDTBridgeOwner)
         );
         console.log("Citrea USDT Bridge Proxy:", address(citreaBridgeProxy));
-        DestinationOUSDT(address(citreaBridgeProxy)).setPeer(ethEID, addressToPeer(address(ethBridgeProxy)));
         vm.stopBroadcast();
-
-        vm.selectFork(ethForkId);
-        vm.startBroadcast();
-        SourceOFTAdapter(address(ethBridgeProxy)).setPeer(citreaEID, addressToPeer(address(citreaBridgeProxy)));
-        vm.stopBroadcast();
-    }
-
-    function addressToPeer(address addr) internal pure returns (bytes32) {
-        return bytes32(uint256(uint160(addr)));
     }
 }

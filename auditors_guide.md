@@ -12,7 +12,7 @@
 
     - Use the implementation of [`OAdapterUpgradeable`](https://etherscan.io/address/0xcd979b10a55fcdac23ec785ce3066c6ef8a479a4#code) on Ethereum mainnet as a reference for this codebase's `SourceOFTAdapter` contract.
 
-    - Use the implementation of [`OUpgradeable`](https://arbiscan.io/address/0x00678fdaab0d5c91b843a22fa38e08af1bbda85e#code) on Arbitrum as a reference for this codebase's `DestinationOUSDT` and `DestinationOUSDC` contracts.
+    - Use the implementation of [`OUpgradeable`](https://unichain.blockscout.com/address/0x13C41AF9e2AdaDB47A55961f6D3B68B41ae36eF9?tab=contract) on Unichain as a reference for this codebase's `DestinationOUSDT` and `DestinationOUSDC` contracts.
 
     - `DestinationOUSDT` is equivalent to `OUpgradeable` above.
 
