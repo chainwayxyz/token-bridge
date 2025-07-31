@@ -16,8 +16,8 @@ rpc = "https://rpc.testnet.citrea.xyz"
         proxyAdminOwner = "0xDc94F4e8F84180C1E807fC4d6b43d65cb459b510"
         
         [citrea.usdc.bridge.deployment]
-        implementation = "0x65789A70e3dc578306247d4c54c05E4781B4F64A"
-        proxy = "0xA5D3dD426253419d18db0FA2b0A3C52f4920Ba6E"
+        implementation = "0x8E6630c5442582A180442f71a545b4fDC37B0c82"
+        proxy = "0x0dD7db8F5643F14ab2846848121593B766586e9b"
 
     [citrea.usdt]
 
@@ -55,8 +55,8 @@ rpc = "https://sepolia.drpc.org"
         proxyAdminOwner = "0xDc94F4e8F84180C1E807fC4d6b43d65cb459b510"
         
         [eth.usdc.bridge.deployment]
-        implementation = "0x8f803Fc8957Eaf4457267AF5AEa613A30f9dBC07"
-        proxy = "0x7Ea96cA345f2062420AF8e643E39D7d6B465C9f1"
+        implementation = "0x90946aA8dC5D4a68221bB80242629575fA2fc327"
+        proxy = "0xae20fB5930046b8a8630c8Ad7f7B5FEEb7c7956c"
 
     [eth.usdt]
     contract = "0x7169D38820dfd117C3FA1f22a697dBA58d90BA06"
