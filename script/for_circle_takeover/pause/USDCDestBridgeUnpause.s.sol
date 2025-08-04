@@ -13,12 +13,14 @@ contract USDCDestBridgeUnpause is ConfigSetup {
     // Should be called by `citrea.usdc.bridge.deployment.init.owner` address
     function run() public {
         vm.createSelectFork(citreaRPC);
-        vm.startBroadcast();
+        _run(true);
+    }
 
+    function _run(bool broadcast) public {
+        if (broadcast) vm.startBroadcast();
         DestinationOUSDC citreaUSDCBridge = DestinationOUSDC(citreaUSDCBridgeProxy);
         citreaUSDCBridge.unpause();
         console.log("Unpaused Citrea USDC Bridge at:", address(citreaUSDCBridge));
-
-        vm.stopBroadcast();
+        if (broadcast) vm.stopBroadcast();
     }
 }

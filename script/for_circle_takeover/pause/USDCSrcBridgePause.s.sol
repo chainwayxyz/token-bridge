@@ -21,4 +21,12 @@ contract USDCSrcBridgePause is ConfigSetup {
 
         vm.stopBroadcast();
     }
+
+    function _run(bool broadcast) public {
+        if (broadcast) vm.startBroadcast();
+        SourceOFTAdapter ethUSDCBridge = SourceOFTAdapter(ethUSDCBridgeProxy);
+        ethUSDCBridge.pause();
+        console.log("Paused Ethereum USDC Bridge at:", address(ethUSDCBridge));
+        if (broadcast) vm.stopBroadcast();
+    }
 }

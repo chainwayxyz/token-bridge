@@ -17,10 +17,12 @@ contract USDCProxyAdminTransferOwner is ConfigSetup {
     // Should be called by `citrea.usdc.bridge.init.proxyAdminOwner` address
     function run() public {
         vm.createSelectFork(citreaRPC);
-        vm.startBroadcast();
+        _run(true);
+    }
 
+    function _run(bool broadcast) public {
+        if (broadcast) vm.startBroadcast();
         IAdminUpgradeabilityProxy(address(citreaUSDC)).changeAdmin(vm.envAddress("CIRCLE_USDC_PROXY_ADMIN"));
-
-        vm.stopBroadcast();
+        if (broadcast) vm.stopBroadcast();
     }
 }

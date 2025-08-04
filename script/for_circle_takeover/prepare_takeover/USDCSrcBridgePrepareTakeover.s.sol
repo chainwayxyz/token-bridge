@@ -15,15 +15,17 @@ contract USDCSrcBridgePrepareTakeover is ConfigSetup {
     // Should be called by `eth.usdc.bridge.deployment.init.proxyAdminOwner` address
     function run() public {
         vm.createSelectFork(ethRPC);
-        vm.startBroadcast();
+        _run(true);
+    }
 
+    function _run(bool broadcast) public {
+        if (broadcast) vm.startBroadcast();
         address newEthUSDCBridgeImpl = address(new SourceOFTAdapter(ethUSDC, ethLzEndpoint));
         bytes32 ethAdminSlot = vm.load(ethUSDCBridgeProxy, ERC1967Utils.ADMIN_SLOT);
         address ethUSDCBridgeProxyAdmin = address(uint160(uint256(ethAdminSlot)));
         ProxyAdmin(ethUSDCBridgeProxyAdmin).upgradeAndCall(
             ITransparentUpgradeableProxy(ethUSDCBridgeProxy), newEthUSDCBridgeImpl, ""
         );
-
-        vm.stopBroadcast();
+        if (broadcast) vm.stopBroadcast();
     }
 }

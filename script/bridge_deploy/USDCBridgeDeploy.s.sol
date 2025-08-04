@@ -15,7 +15,13 @@ contract USDCBridgeDeploy is ConfigSetup {
     // Can be called by any address
     function run() public {
         vm.createSelectFork(ethRPC);
-        vm.startBroadcast();
+        _runEth(true);
+        vm.createSelectFork(citreaRPC);
+        _runCitrea(true);
+    }
+
+    function _runEth(bool broadcast) public returns (address){
+        if (broadcast) vm.startBroadcast();
         SourceOFTAdapter ethBridgeImpl = new SourceOFTAdapter(ethUSDC, ethLzEndpoint);
         console.log("Ethereum USDC Bridge Implementation:", address(ethBridgeImpl));
         TransparentUpgradeableProxy ethBridgeProxy = new TransparentUpgradeableProxy(
@@ -24,10 +30,12 @@ contract USDCBridgeDeploy is ConfigSetup {
             abi.encodeWithSignature("initialize(address)", ethUSDCBridgeOwner)
         );
         console.log("Ethereum USDC Bridge Proxy:", address(ethBridgeProxy));
-        vm.stopBroadcast();
+        if (broadcast) vm.stopBroadcast();
+        return address(ethBridgeProxy);
+    }
 
-        vm.createSelectFork(citreaRPC);
-        vm.startBroadcast();
+    function _runCitrea(bool broadcast) public returns (address) {
+        if (broadcast) vm.startBroadcast();
         DestinationOUSDC citreaBridgeImpl = new DestinationOUSDC(citreaLzEndpoint, citreaUSDC);
         console.log("Citrea USDC Bridge Implementation:", address(citreaBridgeImpl));
         TransparentUpgradeableProxy citreaBridgeProxy = new TransparentUpgradeableProxy(
@@ -36,6 +44,7 @@ contract USDCBridgeDeploy is ConfigSetup {
             abi.encodeWithSignature("initialize(address)", citreaUSDCBridgeOwner)
         );
         console.log("Citrea USDC Bridge Proxy:", address(citreaBridgeProxy));
-        vm.stopBroadcast();
+        if (broadcast) vm.stopBroadcast();
+        return address(citreaBridgeProxy);
     }
 }

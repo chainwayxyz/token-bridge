@@ -13,13 +13,15 @@ contract USDCSrcBridgeSetCircle is ConfigSetup {
     // Should be called by `eth.usdc.bridge.deployment.init.owner` address
     function run() public {
         vm.createSelectFork(ethRPC);
-        vm.startBroadcast();
+        _run(true);
+    }
 
+    function _run(bool broadcast) public {
+        if (broadcast) vm.startBroadcast();
         SourceOFTAdapter ethUSDCBridge = SourceOFTAdapter(ethUSDCBridgeProxy);
         address circle = vm.envAddress("SRC_BRIDGE_CIRCLE_ADDRESS");
         ethUSDCBridge.setCircle(circle);
         console.log("Set Circle address %s to Ethereum USDC Bridge at %s.", circle, address(ethUSDCBridge));
-
-        vm.stopBroadcast();
+        if (broadcast) vm.stopBroadcast();
     }
 }

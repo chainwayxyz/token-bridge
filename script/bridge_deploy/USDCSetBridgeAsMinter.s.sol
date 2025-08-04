@@ -13,11 +13,13 @@ contract USDCSetBridgeAsMinter is ConfigSetup {
     // Should be called by `MASTER_MINTER_OWNER_ADDRESS` in `.env.citrea-usdc`
     function run() public {
         vm.createSelectFork(citreaRPC);
-        vm.startBroadcast();
+        _run(true);
+    }
 
+    function _run(bool broadcast) public {
+        if (broadcast) vm.startBroadcast();
         MasterMinter(citreaMM).configureController(msg.sender, address(citreaUSDCBridgeProxy));
         MasterMinter(citreaMM).configureMinter(type(uint256).max);
-
-        vm.stopBroadcast();
+        if (broadcast) vm.stopBroadcast();
     }
 }

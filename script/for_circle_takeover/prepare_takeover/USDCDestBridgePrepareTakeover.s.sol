@@ -15,15 +15,17 @@ contract USDCDestBridgePrepareTakeover is ConfigSetup {
     // Should be called by `citrea.usdc.bridge.deployment.init.proxyAdminOwner` address
     function run() public {
         vm.createSelectFork(citreaRPC);
-        vm.startBroadcast();
+        _run(true);
+    }
 
+    function _run(bool broadcast) public {
+        if (broadcast) vm.startBroadcast();
         address newCitreaUSDCBridgeImpl = address(new DestinationOUSDC(citreaLzEndpoint, citreaUSDC));
         bytes32 citreaAdminSlot = vm.load(citreaUSDCBridgeProxy, ERC1967Utils.ADMIN_SLOT);
         address citreaUSDCBridgeProxyAdmin = address(uint160(uint256(citreaAdminSlot)));
         ProxyAdmin(citreaUSDCBridgeProxyAdmin).upgradeAndCall(
             ITransparentUpgradeableProxy(citreaUSDCBridgeProxy), newCitreaUSDCBridgeImpl, ""
         );
-
-        vm.stopBroadcast();
+        if (broadcast) vm.stopBroadcast();
     }
 }

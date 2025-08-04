@@ -13,14 +13,16 @@ contract USDCTransferOwner is ConfigSetup {
 
     // Should be called by `citrea.usdc.bridge.init.owner` address
     function run() public {
-        address usdcRolesHolderOwner = vm.envAddress("USDC_ROLES_HOLDER_OWNER");
-
         vm.createSelectFork(citreaRPC);
-        vm.startBroadcast();
+        _run(true);
+    }
+
+    function _run(bool broadcast) public {
+        if (broadcast) vm.startBroadcast();
+        address usdcRolesHolderOwner = vm.envAddress("USDC_ROLES_HOLDER_OWNER");
         USDCRolesHolder usdcRolesHolder = new USDCRolesHolder(usdcRolesHolderOwner, address(citreaUSDC));
         console.log("Created USDC Roles Holder at %s with owner %s.", address(usdcRolesHolder), usdcRolesHolderOwner);
         FiatTokenV2_2(citreaUSDC).transferOwnership(address(usdcRolesHolder));
-
-        vm.stopBroadcast();
+        if (broadcast) vm.stopBroadcast();
     }
 }
