@@ -8,23 +8,23 @@ import "openzeppelin-contracts/contracts/proxy/transparent/TransparentUpgradeabl
 import {ERC1967Utils} from "openzeppelin-contracts/contracts/proxy/ERC1967/ERC1967Utils.sol";
 
 contract USDCSrcBridgePrepareTakeover is ConfigSetup {
-    function setUp() public {
+    function setUp() public virtual {
         loadUSDCConfig({isBridgeDeployed: true});
     }
 
     // Should be called by `eth.usdc.bridge.deployment.init.proxyAdminOwner` address
-    function run() public {
+    function run() public virtual {
         vm.createSelectFork(ethRPC);
-        _run(true);
+        _run(true, ethLzEndpoint, ethUSDC, ethUSDCBridgeProxy);
     }
 
-    function _run(bool broadcast) public {
+    function _run(bool broadcast, address _ethLzEndpoint, address _ethUSDC, address _ethUSDCBridgeProxy) public {
         if (broadcast) vm.startBroadcast();
-        address newEthUSDCBridgeImpl = address(new SourceOFTAdapter(ethUSDC, ethLzEndpoint));
-        bytes32 ethAdminSlot = vm.load(ethUSDCBridgeProxy, ERC1967Utils.ADMIN_SLOT);
-        address ethUSDCBridgeProxyAdmin = address(uint160(uint256(ethAdminSlot)));
+        address newEthUSDCBridgeImpl = address(new SourceOFTAdapter(_ethUSDC, _ethLzEndpoint));
+        bytes32 proxyAdminBytes = vm.load(_ethUSDCBridgeProxy, ERC1967Utils.ADMIN_SLOT);
+        address ethUSDCBridgeProxyAdmin = address(uint160(uint256(proxyAdminBytes)));
         ProxyAdmin(ethUSDCBridgeProxyAdmin).upgradeAndCall(
-            ITransparentUpgradeableProxy(ethUSDCBridgeProxy), newEthUSDCBridgeImpl, ""
+            ITransparentUpgradeableProxy(_ethUSDCBridgeProxy), newEthUSDCBridgeImpl, ""
         );
         if (broadcast) vm.stopBroadcast();
     }

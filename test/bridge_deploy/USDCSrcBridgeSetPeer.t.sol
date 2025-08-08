@@ -1,24 +1,20 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import {USDCBridgeDeployTest} from "./USDCBridgeDeploy.t.sol";
+import {USDCBridgeDeployTestBase} from "./base/USDCBridgeDeployBase.t.sol";
 import {USDCSrcBridgeSetPeer} from "../../script/bridge_deploy/USDCSrcBridgeSetPeer.s.sol";
 import {SourceOFTAdapter} from "../../src/SourceOFTAdapter.sol";
 
-contract USDCSrcBridgeSetPeerTest is USDCBridgeDeployTest, USDCSrcBridgeSetPeer {
-    USDCSrcBridgeSetPeer public usdcSrcBridgeSetPeer;
-
-    function setUp() public override (USDCBridgeDeployTest, USDCSrcBridgeSetPeer) {
-        USDCBridgeDeployTest.setUp();
-        USDCSrcBridgeSetPeer.setUp();
+contract USDCSrcBridgeSetPeerTest is USDCBridgeDeployTestBase, USDCSrcBridgeSetPeer {
+    function setUp() public override (USDCBridgeDeployTestBase, USDCSrcBridgeSetPeer) {
+        USDCBridgeDeployTestBase.setUp();
     }
 
     function testSetPeer() public {
         vm.selectFork(ethForkId);
-        vm.startPrank(ethUSDCBridgeOwner);
-        _run(false);
-        // Verify that the peer address is set correctly
-        bytes32 expectedPeer = _addressToPeer(address(citreaUSDCBridgeProxy));
-        assertTrue(SourceOFTAdapter(ethUSDCBridgeProxy).isPeer(citreaEID, expectedPeer), "Peer should be set correctly");
+        vm.startPrank(ethUSDCBridge.owner());
+        _run(false, address(ethUSDCBridge), address(citreaUSDCBridge), CITREA_EID);
+        bytes32 expectedPeer = _addressToPeer(address(citreaUSDCBridge));
+        assertTrue(ethUSDCBridge.isPeer(CITREA_EID, expectedPeer), "Peer should be set correctly");
     }
 }

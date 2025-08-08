@@ -6,19 +6,19 @@ import {ConfigSetup} from "../../ConfigSetup.s.sol";
 import "forge-std/console.sol";
 
 contract USDCDestBridgeUnpause is ConfigSetup {
-    function setUp() public {
+    function setUp() public virtual {
         loadUSDCConfig({isBridgeDeployed: true});
     }
 
     // Should be called by `citrea.usdc.bridge.deployment.init.owner` address
-    function run() public {
+    function run() public virtual {
         vm.createSelectFork(citreaRPC);
-        _run(true);
+        _run(true, citreaUSDCBridgeProxy);
     }
 
-    function _run(bool broadcast) public {
+    function _run(bool broadcast, address _citreaUSDCBridgeProxy) public {
         if (broadcast) vm.startBroadcast();
-        DestinationOUSDC citreaUSDCBridge = DestinationOUSDC(citreaUSDCBridgeProxy);
+        DestinationOUSDC citreaUSDCBridge = DestinationOUSDC(_citreaUSDCBridgeProxy);
         citreaUSDCBridge.unpause();
         console.log("Unpaused Citrea USDC Bridge at:", address(citreaUSDCBridge));
         if (broadcast) vm.stopBroadcast();

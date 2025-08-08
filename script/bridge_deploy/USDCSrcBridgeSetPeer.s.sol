@@ -13,12 +13,12 @@ contract USDCSrcBridgeSetPeer is ConfigSetup {
     // Should be called by `eth.usdc.bridge.init.owner` address
     function run() public {
         vm.createSelectFork(ethRPC);
-        _run(true);
+        _run(true, ethUSDCBridgeProxy, citreaUSDCBridgeProxy, citreaEID);
     }
 
-    function _run(bool broadcast) public {
+    function _run(bool broadcast, address _ethUSDCBridgeProxy, address _citreaUSDCBridgeProxy, uint32 _citreaEID) public {
         if (broadcast) vm.startBroadcast();
-        SourceOFTAdapter(address(ethUSDCBridgeProxy)).setPeer(citreaEID, _addressToPeer(address(citreaUSDCBridgeProxy)));
+        SourceOFTAdapter(_ethUSDCBridgeProxy).setPeer(_citreaEID, _addressToPeer(_citreaUSDCBridgeProxy));
         if (broadcast) vm.stopBroadcast();
     }
 

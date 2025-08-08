@@ -6,19 +6,19 @@ import {ConfigSetup} from "../../ConfigSetup.s.sol";
 import "forge-std/console.sol";
 
 contract USDCSrcBridgeUnpause is ConfigSetup {
-    function setUp() public {
+    function setUp() public virtual {
         loadUSDCConfig({isBridgeDeployed: true});
     }
 
     // Should be called by `eth.usdc.bridge.deployment.init.owner` address
-    function run() public {
+    function run() public virtual {
         vm.createSelectFork(ethRPC);
-        _run(true);
+        _run(true, ethUSDCBridgeProxy);
     }
 
-    function _run(bool broadcast) public {
+    function _run(bool broadcast, address _ethUSDCBridgeProxy) public {
         if (broadcast) vm.startBroadcast();
-        SourceOFTAdapter ethUSDCBridge = SourceOFTAdapter(ethUSDCBridgeProxy);
+        SourceOFTAdapter ethUSDCBridge = SourceOFTAdapter(_ethUSDCBridgeProxy);
         ethUSDCBridge.unpause();
         console.log("Unpaused Ethereum USDC Bridge at:", address(ethUSDCBridge));
         if (broadcast) vm.stopBroadcast();

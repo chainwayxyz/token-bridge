@@ -6,19 +6,19 @@ import "forge-std/console.sol";
 import {DestinationOUSDT} from "../../src/DestinationOUSDT.sol";
 
 contract USDTDestBridgeSetPeer is ConfigSetup {
-    function setUp() public {
+    function setUp() public virtual {
         loadUSDTConfig({isUSDTDeployed: true, isBridgeDeployed: true});
     }
 
     // Should be called by `citrea.usdt.bridge.init.owner` address
     function run() public {
         vm.createSelectFork(citreaRPC);
-        _run(true);
+        _run(true, ethUSDTBridgeProxy, citreaUSDTBridgeProxy, ethEID);
     }
 
-    function _run(bool broadcast) public {
+    function _run(bool broadcast, address _ethUSDTBridgeProxy, address _citreaUSDTBridgeProxy, uint32 _ethEID) public {
         if (broadcast) vm.startBroadcast();
-        DestinationOUSDT(address(citreaUSDTBridgeProxy)).setPeer(ethEID, _addressToPeer(address(ethUSDTBridgeProxy)));
+        DestinationOUSDT(address(_citreaUSDTBridgeProxy)).setPeer(_ethEID, _addressToPeer(address(_ethUSDTBridgeProxy)));
         if (broadcast) vm.stopBroadcast();
     }
 
