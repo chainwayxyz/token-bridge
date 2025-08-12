@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import {USDCRolesHolder} from "../../../src/USDCRolesHolder.sol";
+import {USDCRolesHolder} from "../../src/USDCRolesHolder.sol";
 import {ConfigSetup, FiatTokenV2_2} from "../ConfigSetup.s.sol";
 import "forge-std/console.sol";
 
