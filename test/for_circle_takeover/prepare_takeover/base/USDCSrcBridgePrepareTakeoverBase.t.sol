@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "../../../bridge_deploy/base/USDCBridgeDeployBase.t.sol";
-import {USDCSrcBridgePrepareTakeover, ERC1967Utils} from "../../../../script/for_circle_takeover/prepare_takeover/USDCSrcBridgePrepareTakeover.s.sol";
+import {USDCBridgeDeployTestBase, FiatTokenV2_2} from "../../../bridge_deploy/base/USDCBridgeDeployBase.t.sol";
+import {USDCSrcBridgePrepareTakeover, ERC1967Utils, SourceOFTAdapter} from "../../../../script/for_circle_takeover/prepare_takeover/USDCSrcBridgePrepareTakeover.s.sol";
 
 contract USDCSrcBridgePrepareTakeoverTestBase is USDCBridgeDeployTestBase, USDCSrcBridgePrepareTakeover {
     function setUp() public virtual override(USDCBridgeDeployTestBase, USDCSrcBridgePrepareTakeover) {
