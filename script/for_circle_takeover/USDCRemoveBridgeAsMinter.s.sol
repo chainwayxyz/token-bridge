@@ -12,7 +12,6 @@ contract USDCRemoveBridgeAsMinter is ConfigSetup {
     // Should be called by `MASTER_MINTER_OWNER_ADDRESS` in `.env.citrea-usdc`
     function run() public virtual {
         vm.createSelectFork(citreaRPC);
-        // TODO: Replace msg.sender and get config as controller? Discuss
         _run(true, citreaMM, msg.sender);
     }
 
