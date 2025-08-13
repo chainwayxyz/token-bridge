@@ -10,17 +10,17 @@ contract USDCDestBridgePause is ConfigSetup {
         loadUSDCConfig({isBridgeDeployed: true});
     }
 
-    // Should be called by `citrea.usdc.bridge.deployment.init.owner` address
+    // Should be called by `dest.usdc.bridge.deployment.init.owner` address
     function run() public virtual {
-        vm.createSelectFork(citreaRPC);
-        _run(true, citreaUSDCBridgeProxy);
+        vm.createSelectFork(destRPC);
+        _run(true, destUSDCBridgeProxy);
     }
 
-    function _run(bool broadcast, address _citreaUSDCBridgeProxy) public {
+    function _run(bool broadcast, address _destUSDCBridgeProxy) public {
         if (broadcast) vm.startBroadcast();
-        DestinationOUSDC citreaUSDCBridge = DestinationOUSDC(_citreaUSDCBridgeProxy);
-        citreaUSDCBridge.pause();
-        console.log("Paused Citrea USDC Bridge at:", address(citreaUSDCBridge));
+        DestinationOUSDC destUSDCBridge = DestinationOUSDC(_destUSDCBridgeProxy);
+        destUSDCBridge.pause();
+        console.log("Paused Destination USDC Bridge at:", address(destUSDCBridge));
         if (broadcast) vm.stopBroadcast();
     }
 }

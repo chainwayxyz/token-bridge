@@ -10,15 +10,15 @@ contract USDTDestBridgeSetPeer is ConfigSetup {
         loadUSDTConfig({isUSDTDeployed: true, isBridgeDeployed: true});
     }
 
-    // Should be called by `citrea.usdt.bridge.init.owner` address
+    // Should be called by `dest.usdt.bridge.init.owner` address
     function run() public {
-        vm.createSelectFork(citreaRPC);
-        _run(true, ethUSDTBridgeProxy, citreaUSDTBridgeProxy, ethEID);
+        vm.createSelectFork(destRPC);
+        _run(true, srcUSDTBridgeProxy, destUSDTBridgeProxy, srcEID);
     }
 
-    function _run(bool broadcast, address _ethUSDTBridgeProxy, address _citreaUSDTBridgeProxy, uint32 _ethEID) public {
+    function _run(bool broadcast, address _srcUSDTBridgeProxy, address _destUSDTBridgeProxy, uint32 _srcEID) public {
         if (broadcast) vm.startBroadcast();
-        DestinationOUSDT(address(_citreaUSDTBridgeProxy)).setPeer(_ethEID, _addressToPeer(address(_ethUSDTBridgeProxy)));
+        DestinationOUSDT(address(_destUSDTBridgeProxy)).setPeer(_srcEID, _addressToPeer(address(_srcUSDTBridgeProxy)));
         if (broadcast) vm.stopBroadcast();
     }
 

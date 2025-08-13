@@ -1,76 +1,76 @@
-[citrea]
+[dest]
 rpc = "https://rpc.mainnet.citrea.xyz"
 
-    [citrea.lz]
+    [dest.lz]
     endpoint = ""
     eid =
 
-    [citrea.usdc]
+    [dest.usdc]
     proxy = ""
     masterMinter = ""
 
-        [citrea.usdc.bridge]
+        [dest.usdc.bridge]
 
-        [citrea.usdc.bridge.init]
+        [dest.usdc.bridge.init]
         owner = ""
         proxyAdminOwner = ""
         
-        [citrea.usdc.bridge.deployment]
+        [dest.usdc.bridge.deployment]
         proxyAdmin = ""
         implementation = ""
         proxy = ""
 
-    [citrea.usdt]
+    [dest.usdt]
 
-    [citrea.usdt.init]
+    [dest.usdt.init]
     owner = ""
     proxyAdminOwner = ""
 
-    [citrea.usdt.deployment]
+    [dest.usdt.deployment]
     proxy = ""
     # Also used for bridge
     proxyAdmin = ""
 
-        [citrea.usdt.bridge]
+        [dest.usdt.bridge]
 
-        [citrea.usdt.bridge.init]
+        [dest.usdt.bridge.init]
         owner = ""
 
-        [citrea.usdt.bridge.deployment]
+        [dest.usdt.bridge.deployment]
         implementation = ""
         proxy = ""
         
-[eth]
+[src]
 rpc = "https://eth.drpc.org"
 
-    [eth.lz]
+    [src.lz]
     endpoint = "0x1a44076050125825900e736c501f859c50fE728c"
     eid = 30101
 
-    [eth.usdc]
+    [src.usdc]
     proxy = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
 
-        [eth.usdc.bridge]
+        [src.usdc.bridge]
 
-        [eth.usdc.bridge.init]
+        [src.usdc.bridge.init]
         owner = ""
         proxyAdminOwner = ""
         
-        [eth.usdc.bridge.deployment]
+        [src.usdc.bridge.deployment]
         proxyAdmin = ""
         implementation = ""
         proxy = ""
 
-    [eth.usdt]
+    [src.usdt]
     contract = "0xdAC17F958D2ee523a2206206994597C13D831ec7"
 
-        [eth.usdt.bridge]
+        [src.usdt.bridge]
 
-        [eth.usdt.bridge.init]
+        [src.usdt.bridge.init]
         owner = ""
         proxyAdminOwner = ""
 
-        [eth.usdt.bridge.deployment]
+        [src.usdt.bridge.deployment]
         proxyAdmin = ""
         implementation = ""
         proxy = ""

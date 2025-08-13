@@ -12,19 +12,19 @@ contract USDCDestBridgePrepareTakeover is ConfigSetup {
         loadUSDCConfig({isBridgeDeployed: true});
     }
 
-    // Should be called by `citrea.usdc.bridge.deployment.init.proxyAdminOwner` address
+    // Should be called by `dest.usdc.bridge.deployment.init.proxyAdminOwner` address
     function run() public virtual {
-        vm.createSelectFork(citreaRPC);
-        _run(true, citreaLzEndpoint, address(citreaUSDC), citreaUSDCBridgeProxy);
+        vm.createSelectFork(destRPC);
+        _run(true, destLzEndpoint, address(destUSDC), destUSDCBridgeProxy);
     }
 
-    function _run(bool broadcast, address _citreaLzEndpoint, address _citreaUSDC, address _citreaUSDCBridgeProxy) public {
+    function _run(bool broadcast, address _destLzEndpoint, address _destUSDC, address _destUSDCBridgeProxy) public {
         if (broadcast) vm.startBroadcast();
-        address newCitreaUSDCBridgeImpl = address(new DestinationOUSDC(_citreaLzEndpoint, FiatTokenV2_2(_citreaUSDC)));
-        bytes32 proxyAdminBytes = vm.load(_citreaUSDCBridgeProxy, ERC1967Utils.ADMIN_SLOT);
-        address citreaUSDCBridgeProxyAdmin = address(uint160(uint256(proxyAdminBytes)));
-        ProxyAdmin(citreaUSDCBridgeProxyAdmin).upgradeAndCall(
-            ITransparentUpgradeableProxy(_citreaUSDCBridgeProxy), newCitreaUSDCBridgeImpl, ""
+        address newDestUSDCBridgeImpl = address(new DestinationOUSDC(_destLzEndpoint, FiatTokenV2_2(_destUSDC)));
+        bytes32 proxyAdminBytes = vm.load(_destUSDCBridgeProxy, ERC1967Utils.ADMIN_SLOT);
+        address destUSDCBridgeProxyAdmin = address(uint160(uint256(proxyAdminBytes)));
+        ProxyAdmin(destUSDCBridgeProxyAdmin).upgradeAndCall(
+            ITransparentUpgradeableProxy(_destUSDCBridgeProxy), newDestUSDCBridgeImpl, ""
         );
         if (broadcast) vm.stopBroadcast();
     }

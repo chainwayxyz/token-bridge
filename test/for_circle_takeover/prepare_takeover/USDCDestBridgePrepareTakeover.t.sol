@@ -11,9 +11,9 @@ contract USDCDestBridgePrepareTakeoverTest is USDCDestBridgePrepareTakeoverTestB
     }
 
     function testPrepareTakeover() public {
-        vm.selectFork(citreaForkId);
-        vm.startPrank(mockCitreaUSDCBridgeOwner);
-        DestinationOUSDC(address(citreaUSDCBridge)).pause();
-        assertTrue(DestinationOUSDC(address(citreaUSDCBridge)).paused(), "Bridge should be paused");
+        vm.selectFork(destForkId);
+        vm.startPrank(mockDestUSDCBridgeOwner);
+        DestinationOUSDC(address(destUSDCBridge)).pause();
+        assertTrue(DestinationOUSDC(address(destUSDCBridge)).paused(), "Bridge should be paused");
     }
 }

@@ -14,15 +14,15 @@ contract USDCProxyAdminTransfer is ConfigSetup {
         loadUSDCConfig({isBridgeDeployed: true});
     }
 
-    // Should be called by `citrea.usdc.bridge.init.proxyAdminOwner` address
+    // Should be called by `dest.usdc.bridge.init.proxyAdminOwner` address
     function run() public {
-        vm.createSelectFork(citreaRPC);
-        _run(true, address(citreaUSDC), vm.envAddress("CIRCLE_USDC_PROXY_ADMIN"));
+        vm.createSelectFork(destRPC);
+        _run(true, address(destUSDC), vm.envAddress("CIRCLE_USDC_PROXY_ADMIN"));
     }
 
-    function _run(bool broadcast, address _citreaUSDC, address _circleUSDCProxyAdmin) public {
+    function _run(bool broadcast, address _destUSDC, address _circleUSDCProxyAdmin) public {
         if (broadcast) vm.startBroadcast();
-        IAdminUpgradeabilityProxy(_citreaUSDC).changeAdmin(_circleUSDCProxyAdmin);
+        IAdminUpgradeabilityProxy(_destUSDC).changeAdmin(_circleUSDCProxyAdmin);
         if (broadcast) vm.stopBroadcast();
     }
 }

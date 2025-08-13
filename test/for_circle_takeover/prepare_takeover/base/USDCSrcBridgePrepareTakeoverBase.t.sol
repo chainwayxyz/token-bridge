@@ -7,8 +7,8 @@ import {USDCSrcBridgePrepareTakeover, ERC1967Utils, SourceOFTAdapter} from "../.
 contract USDCSrcBridgePrepareTakeoverTestBase is USDCBridgeDeployTestBase, USDCSrcBridgePrepareTakeover {
     function setUp() public virtual override(USDCBridgeDeployTestBase, USDCSrcBridgePrepareTakeover) {
         USDCBridgeDeployTestBase.setUp();
-        vm.startPrank(mockEthUSDCBridgeProxyAdminOwner);
-        vm.selectFork(ethForkId);
-        _run(false, ETH_LZ_ENDPOINT, ETH_USDC, address(ethUSDCBridge));
+        vm.startPrank(mockSrcUSDCBridgeProxyAdminOwner);
+        vm.selectFork(srcForkId);
+        _run(false, SRC_LZ_ENDPOINT, SRC_USDC, address(srcUSDCBridge));
     }
 }

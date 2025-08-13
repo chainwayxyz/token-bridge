@@ -13,16 +13,16 @@ contract USDTSetBridgeAsMinter is ConfigSetup {
         loadUSDTConfig({isUSDTDeployed: true, isBridgeDeployed: true});
     }
 
-    // Should be called by `citrea.usdt.init.owner` address
+    // Should be called by `dest.usdt.init.owner` address
     function run() public {
-        vm.createSelectFork(citreaRPC);
-        _run(true, citreaUSDT, citreaUSDTBridgeProxy);
+        vm.createSelectFork(destRPC);
+        _run(true, destUSDT, destUSDTBridgeProxy);
     }
 
-    function _run(bool broadcast, address _citreaUSDT, address _citreaUSDTBridgeProxy) public {
+    function _run(bool broadcast, address _destUSDT, address _destUSDTBridgeProxy) public {
         if (broadcast) vm.startBroadcast();
         // Set the bridge as crosschain minter and burner
-        IOFTExtension(_citreaUSDT).setOFTContract(_citreaUSDTBridgeProxy);
+        IOFTExtension(_destUSDT).setOFTContract(_destUSDTBridgeProxy);
         if (broadcast) vm.stopBroadcast();
     }
 }

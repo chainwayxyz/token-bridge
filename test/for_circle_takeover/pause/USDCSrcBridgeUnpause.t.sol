@@ -14,11 +14,11 @@ contract USDCSrcBridgeUnpauseTest is USDCSrcBridgePrepareTakeoverTestBase, USDCS
     function run() public override (USDCSrcBridgePrepareTakeover, USDCSrcBridgeUnpause) {}
 
     function testUnpause() public {
-        vm.selectFork(ethForkId);
-        vm.startPrank(mockEthUSDCBridgeOwner);
-        SourceOFTAdapter(address(ethUSDCBridge)).pause();
-        assertTrue(SourceOFTAdapter(address(ethUSDCBridge)).paused(), "Bridge should be paused");
-        USDCSrcBridgeUnpause._run(false, address(ethUSDCBridge));
-        assertFalse(SourceOFTAdapter(address(ethUSDCBridge)).paused(), "Bridge should be unpaused");
+        vm.selectFork(srcForkId);
+        vm.startPrank(mockSrcUSDCBridgeOwner);
+        SourceOFTAdapter(address(srcUSDCBridge)).pause();
+        assertTrue(SourceOFTAdapter(address(srcUSDCBridge)).paused(), "Bridge should be paused");
+        USDCSrcBridgeUnpause._run(false, address(srcUSDCBridge));
+        assertFalse(SourceOFTAdapter(address(srcUSDCBridge)).paused(), "Bridge should be unpaused");
     }
 }

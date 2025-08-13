@@ -10,17 +10,17 @@ contract USDCSrcBridgeUnpause is ConfigSetup {
         loadUSDCConfig({isBridgeDeployed: true});
     }
 
-    // Should be called by `eth.usdc.bridge.deployment.init.owner` address
+    // Should be called by `src.usdc.bridge.deployment.init.owner` address
     function run() public virtual {
-        vm.createSelectFork(ethRPC);
-        _run(true, ethUSDCBridgeProxy);
+        vm.createSelectFork(srcRPC);
+        _run(true, srcUSDCBridgeProxy);
     }
 
-    function _run(bool broadcast, address _ethUSDCBridgeProxy) public {
+    function _run(bool broadcast, address _srcUSDCBridgeProxy) public {
         if (broadcast) vm.startBroadcast();
-        SourceOFTAdapter ethUSDCBridge = SourceOFTAdapter(_ethUSDCBridgeProxy);
-        ethUSDCBridge.unpause();
-        console.log("Unpaused Ethereum USDC Bridge at:", address(ethUSDCBridge));
+        SourceOFTAdapter srcUSDCBridge = SourceOFTAdapter(_srcUSDCBridgeProxy);
+        srcUSDCBridge.unpause();
+        console.log("Unpaused Source USDC Bridge at:", address(srcUSDCBridge));
         if (broadcast) vm.stopBroadcast();
     }
 }

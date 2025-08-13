@@ -12,19 +12,19 @@ contract USDCSrcBridgePrepareTakeover is ConfigSetup {
         loadUSDCConfig({isBridgeDeployed: true});
     }
 
-    // Should be called by `eth.usdc.bridge.deployment.init.proxyAdminOwner` address
+    // Should be called by `src.usdc.bridge.deployment.init.proxyAdminOwner` address
     function run() public virtual {
-        vm.createSelectFork(ethRPC);
-        _run(true, ethLzEndpoint, ethUSDC, ethUSDCBridgeProxy);
+        vm.createSelectFork(srcRPC);
+        _run(true, srcLzEndpoint, srcUSDC, srcUSDCBridgeProxy);
     }
 
-    function _run(bool broadcast, address _ethLzEndpoint, address _ethUSDC, address _ethUSDCBridgeProxy) public {
+    function _run(bool broadcast, address _srcLzEndpoint, address _srcUSDC, address _srcUSDCBridgeProxy) public {
         if (broadcast) vm.startBroadcast();
-        address newEthUSDCBridgeImpl = address(new SourceOFTAdapter(_ethUSDC, _ethLzEndpoint));
-        bytes32 proxyAdminBytes = vm.load(_ethUSDCBridgeProxy, ERC1967Utils.ADMIN_SLOT);
-        address ethUSDCBridgeProxyAdmin = address(uint160(uint256(proxyAdminBytes)));
-        ProxyAdmin(ethUSDCBridgeProxyAdmin).upgradeAndCall(
-            ITransparentUpgradeableProxy(_ethUSDCBridgeProxy), newEthUSDCBridgeImpl, ""
+        address newSrcUSDCBridgeImpl = address(new SourceOFTAdapter(_srcUSDC, _srcLzEndpoint));
+        bytes32 proxyAdminBytes = vm.load(_srcUSDCBridgeProxy, ERC1967Utils.ADMIN_SLOT);
+        address srcUSDCBridgeProxyAdmin = address(uint160(uint256(proxyAdminBytes)));
+        ProxyAdmin(srcUSDCBridgeProxyAdmin).upgradeAndCall(
+            ITransparentUpgradeableProxy(_srcUSDCBridgeProxy), newSrcUSDCBridgeImpl, ""
         );
         if (broadcast) vm.stopBroadcast();
     }

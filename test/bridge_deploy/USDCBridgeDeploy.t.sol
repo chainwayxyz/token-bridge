@@ -10,20 +10,20 @@ contract USDCBridgeDeployTest is USDCBridgeDeployTestBase {
     }
 
     function testBridgeOwner() public {
-        vm.selectFork(ethForkId);
-        assertEq(ethUSDCBridge.owner(), mockEthUSDCBridgeOwner, "Owner should be set correctly");
+        vm.selectFork(srcForkId);
+        assertEq(srcUSDCBridge.owner(), mockSrcUSDCBridgeOwner, "Owner should be set correctly");
 
-        vm.selectFork(citreaForkId);
-        assertEq(citreaUSDCBridge.owner(), mockCitreaUSDCBridgeOwner, "Owner should be set correctly");
+        vm.selectFork(destForkId);
+        assertEq(destUSDCBridge.owner(), mockDestUSDCBridgeOwner, "Owner should be set correctly");
     }
 
     function testCannotReinitialize() public {
-        vm.selectFork(ethForkId);
+        vm.selectFork(srcForkId);
         vm.expectRevert(Initializable.InvalidInitialization.selector);
-        ethUSDCBridge.initialize(makeAddr("arbitrary"));
+        srcUSDCBridge.initialize(makeAddr("arbitrary"));
 
-        vm.selectFork(citreaForkId);
+        vm.selectFork(destForkId);
         vm.expectRevert(Initializable.InvalidInitialization.selector);
-        citreaUSDCBridge.initialize(makeAddr("arbitrary"));
+        destUSDCBridge.initialize(makeAddr("arbitrary"));
     }
 }

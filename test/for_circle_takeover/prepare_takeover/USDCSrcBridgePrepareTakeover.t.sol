@@ -11,9 +11,9 @@ contract USDCSrcBridgePrepareTakeoverTest is USDCSrcBridgePrepareTakeoverTestBas
     }
     
     function testPrepareTakeover() public {
-        vm.selectFork(ethForkId);
-        vm.startPrank(mockEthUSDCBridgeOwner);
-        SourceOFTAdapter(address(ethUSDCBridge)).pause();
-        assertTrue(SourceOFTAdapter(address(ethUSDCBridge)).paused(), "Bridge should be paused");
+        vm.selectFork(srcForkId);
+        vm.startPrank(mockSrcUSDCBridgeOwner);
+        SourceOFTAdapter(address(srcUSDCBridge)).pause();
+        assertTrue(SourceOFTAdapter(address(srcUSDCBridge)).paused(), "Bridge should be paused");
     }
 }

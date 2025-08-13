@@ -14,9 +14,9 @@ contract USDCDestBridgePauseTest is USDCDestBridgePrepareTakeoverTestBase, USDCD
     function run() public override (USDCDestBridgePrepareTakeover, USDCDestBridgePause) {}
 
     function testPause() public {
-        vm.selectFork(citreaForkId);
-        vm.startPrank(mockCitreaUSDCBridgeOwner);
-        USDCDestBridgePause._run(false, address(citreaUSDCBridge));
-        assertTrue(DestinationOUSDC(address(citreaUSDCBridge)).paused(), "Bridge should be paused");
+        vm.selectFork(destForkId);
+        vm.startPrank(mockDestUSDCBridgeOwner);
+        USDCDestBridgePause._run(false, address(destUSDCBridge));
+        assertTrue(DestinationOUSDC(address(destUSDCBridge)).paused(), "Bridge should be paused");
     }
 }

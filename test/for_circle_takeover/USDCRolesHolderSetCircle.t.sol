@@ -13,23 +13,23 @@ contract USDCRolesHolderSetCircleTest is USDCTransferOwnerTestBase, USDCRolesHol
     function run() public override (USDCTransferOwner, USDCRolesHolderSetCircle) {}
 
     function testSetCircle() public {
-        vm.selectFork(citreaForkId);
+        vm.selectFork(destForkId);
         vm.startPrank(USDCRolesHolder(usdcRolesHolder).owner());
         address circle = makeAddr("CIRCLE_ADDRESS");
-        _run(false, address(CITREA_USDC), circle);
+        _run(false, address(DEST_USDC), circle);
         assertEq(USDCRolesHolder(usdcRolesHolder).circle(), circle, "Circle address should be set correctly");
     }
 
     function testCircleCanAssumeUSDCOwnership() public {
-        vm.selectFork(citreaForkId);
+        vm.selectFork(destForkId);
         vm.startPrank(USDCRolesHolder(usdcRolesHolder).owner());
         address circle = makeAddr("CIRCLE_ADDRESS");
-        _run(false, address(CITREA_USDC), circle);
+        _run(false, address(DEST_USDC), circle);
         vm.stopPrank();
         vm.startPrank(circle);
         address circleOwner = makeAddr("CIRCLE_OWNER");
         USDCRolesHolder(usdcRolesHolder).transferUSDCRoles(circleOwner);
         vm.stopPrank();
-        assertEq(FiatTokenV2_2(CITREA_USDC).owner(), circleOwner, "USDC owner should be transferred to Circle address");
+        assertEq(FiatTokenV2_2(DEST_USDC).owner(), circleOwner, "USDC owner should be transferred to Circle address");
     }
 }
