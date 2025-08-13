@@ -16,27 +16,48 @@ contract USDTBridgeDeploy is ConfigSetup {
     // Can be called by any address
     function run() public {
         vm.createSelectFork(ethRPC);
-        vm.startBroadcast();
-        SourceOFTAdapter ethBridgeImpl = new SourceOFTAdapter(ethUSDT, ethLzEndpoint);
+        _runEth(true, ethUSDT, ethLzEndpoint, ethUSDTBridgeProxyAdminOwner, ethUSDTBridgeOwner);
+        vm.createSelectFork(citreaRPC);
+        _runCitrea(true, citreaUSDT, citreaLzEndpoint, citreaUSDTBridgeProxyAdminOwner, citreaUSDTBridgeOwner);
+    }
+
+    function _runEth(
+        bool broadcast, 
+        address _ethUSDT, 
+        address _ethLzEndpoint, 
+        address _ethUSDTBridgeProxyAdminOwner, 
+        address _ethUSDTBridgeOwner
+    ) public returns (address) {
+        if (broadcast) vm.startBroadcast();
+        SourceOFTAdapter ethBridgeImpl = new SourceOFTAdapter(_ethUSDT, _ethLzEndpoint);
         console.log("Ethereum USDT Bridge Implementation:", address(ethBridgeImpl));
         TransparentUpgradeableProxy ethBridgeProxy = new TransparentUpgradeableProxy(
             address(ethBridgeImpl),
-            ethUSDTBridgeProxyAdminOwner,
-            abi.encodeWithSignature("initialize(address)", ethUSDTBridgeOwner)
+            _ethUSDTBridgeProxyAdminOwner,
+            abi.encodeWithSignature("initialize(address)", _ethUSDTBridgeOwner)
         );
         console.log("Ethereum USDT Bridge Proxy:", address(ethBridgeProxy));
-        vm.stopBroadcast();
+        if (broadcast) vm.stopBroadcast();
+        return address(ethBridgeProxy);
+    }
 
-        vm.createSelectFork(citreaRPC);
-        vm.startBroadcast();
-        DestinationOUSDT citreaBridgeImpl = new DestinationOUSDT(citreaLzEndpoint, IOFTToken(citreaUSDT));
+    function _runCitrea(
+        bool broadcast,
+        address _citreaUSDT,
+        address _citreaLzEndpoint,
+        address _citreaUSDTBridgeProxyAdminOwner,
+        address _citreaUSDTBridgeOwner
+    ) public returns (address) {
+        if (broadcast) vm.startBroadcast();
+        DestinationOUSDT citreaBridgeImpl = new DestinationOUSDT(_citreaLzEndpoint, IOFTToken(_citreaUSDT));
         console.log("Citrea USDT Bridge Implementation:", address(citreaBridgeImpl));
         TransparentUpgradeableProxy citreaBridgeProxy = new TransparentUpgradeableProxy(
             address(citreaBridgeImpl),
-            citreaUSDTBridgeProxyAdminOwner,
-            abi.encodeWithSignature("initialize(address)", citreaUSDTBridgeOwner)
+            _citreaUSDTBridgeProxyAdminOwner,
+            abi.encodeWithSignature("initialize(address)", _citreaUSDTBridgeOwner)
         );
         console.log("Citrea USDT Bridge Proxy:", address(citreaBridgeProxy));
-        vm.stopBroadcast();
+        if (broadcast) vm.stopBroadcast();
+        return address(citreaBridgeProxy);
     }
 }

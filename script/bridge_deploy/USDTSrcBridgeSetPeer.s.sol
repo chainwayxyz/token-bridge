@@ -6,18 +6,20 @@ import {SourceOFTAdapter} from "../../src/SourceOFTAdapter.sol";
 import "forge-std/console.sol";
 
 contract USDTSrcBridgeSetPeer is ConfigSetup {
-    function setUp() public {
+    function setUp() public virtual {
         loadUSDTConfig({isUSDTDeployed: true, isBridgeDeployed: true});
     }
 
     // Should be called by `eth.usdt.bridge.init.owner` address
     function run() public {
         vm.createSelectFork(ethRPC);
-        vm.startBroadcast();
+        _run(true, ethUSDTBridgeProxy, citreaUSDTBridgeProxy, citreaEID);
+    }
 
-        SourceOFTAdapter(address(ethUSDTBridgeProxy)).setPeer(citreaEID, _addressToPeer(address(citreaUSDTBridgeProxy)));
-
-        vm.stopBroadcast();
+    function _run(bool broadcast, address _ethUSDTBridgeProxy, address _citreaUSDTBridgeProxy, uint32 _citreaEID) public {
+        if (broadcast) vm.startBroadcast();
+        SourceOFTAdapter(address(_ethUSDTBridgeProxy)).setPeer(_citreaEID, _addressToPeer(address(_citreaUSDTBridgeProxy)));
+        if (broadcast) vm.stopBroadcast();
     }
 
     function _addressToPeer(address addr) internal pure returns (bytes32) {

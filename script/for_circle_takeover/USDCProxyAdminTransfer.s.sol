@@ -9,7 +9,7 @@ interface IAdminUpgradeabilityProxy {
     function changeAdmin(address newAdmin) external;
 }
 
-contract USDCProxyAdminTransferOwner is ConfigSetup {
+contract USDCProxyAdminTransfer is ConfigSetup {
     function setUp() public {
         loadUSDCConfig({isBridgeDeployed: true});
     }
@@ -17,10 +17,12 @@ contract USDCProxyAdminTransferOwner is ConfigSetup {
     // Should be called by `citrea.usdc.bridge.init.proxyAdminOwner` address
     function run() public {
         vm.createSelectFork(citreaRPC);
-        vm.startBroadcast();
+        _run(true, address(citreaUSDC), vm.envAddress("CIRCLE_USDC_PROXY_ADMIN"));
+    }
 
-        IAdminUpgradeabilityProxy(address(citreaUSDC)).changeAdmin(vm.envAddress("CIRCLE_USDC_PROXY_ADMIN"));
-
-        vm.stopBroadcast();
+    function _run(bool broadcast, address _citreaUSDC, address _circleUSDCProxyAdmin) public {
+        if (broadcast) vm.startBroadcast();
+        IAdminUpgradeabilityProxy(_citreaUSDC).changeAdmin(_circleUSDCProxyAdmin);
+        if (broadcast) vm.stopBroadcast();
     }
 }

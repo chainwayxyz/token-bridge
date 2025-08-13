@@ -3,7 +3,7 @@ pragma solidity ^0.8.22;
 
 import { OFTCoreUpgradeable } from "@layerzerolabs/oft-evm-upgradeable/contracts/oft/OFTCoreUpgradeable.sol";
 import { IERC20Metadata } from "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol";
-import { IERC7802 } from "./usdt0/wrappers/interfaces/IERC7802.sol";
+import { IERC7802 } from "./usdt0/Wrappers/interfaces/IERC7802.sol";
 
 interface IOFTToken is IERC20Metadata, IERC7802 {
 

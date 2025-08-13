@@ -15,9 +15,13 @@ contract USDTDeploy is ConfigSetup {
     // Can be called by anyone
     function run() public {
         vm.createSelectFork(citreaRPC);
-        vm.startBroadcast();
+        _run(true, citreaUSDTProxyAdminOwner, citreaUSDTOwner);
+    }
+
+    function _run(bool broadcast, address _citreaUSDTProxyAdminOwner, address _citreaUSDTOwner) public returns (address) {
+        if (broadcast) vm.startBroadcast();
         // Hack to stop Foundry from complaining about versioning
-        bytes memory bytecode = vm.getCode("TetherTokenOFTExtension");
+        bytes memory bytecode = vm.getCode("OFTExtension.sol:TetherTokenOFTExtension");
         address citreaUSDTImpl;
         assembly {
             citreaUSDTImpl := create(0, add(bytecode, 0x20), mload(bytecode))
@@ -25,10 +29,12 @@ contract USDTDeploy is ConfigSetup {
         console.log("Citrea USDT Implementation:", address(citreaUSDTImpl));
         TransparentUpgradeableProxy citreaUSDTProxy = new TransparentUpgradeableProxy(
             citreaUSDTImpl,
-            citreaUSDTProxyAdminOwner,
+            _citreaUSDTProxyAdminOwner,
             abi.encodeWithSignature("initialize(string,string,uint8)", "Bridged USDT (Citrea)", "USDT.e", 6)
         );
         console.log("Citrea USDT Proxy:", address(citreaUSDTProxy));
-        Ownable(address(citreaUSDTProxy)).transferOwnership(citreaUSDTOwner);
+        Ownable(address(citreaUSDTProxy)).transferOwnership(_citreaUSDTOwner);
+        if (broadcast) vm.stopBroadcast();
+        return address(citreaUSDTProxy);
     }
 }
