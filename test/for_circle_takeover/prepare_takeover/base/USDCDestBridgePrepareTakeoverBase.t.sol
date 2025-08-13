@@ -7,8 +7,8 @@ import {USDCDestBridgePrepareTakeover, ERC1967Utils} from "../../../../script/fo
 contract USDCDestBridgePrepareTakeoverTestBase is USDCBridgeDeployTestBase, USDCDestBridgePrepareTakeover {
     function setUp() public virtual override(USDCBridgeDeployTestBase, USDCDestBridgePrepareTakeover) {
         USDCBridgeDeployTestBase.setUp();
-        vm.startPrank(mockCitreaUSDCBridgeProxyAdminOwner);
-        vm.selectFork(citreaForkId);
-        _run(false, CITREA_LZ_ENDPOINT, CITREA_USDC, address(citreaUSDCBridge));
+        vm.startPrank(mockDestUSDCBridgeProxyAdminOwner);
+        vm.selectFork(destForkId);
+        _run(false, DEST_LZ_ENDPOINT, DEST_USDC, address(destUSDCBridge));
     }
 }

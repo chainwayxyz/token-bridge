@@ -9,19 +9,19 @@ contract USDCRemoveBridgeAsMinter is ConfigSetup {
         loadUSDCConfig({isBridgeDeployed: true});
     }
 
-    // Should be called by `MASTER_MINTER_OWNER_ADDRESS` in `.env.citrea-usdc`
+    // Should be called by `MASTER_MINTER_OWNER_ADDRESS` in `.env.dest-usdc`
     function run() public virtual {
-        vm.createSelectFork(citreaRPC);
-        _run(true, citreaMM, msg.sender);
+        vm.createSelectFork(destRPC);
+        _run(true, destMM, msg.sender);
     }
 
-    function _run(bool broadcast, address _citreaMM, address _controller) public {
+    function _run(bool broadcast, address _destMM, address _controller) public {
         if (broadcast) vm.startBroadcast();
         // MasterMinter in turn removes the bridge as a minter from USDC directly so this step is necessary.
-        MasterMinter(_citreaMM).removeMinter();
-        // This step is not strictly necessary as our MasterMinter will detach from Citrea USDC for takeover
+        MasterMinter(_destMM).removeMinter();
+        // This step is not strictly necessary as our MasterMinter will detach from Destination USDC for takeover
         // and the controller is a MasterMinter specific logic. Regardless, having this step makes it a full reversion of the steps in the deploy script.
-        MasterMinter(_citreaMM).removeController(_controller);
+        MasterMinter(_destMM).removeController(_controller);
         if (broadcast) vm.stopBroadcast();
     }
 }

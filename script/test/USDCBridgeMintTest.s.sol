@@ -15,17 +15,17 @@ contract USDCBridgeMintTest is ConfigSetup {
         loadUSDCConfig({isBridgeDeployed: true});
     }
 
-    // Can be called by anyone with >= 1 cent Ethereum USDC balance
+    // Can be called by anyone with >= 1 cent Source USDC balance
     function run() public {
-        SourceOFTAdapter ethUSDCBridge = SourceOFTAdapter(ethUSDCBridgeProxy);
+        SourceOFTAdapter srcUSDCBridge = SourceOFTAdapter(srcUSDCBridgeProxy);
 
-        vm.createSelectFork(ethRPC);
+        vm.createSelectFork(srcRPC);
         vm.startBroadcast();
         uint256 amount = 1 * 10 ** 4; // 1 cent
-        IERC20(ethUSDCBridge.token()).approve(address(ethUSDCBridge), amount);
+        IERC20(srcUSDCBridge.token()).approve(address(srcUSDCBridge), amount);
         bytes memory _extraOptions = OptionsBuilder.newOptions().addExecutorLzReceiveOption(650000, 0);
         SendParam memory sendParam = SendParam({
-            dstEid: citreaEID,
+            dstEid: destEID,
             to: bytes32(uint256(uint160(msg.sender))),
             amountLD: amount,
             minAmountLD: amount * 9 / 10,
@@ -34,8 +34,8 @@ contract USDCBridgeMintTest is ConfigSetup {
             oftCmd: ""
         });
 
-        MessagingFee memory fee = ethUSDCBridge.quoteSend(sendParam, false);
-        ethUSDCBridge.send{value: fee.nativeFee}(sendParam, fee, msg.sender);
+        MessagingFee memory fee = srcUSDCBridge.quoteSend(sendParam, false);
+        srcUSDCBridge.send{value: fee.nativeFee}(sendParam, fee, msg.sender);
 
         vm.stopBroadcast();
     }

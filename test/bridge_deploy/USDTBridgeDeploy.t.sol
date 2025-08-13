@@ -7,20 +7,20 @@ import {Initializable} from "@openzeppelin/contracts/proxy/utils/Initializable.s
 
 contract USDTBridgeDeployTest is USDTBridgeDeployTestBase {
     function testBridgeOwner() public {
-        vm.selectFork(ethForkId);
-        assertEq(ethUSDTBridge.owner(), mockEthUSDTBridgeOwner, "Owner should be set correctly");
+        vm.selectFork(srcForkId);
+        assertEq(srcUSDTBridge.owner(), mockSrcUSDTBridgeOwner, "Owner should be set correctly");
 
-        vm.selectFork(citreaForkId);
-        assertEq(citreaUSDTBridge.owner(), mockCitreaUSDTBridgeOwner, "Owner should be set correctly");
+        vm.selectFork(destForkId);
+        assertEq(destUSDTBridge.owner(), mockDestUSDTBridgeOwner, "Owner should be set correctly");
     }
 
     function testCannotReinitialize() public {
-        vm.selectFork(ethForkId);
+        vm.selectFork(srcForkId);
         vm.expectRevert(Initializable.InvalidInitialization.selector);
-        ethUSDTBridge.initialize(makeAddr("arbitrary"));
+        srcUSDTBridge.initialize(makeAddr("arbitrary"));
 
-        vm.selectFork(citreaForkId);
+        vm.selectFork(destForkId);
         vm.expectRevert(Initializable.InvalidInitialization.selector);
-        citreaUSDTBridge.initialize(makeAddr("arbitrary"));
+        destUSDTBridge.initialize(makeAddr("arbitrary"));
     }
 }

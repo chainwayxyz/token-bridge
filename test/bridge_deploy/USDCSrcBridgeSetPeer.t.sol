@@ -11,10 +11,10 @@ contract USDCSrcBridgeSetPeerTest is USDCBridgeDeployTestBase, USDCSrcBridgeSetP
     }
 
     function testSetPeer() public {
-        vm.selectFork(ethForkId);
-        vm.startPrank(ethUSDCBridge.owner());
-        _run(false, address(ethUSDCBridge), address(citreaUSDCBridge), CITREA_EID);
-        bytes32 expectedPeer = _addressToPeer(address(citreaUSDCBridge));
-        assertTrue(ethUSDCBridge.isPeer(CITREA_EID, expectedPeer), "Peer should be set correctly");
+        vm.selectFork(srcForkId);
+        vm.startPrank(srcUSDCBridge.owner());
+        _run(false, address(srcUSDCBridge), address(destUSDCBridge), DEST_EID);
+        bytes32 expectedPeer = _addressToPeer(address(destUSDCBridge));
+        assertTrue(srcUSDCBridge.isPeer(DEST_EID, expectedPeer), "Peer should be set correctly");
     }
 }

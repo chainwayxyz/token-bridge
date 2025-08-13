@@ -15,17 +15,17 @@ contract USDCBridgeBurnTest is ConfigSetup {
         loadUSDCConfig({isBridgeDeployed: true});
     }
 
-    // Can be called by anyone with >= 1 cent Citrea USDC balance
+    // Can be called by anyone with >= 1 cent Destination USDC balance
     function run() public {
-        DestinationOUSDC citreaUSDCBridge = DestinationOUSDC(citreaUSDCBridgeProxy);
+        DestinationOUSDC destUSDCBridge = DestinationOUSDC(destUSDCBridgeProxy);
 
-        vm.createSelectFork(citreaRPC);
+        vm.createSelectFork(destRPC);
         vm.startBroadcast();
         uint256 amount = 1 * 10 ** 4; // 1 cent
-        IERC20(citreaUSDCBridge.token()).approve(address(citreaUSDCBridge), amount);
+        IERC20(destUSDCBridge.token()).approve(address(destUSDCBridge), amount);
         bytes memory _extraOptions = OptionsBuilder.newOptions().addExecutorLzReceiveOption(650000, 0);
         SendParam memory sendParam = SendParam({
-            dstEid: ethEID,
+            dstEid: srcEID,
             to: bytes32(uint256(uint160(msg.sender))),
             amountLD: amount,
             minAmountLD: amount * 9 / 10,
@@ -34,8 +34,8 @@ contract USDCBridgeBurnTest is ConfigSetup {
             oftCmd: ""
         });
 
-        MessagingFee memory fee = citreaUSDCBridge.quoteSend(sendParam, false);
-        citreaUSDCBridge.send{value: fee.nativeFee}(sendParam, fee, msg.sender);
+        MessagingFee memory fee = destUSDCBridge.quoteSend(sendParam, false);
+        destUSDCBridge.send{value: fee.nativeFee}(sendParam, fee, msg.sender);
 
         vm.stopBroadcast();
     }

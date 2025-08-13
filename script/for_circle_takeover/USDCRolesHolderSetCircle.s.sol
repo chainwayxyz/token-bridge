@@ -12,13 +12,13 @@ contract USDCRolesHolderSetCircle is ConfigSetup {
 
     // Should be called by `owner` of `USDC_ROLES_HOLDER` address
     function run() public virtual {
-        vm.createSelectFork(citreaRPC);
-        _run(true, address(citreaUSDC), vm.envAddress("USDC_ROLES_HOLDER_CIRCLE_ADDRESS"));
+        vm.createSelectFork(destRPC);
+        _run(true, address(destUSDC), vm.envAddress("USDC_ROLES_HOLDER_CIRCLE_ADDRESS"));
     }
 
-    function _run(bool broadcast, address _citreaUSDC, address _circle) public virtual {
+    function _run(bool broadcast, address _destUSDC, address _circle) public virtual {
         if (broadcast) vm.startBroadcast();
-        USDCRolesHolder usdcRolesHolder = USDCRolesHolder(FiatTokenV2_2(_citreaUSDC).owner());
+        USDCRolesHolder usdcRolesHolder = USDCRolesHolder(FiatTokenV2_2(_destUSDC).owner());
         usdcRolesHolder.setCircle(_circle);
         console.log("Set Circle address %s to USDC Roles Holder at %s.", _circle, address(usdcRolesHolder));
         if (broadcast) vm.stopBroadcast();

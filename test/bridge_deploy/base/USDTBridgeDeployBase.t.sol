@@ -9,39 +9,39 @@ import {DestinationOUSDT} from "../../../src/DestinationOUSDT.sol";
 
 contract USDTBridgeDeployTestBase is USDTDeployTestBase {
     USDTBridgeDeploy public usdtBridgeDeploy;
-    SourceOFTAdapter public ethUSDTBridge;
-    DestinationOUSDT public citreaUSDTBridge;
+    SourceOFTAdapter public srcUSDTBridge;
+    DestinationOUSDT public destUSDTBridge;
 
-    uint256 public ethForkId;
-    uint256 public citreaForkId;
+    uint256 public srcForkId;
+    uint256 public destForkId;
 
-    address public mockEthUSDTBridgeOwner;
-    address public mockCitreaUSDTBridgeOwner;
+    address public mockSrcUSDTBridgeOwner;
+    address public mockDestUSDTBridgeOwner;
 
-    string public constant ETH_RPC = "https://sepolia.drpc.org";
-    address public constant ETH_USDT = 0x7169D38820dfd117C3FA1f22a697dBA58d90BA06;
-    address public constant ETH_LZ_ENDPOINT = 0x6EDCE65403992e310A62460808c4b910D972f10f;
-    uint32 public constant ETH_EID = 40161;
+    string public constant SRC_RPC = "https://sepolia.drpc.org";
+    address public constant SRC_USDT = 0x7169D38820dfd117C3FA1f22a697dBA58d90BA06;
+    address public constant SRC_LZ_ENDPOINT = 0x6EDCE65403992e310A62460808c4b910D972f10f;
+    uint32 public constant SRC_EID = 40161;
 
-    string public constant CITREA_RPC = "https://rpc.testnet.citrea.xyz";
-    address public constant CITREA_LZ_ENDPOINT = 0x6C7Ab2202C98C4227C5c46f1417D81144DA716Ff;
-    uint32 public constant CITREA_EID = 40344;
+    string public constant DEST_RPC = "https://rpc.testnet.citrea.xyz";
+    address public constant DEST_LZ_ENDPOINT = 0x6C7Ab2202C98C4227C5c46f1417D81144DA716Ff;
+    uint32 public constant DEST_EID = 40344;
 
     function setUp() public virtual override {
         USDTDeployTestBase.setUp();
 
         usdtBridgeDeploy = new USDTBridgeDeploy();
 
-        address ethUSDTBridgeProxyAdminOwner = makeAddr("Eth USDT Bridge Proxy Admin Owner");
-        mockEthUSDTBridgeOwner = makeAddr("Eth USDT Bridge Owner");
+        address srcUSDTBridgeProxyAdminOwner = makeAddr("Src USDT Bridge Proxy Admin Owner");
+        mockSrcUSDTBridgeOwner = makeAddr("Src USDT Bridge Owner");
 
-        ethForkId = vm.createSelectFork(ETH_RPC);
-        ethUSDTBridge = SourceOFTAdapter(usdtBridgeDeploy._runEth(false, ETH_USDT, ETH_LZ_ENDPOINT, ethUSDTBridgeProxyAdminOwner, mockEthUSDTBridgeOwner));
+        srcForkId = vm.createSelectFork(SRC_RPC);
+        srcUSDTBridge = SourceOFTAdapter(usdtBridgeDeploy._runSrc(false, SRC_USDT, SRC_LZ_ENDPOINT, srcUSDTBridgeProxyAdminOwner, mockSrcUSDTBridgeOwner));
 
-        address citreaUSDTBridgeProxyAdminOwner = makeAddr("Citrea USDT Bridge Proxy Admin Owner");
-        mockCitreaUSDTBridgeOwner = makeAddr("Citrea USDT Bridge Owner");
+        address destUSDTBridgeProxyAdminOwner = makeAddr("Dest USDT Bridge Proxy Admin Owner");
+        mockDestUSDTBridgeOwner = makeAddr("Dest USDT Bridge Owner");
 
-        citreaForkId = vm.createSelectFork(CITREA_RPC);
-        citreaUSDTBridge = DestinationOUSDT(usdtBridgeDeploy._runCitrea(false, address(usdt), CITREA_LZ_ENDPOINT, citreaUSDTBridgeProxyAdminOwner, mockCitreaUSDTBridgeOwner));
+        destForkId = vm.createSelectFork(DEST_RPC);
+        destUSDTBridge = DestinationOUSDT(usdtBridgeDeploy._runDest(false, address(usdt), DEST_LZ_ENDPOINT, destUSDTBridgeProxyAdminOwner, mockDestUSDTBridgeOwner));
     }
 }

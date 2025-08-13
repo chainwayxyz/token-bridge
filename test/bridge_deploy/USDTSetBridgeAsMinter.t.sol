@@ -27,29 +27,29 @@ contract USDTSetBridgeAsMinterTest is USDTBridgeDeployTestBase, USDTSetBridgeAsM
     }
 
     function testSetMinter() public {
-        vm.selectFork(citreaForkId);
+        vm.selectFork(destForkId);
         vm.startPrank(usdtOwner);
-        _run(false, address(usdt), address(citreaUSDTBridge));
-        assertEq(TetherTokenOFTExtension(usdt).oftContract(), address(citreaUSDTBridge));
+        _run(false, address(usdt), address(destUSDTBridge));
+        assertEq(TetherTokenOFTExtension(usdt).oftContract(), address(destUSDTBridge));
     }
 
     function testMint() public {
-        vm.selectFork(citreaForkId);
-        address mockUSDTBridge = address(new DestinationOUSDTHarness(CITREA_LZ_ENDPOINT, IOFTToken(address(usdt))));
+        vm.selectFork(destForkId);
+        address mockUSDTBridge = address(new DestinationOUSDTHarness(DEST_LZ_ENDPOINT, IOFTToken(address(usdt))));
         vm.startPrank(usdtOwner);
         _run(false, address(usdt), address(mockUSDTBridge));
         uint256 amountToMint = 1000 * 10**6;
         address recipient = makeAddr("recipient");
-        DestinationOUSDTHarness(mockUSDTBridge).credit(recipient, amountToMint, ethEID);
+        DestinationOUSDTHarness(mockUSDTBridge).credit(recipient, amountToMint, srcEID);
         assertEq(TetherTokenOFTExtension(usdt).balanceOf(recipient), amountToMint, "Recipient should have received the minted USDT");
     }
 
     function testBridgeCannotMintWithoutSetMinter() public {
-        vm.selectFork(citreaForkId);
-        DestinationOUSDTHarness mockUSDTBridge = new DestinationOUSDTHarness(CITREA_LZ_ENDPOINT, IOFTToken(address(usdt)));
+        vm.selectFork(destForkId);
+        DestinationOUSDTHarness mockUSDTBridge = new DestinationOUSDTHarness(DEST_LZ_ENDPOINT, IOFTToken(address(usdt)));
         address recipient = makeAddr("recipient");
         uint256 amountToMint = 1000 * 10**6;
         vm.expectRevert("Only OFT can call");
-        mockUSDTBridge.credit(recipient, amountToMint, ethEID);
+        mockUSDTBridge.credit(recipient, amountToMint, srcEID);
     }
 }
