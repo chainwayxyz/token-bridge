@@ -6,11 +6,11 @@ import "./base/USDTDeployBase.t.sol";
 
 contract USDTDeployTest is USDTDeployTestBase {
     function testName() public view {
-        assertEq(usdt.name(),  "Bridged USDT (Citrea)", "USDT name should match");
+        assertEq(usdt.name(),  "Bridged USDT (Dest)", "USDT name should match");
     }
 
     function testSymbol() public view {
-        assertEq(usdt.symbol(), "USDT.e", "USDT symbol should match");
+        assertEq(usdt.symbol(), "USDT.s", "USDT symbol should match");
     }
 
     function testDecimals() public view {

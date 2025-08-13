@@ -15,10 +15,10 @@ contract USDTDeploy is ConfigSetup {
     // Can be called by anyone
     function run() public {
         vm.createSelectFork(destRPC);
-        _run(true, destUSDTProxyAdminOwner, destUSDTOwner);
+        _run(true, destUSDTProxyAdminOwner, destUSDTOwner, destUSDTName, destUSDTSymbol);
     }
 
-    function _run(bool broadcast, address _destUSDTProxyAdminOwner, address _destUSDTOwner) public returns (address) {
+    function _run(bool broadcast, address _destUSDTProxyAdminOwner, address _destUSDTOwner, string memory _destUSDTName, string memory _destUSDTSymbol) public returns (address) {
         if (broadcast) vm.startBroadcast();
         // Hack to stop Foundry from complaining about versioning
         bytes memory bytecode = vm.getCode("OFTExtension.sol:TetherTokenOFTExtension");
@@ -30,7 +30,7 @@ contract USDTDeploy is ConfigSetup {
         TransparentUpgradeableProxy destUSDTProxy = new TransparentUpgradeableProxy(
             destUSDTImpl,
             _destUSDTProxyAdminOwner,
-            abi.encodeWithSignature("initialize(string,string,uint8)", "Bridged USDT (Citrea)", "USDT.e", 6)
+            abi.encodeWithSignature("initialize(string,string,uint8)", _destUSDTName, _destUSDTSymbol, 6)
         );
         console.log("Destination USDT Proxy:", address(destUSDTProxy));
         Ownable(address(destUSDTProxy)).transferOwnership(_destUSDTOwner);

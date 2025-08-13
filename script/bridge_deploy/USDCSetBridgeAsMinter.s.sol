@@ -10,7 +10,7 @@ contract USDCSetBridgeAsMinter is ConfigSetup {
         loadUSDCConfig({isBridgeDeployed: true});
     }
 
-    // Should be called by `MASTER_MINTER_OWNER_ADDRESS` in `.env.citrea-usdc`
+    // Should be called by `MASTER_MINTER_OWNER_ADDRESS` in `.env.dest-usdc`
     function run() public {
         vm.createSelectFork(destRPC);
         _run(true, msg.sender, destMM, destUSDCBridgeProxy);

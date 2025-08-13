@@ -20,6 +20,9 @@ contract USDTDeployTestBase is Test {
         usdtOwner = makeAddr("USDT Owner");
         usdtProxyAdminOwner = makeAddr("USDT Proxy Admin Owner");
 
-        usdt = TetherTokenOFTExtension(usdtDeploy._run(false, usdtProxyAdminOwner, usdtOwner));
+        string memory usdtName = "Bridged USDT (Dest)";
+        string memory usdtSymbol = "USDT.s";
+
+        usdt = TetherTokenOFTExtension(usdtDeploy._run(false, usdtProxyAdminOwner, usdtOwner, usdtName, usdtSymbol));
     }
 }

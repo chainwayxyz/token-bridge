@@ -18,6 +18,8 @@ contract ConfigSetup is Script {
 
     address public destUSDTOwner;
     address public destUSDTProxyAdminOwner;
+    string public destUSDTName;
+    string public destUSDTSymbol;
     address public destUSDT;
     
     address public destUSDTBridgeOwner;
@@ -85,6 +87,10 @@ contract ConfigSetup is Script {
         require(destUSDTOwner != address(0), "Destination USDT Owner is not set in the config file");
         destUSDTProxyAdminOwner = vm.parseTomlAddress(tomlContent, ".dest.usdt.init.proxyAdminOwner");
         require(destUSDTProxyAdminOwner != address(0), "Destination USDT Proxy Admin Owner is not set in the config file");
+        destUSDTName = vm.parseTomlString(tomlContent, ".dest.usdt.init.name");
+        require(bytes(destUSDTName).length > 0, "Destination USDT Name is not set in the config file");
+        destUSDTSymbol = vm.parseTomlString(tomlContent, ".dest.usdt.init.symbol");
+        require(bytes(destUSDTSymbol).length > 0, "Destination USDT Symbol is not set in the config file");
 
         if (isUSDTDeployed) {
             destUSDT = vm.parseTomlAddress(tomlContent, ".dest.usdt.deployment.proxy");

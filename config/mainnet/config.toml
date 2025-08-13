@@ -25,6 +25,8 @@ rpc = "https://rpc.mainnet.citrea.xyz"
     [dest.usdt.init]
     owner = ""
     proxyAdminOwner = ""
+    name = "Bridged USDT (Citrea)"
+    symbol = "USDT.e"
 
     [dest.usdt.deployment]
     proxy = ""

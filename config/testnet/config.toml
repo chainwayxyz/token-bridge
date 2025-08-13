@@ -24,6 +24,8 @@ rpc = "https://rpc.testnet.citrea.xyz"
     [dest.usdt.init]
     owner = "0xDc94F4e8F84180C1E807fC4d6b43d65cb459b510"
     proxyAdminOwner = "0xDc94F4e8F84180C1E807fC4d6b43d65cb459b510"
+    name = "Bridged USDT (Citrea)"
+    symbol = "USDT.e"
 
     [dest.usdt.deployment]
     proxy = "0x9c4C6f344FB1FAfF1Ff0f30BF30C25df79b48979"
