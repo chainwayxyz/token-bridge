@@ -5,21 +5,7 @@ import {USDTBridgeDeployTestBase} from "./base/USDTBridgeDeployBase.t.sol";
 import {USDTSetBridgeAsMinter} from "../../script/bridge_deploy/USDTSetBridgeAsMinter.s.sol";
 import {DestinationOUSDT, IOFTToken} from "../../src/DestinationOUSDT.sol";
 import {TetherTokenOFTExtension} from "../../src/interfaces/IOFTExtension.sol";
-
-contract DestinationOUSDTHarness is DestinationOUSDT {
-    constructor(address _lzEndpoint, IOFTToken _token) DestinationOUSDT(_lzEndpoint, _token) {}
-
-    function debit(address from, uint256 amountLD, uint256 minAmountLD, uint32 dstEid)
-        external
-        returns (uint256 amountSentLD, uint256 amountReceivedLD)
-    {
-        return _debit(from, amountLD, minAmountLD, dstEid);
-    }
-
-    function credit(address to, uint256 amountLD, uint32 srcEid) external returns (uint256 amountReceivedLD) {
-        return _credit(to, amountLD, srcEid);
-    }
-}
+import {DestinationOUSDTHarness} from "../mock/DestinationOUSDTHarness.sol";
 
 contract USDTSetBridgeAsMinterTest is USDTBridgeDeployTestBase, USDTSetBridgeAsMinter {
     function setUp() public override (USDTBridgeDeployTestBase, USDTSetBridgeAsMinter) {

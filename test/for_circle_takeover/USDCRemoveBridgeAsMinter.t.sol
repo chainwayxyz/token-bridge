@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 import {USDCBridgeDeployTestBase} from "../bridge_deploy/base/USDCBridgeDeployBase.t.sol";
-import {DestinationOUSDCHarness, FiatTokenV2_2} from "../bridge_deploy/USDCSetBridgeAsMinter.t.sol";
+import {DestinationOUSDCHarness, FiatTokenV2_2} from "../mock/DestionationOUSDCHarness.sol";
 import {USDCRemoveBridgeAsMinter, MasterMinter} from "../../script/for_circle_takeover/USDCRemoveBridgeAsMinter.s.sol";
 
 contract USDCRemoveBridgeAsMinterTest is USDCBridgeDeployTestBase, USDCRemoveBridgeAsMinter {
