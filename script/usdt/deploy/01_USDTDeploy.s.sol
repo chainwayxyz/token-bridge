@@ -15,7 +15,8 @@ contract USDTDeploy is ConfigSetup {
     // Can be called by anyone
     function run() public {
         vm.createSelectFork(destRPC);
-        _run(true, destUSDTProxyAdminOwner, destUSDTOwner, destUSDTName, destUSDTSymbol);
+        address usdt = _run(true, destUSDTProxyAdminOwner, destUSDTOwner, destUSDTName, destUSDTSymbol);
+        saveAddressToConfig(".dest.usdt.deployment.proxy", usdt);
     }
 
     function _run(bool broadcast, address _destUSDTProxyAdminOwner, address _destUSDTOwner, string memory _destUSDTName, string memory _destUSDTSymbol) public returns (address) {

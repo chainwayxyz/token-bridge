@@ -1,74 +1,60 @@
 [dest]
 rpc = "https://rpc.testnet.citrea.xyz"
 
-    [dest.lz]
-    endpoint = "0x6C7Ab2202C98C4227C5c46f1417D81144DA716Ff"
-    eid = 40344
+[dest.lz]
+endpoint = "0x6C7Ab2202C98C4227C5c46f1417D81144DA716Ff"
+eid = 40344
 
-    [dest.usdc]
-    proxy = "0x06811Ab270e94c7A4E114b972b8f7B8c4dD031EA"
-    masterMinter = "0x15666fCded1bAC2366847e682Be79c12457ad36B"
+[dest.usdc]
+proxy = "0x06811Ab270e94c7A4E114b972b8f7B8c4dD031EA"
+masterMinter = "0x15666fCded1bAC2366847e682Be79c12457ad36B"
 
-        [dest.usdc.bridge]
+[dest.usdc.bridge.init]
+owner = "0xDc94F4e8F84180C1E807fC4d6b43d65cb459b510"
+proxyAdminOwner = "0xDc94F4e8F84180C1E807fC4d6b43d65cb459b510"
 
-        [dest.usdc.bridge.init]
-        owner = "0xDc94F4e8F84180C1E807fC4d6b43d65cb459b510"
-        proxyAdminOwner = "0xDc94F4e8F84180C1E807fC4d6b43d65cb459b510"
-        
-        [dest.usdc.bridge.deployment]
-        implementation = "0x8E6630c5442582A180442f71a545b4fDC37B0c82"
-        proxy = "0x0dD7db8F5643F14ab2846848121593B766586e9b"
+[dest.usdc.bridge.deployment]
+proxy = "0x0dD7db8F5643F14ab2846848121593B766586e9b"
 
-    [dest.usdt]
+[dest.usdt.init]
+owner = "0xDc94F4e8F84180C1E807fC4d6b43d65cb459b510"
+proxyAdminOwner = "0xDc94F4e8F84180C1E807fC4d6b43d65cb459b510"
+name = "Bridged USDT (Citrea)"
+symbol = "USDT.e"
 
-    [dest.usdt.init]
-    owner = "0xDc94F4e8F84180C1E807fC4d6b43d65cb459b510"
-    proxyAdminOwner = "0xDc94F4e8F84180C1E807fC4d6b43d65cb459b510"
-    name = "Bridged USDT (Citrea)"
-    symbol = "USDT.e"
+[dest.usdt.deployment]
+proxy = "0x00fc9E997680b78FC4D9bb267e51dc6cA619F359"
 
-    [dest.usdt.deployment]
-    proxy = "0x9c4C6f344FB1FAfF1Ff0f30BF30C25df79b48979"
+[dest.usdt.bridge.init]
+owner = "0xDc94F4e8F84180C1E807fC4d6b43d65cb459b510"
+proxyAdminOwner = "0xDc94F4e8F84180C1E807fC4d6b43d65cb459b510"
 
-        [dest.usdt.bridge]
+[dest.usdt.bridge.deployment]
+proxy = "0x36543d052D10d9957c381D51B9EE838A2eb2621C"
 
-        [dest.usdt.bridge.init]
-        owner = "0xDc94F4e8F84180C1E807fC4d6b43d65cb459b510"
-        proxyAdminOwner = "0xDc94F4e8F84180C1E807fC4d6b43d65cb459b510"
-
-        [dest.usdt.bridge.deployment]
-        implementation = "0x6ECa384f6dffdF396c93354e7f3d341eb3f96eEA"
-        proxy = "0x22924fECF57936C905B60B44082eF8DED86d0B31"
-        
 [src]
 rpc = "https://sepolia.drpc.org"
 
-    [src.lz]
-    endpoint = "0x6EDCE65403992e310A62460808c4b910D972f10f"
-    eid = 40161
+[src.lz]
+endpoint = "0x6EDCE65403992e310A62460808c4b910D972f10f"
+eid = 40161
 
-    [src.usdc]
-    proxy = "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238"
+[src.usdc]
+proxy = "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238"
 
-        [src.usdc.bridge]
+[src.usdc.bridge.init]
+owner = "0xDc94F4e8F84180C1E807fC4d6b43d65cb459b510"
+proxyAdminOwner = "0xDc94F4e8F84180C1E807fC4d6b43d65cb459b510"
 
-        [src.usdc.bridge.init]
-        owner = "0xDc94F4e8F84180C1E807fC4d6b43d65cb459b510"
-        proxyAdminOwner = "0xDc94F4e8F84180C1E807fC4d6b43d65cb459b510"
-        
-        [src.usdc.bridge.deployment]
-        implementation = "0x90946aA8dC5D4a68221bB80242629575fA2fc327"
-        proxy = "0xae20fB5930046b8a8630c8Ad7f7B5FEEb7c7956c"
+[src.usdc.bridge.deployment]
+proxy = "0xae20fB5930046b8a8630c8Ad7f7B5FEEb7c7956c"
 
-    [src.usdt]
-    contract = "0x7169D38820dfd117C3FA1f22a697dBA58d90BA06"
+[src.usdt]
+contract = "0x7169D38820dfd117C3FA1f22a697dBA58d90BA06"
 
-        [src.usdt.bridge]
+[src.usdt.bridge.init]
+owner = "0xDc94F4e8F84180C1E807fC4d6b43d65cb459b510"
+proxyAdminOwner = "0xDc94F4e8F84180C1E807fC4d6b43d65cb459b510"
 
-        [src.usdt.bridge.init]
-        owner = "0xDc94F4e8F84180C1E807fC4d6b43d65cb459b510"
-        proxyAdminOwner = "0xDc94F4e8F84180C1E807fC4d6b43d65cb459b510"
-
-        [src.usdt.bridge.deployment]
-        implementation = "0x46A6E5472D68A987693cE6FB353C358d7ACa7dAD"
-        proxy = "0xF92e6A50F3AAFA0d0dfCD1C31166D90A1AbCd905"
+[src.usdt.bridge.deployment]
+proxy = "0x3fEd708bb7631304e6077c491D6c25aDc2221062"

@@ -17,7 +17,6 @@ rpc = "https://rpc.mainnet.citrea.xyz"
         
         [dest.usdc.bridge.deployment]
         proxyAdmin = ""
-        implementation = ""
         proxy = ""
 
     [dest.usdt]
@@ -39,7 +38,6 @@ rpc = "https://rpc.mainnet.citrea.xyz"
         owner = ""
 
         [dest.usdt.bridge.deployment]
-        implementation = ""
         proxy = ""
         
 [src]
@@ -60,7 +58,6 @@ rpc = "https://eth.drpc.org"
         
         [src.usdc.bridge.deployment]
         proxyAdmin = ""
-        implementation = ""
         proxy = ""
 
     [src.usdt]
@@ -74,5 +71,4 @@ rpc = "https://eth.drpc.org"
 
         [src.usdt.bridge.deployment]
         proxyAdmin = ""
-        implementation = ""
         proxy = ""
