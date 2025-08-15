@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 import {ConfigSetup} from "../../ConfigSetup.s.sol";
-import {SourceOFTAdapter} from "../../../src/upgrade_to_before_circle_takeover/SourceOFTAdapterForTakeover.sol";
+import {SourceOFTAdapter} from "../../../src/for_circle_takeover/SourceOFTAdapterForTakeover.sol";
 import "openzeppelin-contracts/contracts/proxy/transparent/ProxyAdmin.sol";
 import "openzeppelin-contracts/contracts/proxy/transparent/TransparentUpgradeableProxy.sol";
 import {ERC1967Utils} from "openzeppelin-contracts/contracts/proxy/ERC1967/ERC1967Utils.sol";

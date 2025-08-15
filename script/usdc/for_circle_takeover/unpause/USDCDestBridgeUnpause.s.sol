@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import {DestinationOUSDC} from "../../../src/upgrade_to_before_circle_takeover/DestinationOUSDCForTakeover.sol";
-import {ConfigSetup} from "../../ConfigSetup.s.sol";
+import {DestinationOUSDC} from "../../../../src/for_circle_takeover/DestinationOUSDCForTakeover.sol";
+import {ConfigSetup} from "../../../ConfigSetup.s.sol";
 import "forge-std/console.sol";
 
 contract USDCDestBridgeUnpause is ConfigSetup {

@@ -51,16 +51,16 @@ forge script ./script/bridge_deploy/USDCBridgeDeploy.s.sol --private-key <ANY_PR
 
 3. Fill the fields of `[dest.usdc.bridge.deployment]` and `[src.usdc.bridge.deployment]` in `config/<mainnet or testnet>/config.toml`.
 
-4. Set the bridge as a minter for USDC:
-```
-forge script ./script/bridge_deploy/USDCSetBridgeAsMinter.s.sol --private-key <MASTER_MINTER_OWNER_ADDRESS_PRIVATE_KEY> --broadcast
-```
-
-5. Set the peers for both ends of the bridge:
+4. Set the peers for both ends of the bridge:
 ```
 forge script ./script/bridge_deploy/USDCSrcBridgeSetPeer.s.sol --private-key <SRC_USDC_BRIDGE_OWNER_PRIVATE_KEY> --broadcast
 
 forge script ./script/bridge_deploy/USDCDestBridgeSetPeer.s.sol --private-key <DEST_USDC_BRIDGE_OWNER_PRIVATE_KEY> --broadcast
+```
+
+5. Set the bridge as a minter for USDC:
+```
+forge script ./script/bridge_deploy/USDCSetBridgeAsMinter.s.sol --private-key <MASTER_MINTER_OWNER_ADDRESS_PRIVATE_KEY> --broadcast
 ```
 
 ### 3. Testing USDC Bridge
@@ -84,47 +84,47 @@ forge script ./script/test/USDCBridgeBurnTest.s.sol --private-key <ANY_PRIVATE_K
 1. Upgrade the USDC bridge contracts to the Circle takeover version by running the upgrade script from respective proxy admin owners:
 
 ```
-forge script ./script/for_circle_takeover/prepare_takeover/USDCDestBridgePrepareTakeover.s.sol --private-key <DEST_USDC_BRIDGE_PROXY_ADMIN_OWNER_PRIVATE_KEY> --broadcast
-
 forge script ./script/for_circle_takeover/prepare_takeover/USDCSrcBridgePrepareTakeover.s.sol --private-key <SRC_USDC_BRIDGE_PROXY_ADMIN_OWNER_PRIVATE_KEY> --broadcast
+
+forge script ./script/for_circle_takeover/prepare_takeover/USDCDestBridgePrepareTakeover.s.sol --private-key <DEST_USDC_BRIDGE_PROXY_ADMIN_OWNER_PRIVATE_KEY> --broadcast
 ```
 
-2. Set Circle's address so they can perform the USDC burn action on source chain end of the bridge:
+2. Pause both ends of the bridge, should be called by respective bridge owners:
+
+```
+forge script ./script/for_circle_takeover/pause/USDCSrcBridgePause.s.sol --private-key <SRC_USDC_BRIDGE_OWNER_PRIVATE_KEY> --broadcast
+
+forge script ./script/for_circle_takeover/pause/USDCDestBridgePause.s.sol --private-key <DEST_USDC_BRIDGE_OWNER_PRIVATE_KEY> --broadcast
+```
+
+3. Remove bridge's minter role from destination USDC, should be called by `MasterMinter`'s owner:
+
+```
+forge script ./script/for_circle_takeover/USDCRemoveBridgeAsMinter.s.sol --private-key <MASTER_MINTER_OWNER_ADDRESS_PRIVATE_KEY> --broadcast
+```
+
+4. Set Circle's address so they can perform the USDC burn action on source chain end of the bridge:
 
 ```
 SRC_BRIDGE_CIRCLE_ADDRESS=<ADDRESS_GIVEN_BY_CIRCLE> forge script ./script/for_circle_takeover/USDCSrcBridgeSetCircle.s.sol --private-key <SRC_USDC_BRIDGE_OWNER_PRIVATE_KEY> --broadcast
 ```
 
-3. Pause both ends of the bridge, should be called by respective bridge owners:
-
-```
-forge script ./script/for_circle_takeover/pause/USDCDestBridgePause.s.sol --private-key <DEST_USDC_BRIDGE_OWNER_PRIVATE_KEY> --broadcast
-
-forge script ./script/for_circle_takeover/pause/USDCSrcBridgePause.s.sol --private-key <SRC_USDC_BRIDGE_OWNER_PRIVATE_KEY> --broadcast
-```
-
-4. Transfer the proxy admin of USDC to Circle's given address:
+5. Transfer the proxy admin of USDC to Circle's given address:
 
 ```
 CIRCLE_USDC_PROXY_ADMIN=<ADDRESS_GIVEN_BY_CIRCLE> forge script ./script/for_circle_takeover/USDCProxyAdminTransfer.s.sol --private-key <DEST_USDC_BRIDGE_PROXY_ADMIN_OWNER_PRIVATE_KEY> --broadcast
 ```
 
-5. Transfer USDC's ownership to a contract that Circle can later use to retrieve the ownership of USDC, `USDC_ROLES_HOLDER_OWNER` should be in our control:
+6. Transfer USDC's ownership to a contract that Circle can later use to retrieve the ownership of USDC, `USDC_ROLES_HOLDER_OWNER` should be in our control:
 
 ```
 USDC_ROLES_HOLDER_OWNER=<OWNER_ADDRESS> forge script ./script/for_circle_takeover/USDCTransferOwner.s.sol --private-key <DEST_USDC_BRIDGE_OWNER_PRIVATE_KEY> --broadcast
 ```
 
-6. Set the Circle's address in `USDCRolesHolder` contract:
+7. Set the Circle's address in `USDCRolesHolder` contract:
 
 ```
 USDC_ROLES_HOLDER_CIRCLE_ADDRESS=<ADDRESS_GIVEN_BY_CIRCLE> forge script ./script/for_circle_takeover/USDCRolesHolderSetCircle.s.sol --private-key <USDC_ROLES_HOLDER_OWNER_PRIVATE_KEY> --broadcast
-```
-
-7. Remove bridge's minter role from USDC, should be called by `MasterMinter`'s owner:
-
-```
-forge script ./script/for_circle_takeover/USDCRemoveBridgeAsMinter.s.sol --private-key <MASTER_MINTER_OWNER_ADDRESS_PRIVATE_KEY> --broadcast
 ```
 
 ## USDT
@@ -147,16 +147,16 @@ forge script ./script/bridge_deploy/USDTBridgeDeploy.s.sol --private-key <ANY_PR
 
 3. Fill the fields of `[dest.usdt.bridge.deployment]` and `[src.usdt.bridge.deployment]` in `config/<mainnet or testnet>/config.toml`.
 
-4. Set the bridge as a minter for USDT:
-```
-forge script ./script/bridge_deploy/USDTSetBridgeAsMinter.s.sol --private-key <DEST_USDT_OWNER_PRIVATE_KEY> --broadcast
-```
-
-5. Set the peers for both ends of the bridge:
+4. Set the peers for both ends of the bridge:
 ```
 forge script ./script/bridge_deploy/USDTSrcBridgeSetPeer.s.sol --private-key <SRC_USDT_BRIDGE_OWNER_PRIVATE_KEY> --broadcast
 
 forge script ./script/bridge_deploy/USDTDestBridgeSetPeer.s.sol --private-key <DEST_USDT_BRIDGE_OWNER_PRIVATE_KEY> --broadcast
+```
+
+5. Set the bridge as a minter for USDT:
+```
+forge script ./script/bridge_deploy/USDTSetBridgeAsMinter.s.sol --private-key <DEST_USDT_OWNER_PRIVATE_KEY> --broadcast
 ```
 
 ### 3. Testing USDT Bridge

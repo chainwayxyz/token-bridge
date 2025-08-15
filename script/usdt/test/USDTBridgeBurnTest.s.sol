@@ -1,31 +1,31 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import {ConfigSetup} from "../ConfigSetup.s.sol";
-import {SourceOFTAdapter} from "../../src/SourceOFTAdapter.sol";
+import {ConfigSetup} from "../../ConfigSetup.s.sol";
+import {DestinationOUSDT} from "../../../src/DestinationOUSDT.sol";
 import "openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
 import {MessagingFee} from "@layerzerolabs/oapp-evm/contracts/oapp/OApp.sol";
 import {SendParam} from "@layerzerolabs/oft-evm/contracts/interfaces/IOFT.sol";
 import {OptionsBuilder} from "@layerzerolabs/oapp-evm/contracts/oapp/libs/OptionsBuilder.sol";
 
-contract USDCBridgeMintTest is ConfigSetup {
+contract USDCBridgeBurnTest is ConfigSetup {
     using OptionsBuilder for bytes;
 
     function setUp() public {
-        loadUSDCConfig({isBridgeDeployed: true});
+        loadUSDTConfig({isUSDTDeployed: true, isBridgeDeployed: true});
     }
 
-    // Can be called by anyone with >= 1 cent Source USDC balance
+    // Can be called by anyone with >= 1 cent Destination USDT balance
     function run() public {
-        SourceOFTAdapter srcUSDCBridge = SourceOFTAdapter(srcUSDCBridgeProxy);
+        DestinationOUSDT destUSDTBridge = DestinationOUSDT(destUSDTBridgeProxy);
 
-        vm.createSelectFork(srcRPC);
+        vm.createSelectFork(destRPC);
         vm.startBroadcast();
         uint256 amount = 1 * 10 ** 4; // 1 cent
-        IERC20(srcUSDCBridge.token()).approve(address(srcUSDCBridge), amount);
+        IERC20(destUSDTBridge.token()).approve(address(destUSDTBridge), amount);
         bytes memory _extraOptions = OptionsBuilder.newOptions().addExecutorLzReceiveOption(650000, 0);
         SendParam memory sendParam = SendParam({
-            dstEid: destEID,
+            dstEid: srcEID,
             to: bytes32(uint256(uint160(msg.sender))),
             amountLD: amount,
             minAmountLD: amount * 9 / 10,
@@ -34,8 +34,8 @@ contract USDCBridgeMintTest is ConfigSetup {
             oftCmd: ""
         });
 
-        MessagingFee memory fee = srcUSDCBridge.quoteSend(sendParam, false);
-        srcUSDCBridge.send{value: fee.nativeFee}(sendParam, fee, msg.sender);
+        MessagingFee memory fee = destUSDTBridge.quoteSend(sendParam, false);
+        destUSDTBridge.send{value: fee.nativeFee}(sendParam, fee, msg.sender);
 
         vm.stopBroadcast();
     }

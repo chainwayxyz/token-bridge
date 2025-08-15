@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import {ConfigSetup} from "../ConfigSetup.s.sol";
-import "forge-std/console.sol";
-import {SourceOFTAdapter} from "../../src/SourceOFTAdapter.sol";
-import {DestinationOUSDT, IOFTToken} from "../../src/DestinationOUSDT.sol";
+import {ConfigSetup} from "../../ConfigSetup.s.sol";
+import {SourceOFTAdapter} from "../../../src/SourceOFTAdapter.sol";
+import {DestinationOUSDT, IOFTToken} from "../../../src/DestinationOUSDT.sol";
 import "openzeppelin-contracts/contracts/proxy/transparent/TransparentUpgradeableProxy.sol";
 import "openzeppelin-contracts/contracts/proxy/transparent/ProxyAdmin.sol";
+import "forge-std/console.sol";
 
 contract USDTBridgeDeploy is ConfigSetup {
     function setUp() public {

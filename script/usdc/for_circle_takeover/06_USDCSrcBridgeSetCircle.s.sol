@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import {SourceOFTAdapter} from "../../src/upgrade_to_before_circle_takeover/SourceOFTAdapterForTakeover.sol";
-import {ConfigSetup} from "../ConfigSetup.s.sol";
+import {SourceOFTAdapter} from "../../../src/for_circle_takeover/SourceOFTAdapterForTakeover.sol";
+import {ConfigSetup} from "../../ConfigSetup.s.sol";
 import "forge-std/console.sol";
 
 contract USDCSrcBridgeSetCircle is ConfigSetup {

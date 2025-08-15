@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import {ConfigSetup} from "../ConfigSetup.s.sol";
+import {ConfigSetup} from "../../ConfigSetup.s.sol";
 import "forge-std/console.sol";
-import {MasterMinter} from "../../src/interfaces/IMasterMinter.sol";
+import {MasterMinter} from "../../../src/interfaces/IMasterMinter.sol";
 
 contract USDCSetBridgeAsMinter is ConfigSetup {
     function setUp() public virtual {

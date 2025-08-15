@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import {ConfigSetup} from "../ConfigSetup.s.sol";
-import {SourceOFTAdapter} from "../../src/SourceOFTAdapter.sol";
+import {ConfigSetup} from "../../ConfigSetup.s.sol";
+import {SourceOFTAdapter} from "../../../src/SourceOFTAdapter.sol";
 import "forge-std/console.sol";
 
 contract USDTSrcBridgeSetPeer is ConfigSetup {

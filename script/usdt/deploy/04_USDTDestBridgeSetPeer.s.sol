@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import {ConfigSetup} from "../ConfigSetup.s.sol";
+import {ConfigSetup} from "../../ConfigSetup.s.sol";
 import "forge-std/console.sol";
-import {DestinationOUSDT} from "../../src/DestinationOUSDT.sol";
+import {DestinationOUSDT} from "../../../src/DestinationOUSDT.sol";
 
 contract USDTDestBridgeSetPeer is ConfigSetup {
     function setUp() public virtual {

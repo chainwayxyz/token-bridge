@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 import {ConfigSetup} from "../../ConfigSetup.s.sol";
-import {DestinationOUSDC, FiatTokenV2_2} from "../../../src/upgrade_to_before_circle_takeover/DestinationOUSDCForTakeover.sol";
+import {DestinationOUSDC, FiatTokenV2_2} from "../../../src/for_circle_takeover/DestinationOUSDCForTakeover.sol";
 import "openzeppelin-contracts/contracts/proxy/transparent/ProxyAdmin.sol";
 import "openzeppelin-contracts/contracts/proxy/transparent/TransparentUpgradeableProxy.sol";
 import {ERC1967Utils} from "openzeppelin-contracts/contracts/proxy/ERC1967/ERC1967Utils.sol";
