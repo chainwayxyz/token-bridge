@@ -31,7 +31,7 @@ contract USDTBridgeMintTest is ConfigSetup {
             dstEid: destEID,
             to: bytes32(uint256(uint160(msg.sender))),
             amountLD: amount,
-            minAmountLD: amount * 9 / 10,
+            minAmountLD: amount,
             extraOptions: _extraOptions,
             composeMsg: "",
             oftCmd: ""
