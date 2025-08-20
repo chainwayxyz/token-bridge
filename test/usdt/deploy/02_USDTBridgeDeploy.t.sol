@@ -8,10 +8,10 @@ import {Initializable} from "@openzeppelin/contracts/proxy/utils/Initializable.s
 contract USDTBridgeDeployTest is USDTBridgeDeployTestBase {
     function testBridgeOwner() public {
         vm.selectFork(srcForkId);
-        assertEq(srcUSDTBridge.owner(), mockSrcUSDTBridgeOwner, "Owner should be set correctly");
+        assertEq(srcUSDTBridge.owner(), deployer, "Owner should be set to deployer initially");
 
         vm.selectFork(destForkId);
-        assertEq(destUSDTBridge.owner(), mockDestUSDTBridgeOwner, "Owner should be set correctly");
+        assertEq(destUSDTBridge.owner(), deployer, "Owner should be set to deployer initially");
     }
 
     function testCannotReinitialize() public {

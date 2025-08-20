@@ -18,7 +18,7 @@ contract USDTDeployTest is USDTDeployTestBase {
     }
 
     function testOwner() public view {
-        assertEq(usdt.owner(), usdtOwner, "Owner should be set correctly");
+        assertEq(usdt.owner(), deployer, "Owner should be set to deployer initially");
     }
 
     function testProxyAdminOwner() public view {

@@ -10,6 +10,7 @@ contract ConfigSetup is Script {
 
     FiatTokenV2_2 public destUSDC;
     address public destMM;
+    address public destMMOwner;
 
     address public destUSDCBridgeOwner;
     address public destUSDCBridgeProxyAdminOwner;
@@ -42,13 +43,18 @@ contract ConfigSetup is Script {
     address public srcUSDTBridgeProxyAdminOwner;
     address public srcUSDTBridgeProxy;
 
+
+    string public tomlPath;
+
     function loadUSDCConfig(bool isBridgeDeployed) public {
         string memory tomlContent = _loadCommonConfig();
                 
-        destUSDC = FiatTokenV2_2(vm.parseTomlAddress(tomlContent, ".dest.usdc.proxy"));
+        destUSDC = FiatTokenV2_2(vm.parseTomlAddress(tomlContent, ".dest.usdc.deployment.proxy"));
         require(address(destUSDC) != address(0), "Destination USDC Proxy is not set in the config file");
-        destMM = vm.parseTomlAddress(tomlContent, ".dest.usdc.masterMinter");
+        destMM = vm.parseTomlAddress(tomlContent, ".dest.usdc.deployment.masterMinter");
         require(destMM != address(0), "Destination USDC Master Minter is not set in the config file");
+        destMMOwner = vm.parseTomlAddress(tomlContent, ".dest.usdc.init.masterMinterOwner");
+        require(destMMOwner != address(0), "Destination USDC Master Minter Owner is not set in the config file");
         destUSDCBridgeOwner = vm.parseTomlAddress(tomlContent, ".dest.usdc.bridge.init.owner");
         require(destUSDCBridgeOwner != address(0), "Destination USDC Bridge Owner is not set in the config file");
         destUSDCBridgeProxyAdminOwner = vm.parseTomlAddress(tomlContent, ".dest.usdc.bridge.init.proxyAdminOwner");
@@ -110,8 +116,11 @@ contract ConfigSetup is Script {
     }
 
     function _loadCommonConfig() internal returns (string memory tomlContent){
-        string memory testnetConfigPath = "./config/testnet/config.toml";
-        string memory tomlPath = vm.envOr("CONFIG_PATH", testnetConfigPath);
+        string memory network = vm.envString("NETWORK");
+        require(keccak256(bytes(network)) == keccak256(bytes("mainnet")) ||
+                keccak256(bytes(network)) == keccak256(bytes("testnet")),
+                "NETWORK must be either 'mainnet' or 'testnet'");
+        tomlPath = string(abi.encodePacked("./config/", network, "/config.toml"));
         tomlContent = vm.readFile(tomlPath);
                 
         destRPC = vm.parseTomlString(tomlContent, ".dest.rpc");
@@ -130,10 +139,11 @@ contract ConfigSetup is Script {
     }
 
     function saveAddressToConfig(string memory key, address addr) public {
+        // Check there is no data at the key
+        string memory tomlContent = vm.readFile(tomlPath);
+        string memory existingAddress = vm.parseTomlString(tomlContent, key);
+        require(bytes(existingAddress).length == 0, "Cannot overwrite existing address. Run `CleanDeploymentsFromConfig.py <token-name>` to remove existing deployments first.");
         string memory value = vm.toString(addr);
-        string memory testnetConfigPath = "./config/testnet/config.toml";
-        string memory tomlPath = vm.envOr("CONFIG_PATH", testnetConfigPath);
-
         vm.writeToml(value, tomlPath, key);
     }
 }

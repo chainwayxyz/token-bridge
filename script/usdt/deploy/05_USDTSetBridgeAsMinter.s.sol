@@ -13,7 +13,7 @@ contract USDTSetBridgeAsMinter is ConfigSetup {
         loadUSDTConfig({isUSDTDeployed: true, isBridgeDeployed: true});
     }
 
-    // Should be called by `dest.usdt.init.owner` address
+    // Should be called by deployer (or `dest.usdt.init.owner` if role transfer is already done)
     function run() public {
         vm.createSelectFork(destRPC);
         _run(true, destUSDT, destUSDTBridgeProxy);

@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 import "forge-std/Test.sol";
-import {USDCBridgeDeploy, FiatTokenV2_2} from "../../../../script/usdc/bridge_deploy/01_USDCBridgeDeploy.s.sol";
+import {USDCBridgeDeploy, FiatTokenV2_2} from "../../../../script/usdc/deploy/02_USDCBridgeDeploy.s.sol";
 import {SourceOFTAdapter} from "../../../../src/SourceOFTAdapter.sol";
 import {DestinationOUSDC} from "../../../../src/DestinationOUSDC.sol";
 import {Initializable} from "@openzeppelin/contracts/proxy/utils/Initializable.sol";

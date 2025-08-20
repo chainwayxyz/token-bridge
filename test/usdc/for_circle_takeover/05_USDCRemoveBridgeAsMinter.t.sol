@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import {USDCBridgeDeployTestBase} from "../bridge_deploy/base/USDCBridgeDeployBase.t.sol";
+import {USDCBridgeDeployTestBase} from "../deploy/base/USDCBridgeDeployBase.t.sol";
 import {DestinationOUSDCHarness, FiatTokenV2_2} from "../mock/DestionationOUSDCHarness.sol";
 import {USDCRemoveBridgeAsMinter, MasterMinter} from "../../../script/usdc/for_circle_takeover/05_USDCRemoveBridgeAsMinter.s.sol";
 

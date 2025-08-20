@@ -15,9 +15,6 @@ contract USDTBridgeDeployTestBase is USDTDeployTestBase {
     uint256 public srcForkId;
     uint256 public destForkId;
 
-    address public mockSrcUSDTBridgeOwner;
-    address public mockDestUSDTBridgeOwner;
-
     string public constant SRC_RPC = "https://sepolia.drpc.org";
     address public constant SRC_USDT = 0x7169D38820dfd117C3FA1f22a697dBA58d90BA06;
     address public constant SRC_LZ_ENDPOINT = 0x6EDCE65403992e310A62460808c4b910D972f10f;
@@ -33,15 +30,13 @@ contract USDTBridgeDeployTestBase is USDTDeployTestBase {
         usdtBridgeDeploy = new USDTBridgeDeploy();
 
         address srcUSDTBridgeProxyAdminOwner = makeAddr("Src USDT Bridge Proxy Admin Owner");
-        mockSrcUSDTBridgeOwner = makeAddr("Src USDT Bridge Owner");
 
         srcForkId = vm.createSelectFork(SRC_RPC);
-        srcUSDTBridge = SourceOFTAdapter(usdtBridgeDeploy._runSrc(false, SRC_USDT, SRC_LZ_ENDPOINT, srcUSDTBridgeProxyAdminOwner, mockSrcUSDTBridgeOwner));
+        srcUSDTBridge = SourceOFTAdapter(usdtBridgeDeploy._runSrc(false, SRC_USDT, SRC_LZ_ENDPOINT, srcUSDTBridgeProxyAdminOwner, deployer));
 
         address destUSDTBridgeProxyAdminOwner = makeAddr("Dest USDT Bridge Proxy Admin Owner");
-        mockDestUSDTBridgeOwner = makeAddr("Dest USDT Bridge Owner");
 
         destForkId = vm.createSelectFork(DEST_RPC);
-        destUSDTBridge = DestinationOUSDT(usdtBridgeDeploy._runDest(false, address(usdt), DEST_LZ_ENDPOINT, destUSDTBridgeProxyAdminOwner, mockDestUSDTBridgeOwner));
+        destUSDTBridge = DestinationOUSDT(usdtBridgeDeploy._runDest(false, address(usdt), DEST_LZ_ENDPOINT, destUSDTBridgeProxyAdminOwner, deployer));
     }
 }

@@ -15,9 +15,12 @@ contract USDCBridgeDeploy is ConfigSetup {
     // Can be called by any address
     function run() public {
         vm.createSelectFork(srcRPC);
-        _runSrc(true, srcUSDC, srcLzEndpoint, srcUSDCBridgeProxyAdminOwner, srcUSDCBridgeOwner);
+        // Set initial owners as the deployer, transfer later
+        address srcBridgeProxy = _runSrc(true, srcUSDC, srcLzEndpoint, srcUSDCBridgeProxyAdminOwner, msg.sender);
+        saveAddressToConfig(".src.usdc.bridge.deployment.proxy", srcBridgeProxy);
         vm.createSelectFork(destRPC);
-        _runDest(true, destUSDC, destLzEndpoint, destUSDCBridgeProxyAdminOwner, destUSDCBridgeOwner);
+        address destBridgeProxy = _runDest(true, destUSDC, destLzEndpoint, destUSDCBridgeProxyAdminOwner, msg.sender);
+        saveAddressToConfig(".dest.usdc.bridge.deployment.proxy", destBridgeProxy);
     }
 
     function _runSrc(

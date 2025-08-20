@@ -10,7 +10,7 @@ contract USDTSrcBridgeSetPeer is ConfigSetup {
         loadUSDTConfig({isUSDTDeployed: true, isBridgeDeployed: true});
     }
 
-    // Should be called by `src.usdt.bridge.init.owner` address
+    // Should be called by deployer (or `src.usdt.bridge.init.owner` if role transfer is already done)
     function run() public {
         vm.createSelectFork(srcRPC);
         _run(true, srcUSDTBridgeProxy, destUSDTBridgeProxy, destEID);

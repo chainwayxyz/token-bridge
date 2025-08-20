@@ -14,7 +14,7 @@ contract USDTSetBridgeAsMinterTest is USDTBridgeDeployTestBase, USDTSetBridgeAsM
 
     function testSetMinter() public {
         vm.selectFork(destForkId);
-        vm.startPrank(usdtOwner);
+        vm.startPrank(deployer);
         _run(false, address(usdt), address(destUSDTBridge));
         assertEq(TetherTokenOFTExtension(usdt).oftContract(), address(destUSDTBridge));
     }
@@ -22,7 +22,7 @@ contract USDTSetBridgeAsMinterTest is USDTBridgeDeployTestBase, USDTSetBridgeAsM
     function testMint() public {
         vm.selectFork(destForkId);
         address mockUSDTBridge = address(new DestinationOUSDTHarness(DEST_LZ_ENDPOINT, IOFTToken(address(usdt))));
-        vm.startPrank(usdtOwner);
+        vm.startPrank(deployer);
         _run(false, address(usdt), address(mockUSDTBridge));
         uint256 amountToMint = 1000 * 10**6;
         address recipient = makeAddr("recipient");
