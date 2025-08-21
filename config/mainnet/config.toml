@@ -5,10 +5,16 @@ rpc = ""
 endpoint = ""
 eid = 
 
-[dest.usdc]
+[dest.usdc.init]
+owner = ""
+proxyAdmin = ""
+masterMinterOwner = ""
+name = "Bridged USDC (Citrea)"
+symbol = "USDC.e"
+
+[dest.usdc.deployment]
 proxy = ""
 masterMinter = ""
-masterMinterOwner = ""
 
 [dest.usdc.bridge.init]
 owner = ""
@@ -38,7 +44,7 @@ rpc = ""
 
 [src.lz]
 endpoint = ""
-eid =
+eid = 
 
 [src.usdc]
 proxy = ""
