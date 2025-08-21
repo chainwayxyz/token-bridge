@@ -8,6 +8,12 @@ source .env
 # Run foundryup to ensure keystore works
 foundryup
 CURRENT_DIR=$(pwd)
+
+if [[ "$NETWORK" != "mainnet" && "$NETWORK" != "testnet" ]]; then
+    echo "Error: NETWORK must be either 'mainnet' or 'testnet'."
+    exit 1
+fi
+
 CONFIG_PATH="$CURRENT_DIR/config/${NETWORK}/config.toml"
 
 DEPLOYER_ADDRESS=$(cast wallet address --account ${ACCOUNT_NAME} --password ${PASSWORD})

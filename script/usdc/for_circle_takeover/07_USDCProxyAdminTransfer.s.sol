@@ -10,7 +10,7 @@ interface IAdminUpgradeabilityProxy {
 }
 
 contract USDCProxyAdminTransfer is ConfigSetup {
-    function setUp() public {
+    function setUp() public virtual {
         loadUSDCConfig({isBridgeDeployed: true});
     }
 

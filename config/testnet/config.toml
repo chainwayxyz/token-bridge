@@ -13,15 +13,15 @@ name = "Bridged USDC (Citrea)"
 symbol = "USDC.e"
 
 [dest.usdc.deployment]
-proxy = "0x0DeE61922E760d4b14A0B518c76501B5EA3bDcBd"
-masterMinter = "0xF12393C44eB1d33385D78b7a1EFbcD9CAA821F12"
+proxy = ""
+masterMinter = ""
 
 [dest.usdc.bridge.init]
 owner = "0xDc94F4e8F84180C1E807fC4d6b43d65cb459b510"
 proxyAdminOwner = "0xDc94F4e8F84180C1E807fC4d6b43d65cb459b510"
 
 [dest.usdc.bridge.deployment]
-proxy = "0xBB6223890aDa308C2FF1Fe35Ae3Ba466595BF87f"
+proxy = ""
 
 [dest.usdt.init]
 owner = "0xDc94F4e8F84180C1E807fC4d6b43d65cb459b510"
@@ -54,7 +54,7 @@ owner = "0xDc94F4e8F84180C1E807fC4d6b43d65cb459b510"
 proxyAdminOwner = "0xDc94F4e8F84180C1E807fC4d6b43d65cb459b510"
 
 [src.usdc.bridge.deployment]
-proxy = "0xa2DC9c4832983a576B854C1B732c9ECB8763498B"
+proxy = ""
 
 [src.usdt]
 contract = "0x7169D38820dfd117C3FA1f22a697dBA58d90BA06"

@@ -1,72 +1,71 @@
 If you are looking to review this repository, please read [the auditor's guide](auditors_guide.md) first.
 
-If bridge is going to work with already deployed stablecoins on destination chain, go to section 2 of respective stablecoins.
+If bridge is going to work with already deployed stablecoins on destination chain, go to section 3 of respective stablecoins.
 
-If you wish to test an existing bridge, go to section 3 of respective stablecoins.
+If you wish to test an existing bridge, go to section 4 of respective stablecoins.
 
-If you are going to use Ledger, please see [Ledger edition of this README](README_ledger.md).
+## Setting up the environment
+
+### Prerequisites
+- [Foundry](https://getfoundry.sh/introduction/installation#installation)
+- python3
+- jq
+- yq
+
+For macOS, `python3` is installed by default, and `jq` and `yq` can be installed via Homebrew:
+```bash
+brew install jq yq
+```
+
+Circle's USDC deployment scripts may require a different `node` and `yarn` versions than the ones installed by default on your system. It is recommended to use `nvm` to set the `node` version, and `yarn set version` to set the `yarn` version. The required versions are:
+- `node`: 20.9.0
+- `yarn`: 1.22.19
+
+### Setting the environment variables and the deployer
+1. Copy `.env.example` to `.env` in the root directory of this repository. Set a `PASSWORD` and `ACCOUNT_NAME` for the deploy address. The private key for the deployer address will be encrypted with this password. Set the `NETWORK` depending on if this is a mainnet or testnet deployment.
+```
+cp .env.example .env
+```
+
+2. Create an account that will function as the deployer address, and set the private key of that account through Foundry keystore:
+```
+source .env
+cast wallet import $ACCOUNT_NAME --unsafe-password $PASSWORD --interactive
+```
+
+3. Fund this address with some native assets on both `src` and `dest` chains to pay for gas. Also fund it with USDC and USDT on `src` chain if you are going to test the bridge. 1 cent of each stablecoin is enough for testing.
 
 ## USDC
-### 1. Deploying USDC
-1. Fill `./stablecoin-evm_env/.env.dest-usdc` for the following variables, for `PROXY_ADMIN_ADDRESS` use a different address than the one `DEPLOYER_PRIVATE_KEY` corresponds to:
-
+### 1. Deploying both USDC and USDC Bridge
+1. Run the deployment commands after filling all `[*.usdc.*]` fields except the ones ending with `.deployment` in `config/<mainnet or testnet>/config.toml`:
 ```
-DEPLOYER_PRIVATE_KEY=
-PROXY_ADMIN_ADDRESS=
-OWNER_ADDRESS=
-MASTER_MINTER_OWNER_ADDRESS=
+make usdc-and-bridge
 ```
 
-2. Deploy USDC `FiatTokenv2_2` contracts to destination chain via Deployment section in [USDC README](https://github.com/circlefin/stablecoin-evm).
+2. Save the USDC compilation output for verification. Copy the compilation outputs of the relevant contracts to this repository if canonical deployment. This step is not critical since the deployment of USDC is done through official Circle scripts, and Blockscout can automatically verify the contracts due to bytecode equivalence. You can find the compilation outputs in the created `stablecoin-evm` directory under the root level of this repository. Copying `broadcast/deploy-fiat-token.s.sol/<your-chain-id>/run-latest.json` and the `artifacts/foundry` directory is a good practice in case something goes wrong later.
 
+3. Go to section 4 to test the bridge.
+
+### 2. Deploying USDC only
+1. Run the USDC deployment script after filling `[dest.usdc.init]`:
 ```
-cd ..
-git clone https://github.com/circlefin/stablecoin-evm.git
-cd stablecoin-evm
-git checkout c8c31b2
-cp ../stablecoin-bridge/stablecoin-evm_env/.env.dest-usdc .env
-echo "[]" > blacklist.remote.json
-yarn install
-yarn forge:simulate scripts/deploy/deploy-fiat-token.s.sol --rpc-url <testnet OR mainnet>
-yarn forge:broadcast scripts/deploy/deploy-fiat-token.s.sol --rpc-url <testnet OR mainnet>
-cd ../stablecoin-bridge
+make usdc-deploy
 ```
 
-3. Fill `config/<mainnet or testnet>/config.toml` file with the following variables and push to repository:
+2. Save the compilation output for verification. Copy the compilation outputs of the relevant contracts to this repository if canonical deployment. This step is not critical since the deployment of USDC is done through official Circle scripts, and Blockscout can automatically verify the contracts due to bytecode equivalence. You can find the compilation outputs in the created `stablecoin-evm` directory under the root level of this repository. Copying `broadcast/deploy-fiat-token.s.sol/<your-chain-id>/run-latest.json` and the `artifacts/foundry` directory is a good practice in case something goes wrong later.
 
-```
-dest.usdc.proxy=<FiatTokenProxy in previous step>
-dest.usdc.masterMinter=<MasterMinter in previous step>
-```
-
-4. Save the compilation output for verification. Copy the compilation outputs of the relevant contracts to this repository if canonical deployment. This step is not critical since the deployment of USDC is done through official Circle scripts, and Blockscout can automatically verify the contracts due to bytecode equivalence.
-
-### 2. Deploying USDC Bridge
+### 3. Deploying USDC Bridge only
 1. Fill the fields of `[dest.usdc.bridge.init]` and `[src.usdc.bridge.init]` in `config/<mainnet or testnet>/config.toml`.
 
 2. Run the bridge deployment script:
 ```
-forge script ./script/bridge_deploy/USDCBridgeDeploy.s.sol --private-key <ANY_PRIVATE_KEY> --broadcast
+make usdc-bridge-full
 ```
 
-3. Fill the fields of `[dest.usdc.bridge.deployment]` and `[src.usdc.bridge.deployment]` in `config/<mainnet or testnet>/config.toml`.
-
-4. Set the peers for both ends of the bridge:
-```
-forge script ./script/bridge_deploy/USDCSrcBridgeSetPeer.s.sol --private-key <SRC_USDC_BRIDGE_OWNER_PRIVATE_KEY> --broadcast
-
-forge script ./script/bridge_deploy/USDCDestBridgeSetPeer.s.sol --private-key <DEST_USDC_BRIDGE_OWNER_PRIVATE_KEY> --broadcast
-```
-
-5. Set the bridge as a minter for USDC:
-```
-forge script ./script/bridge_deploy/USDCSetBridgeAsMinter.s.sol --private-key <MASTER_MINTER_OWNER_ADDRESS_PRIVATE_KEY> --broadcast
-```
-
-### 3. Testing USDC Bridge
+### 4. Testing USDC Bridge
 1. Test the deployment by running the test script which sends 1 cent from source chain to destination chain, you need to have some USDC on source chain for this:
 ```
-forge script ./script/test/USDCBridgeMintTest.s.sol --private-key <ANY_PRIVATE_KEY> --broadcast
+make usdc-bridge-mint-test
 ```
 
 2. If the script is successful, search for the `send` transaction (the other one is approval) in the output of the script on LayerZero Scan. Wait for the destination transaction hash, look it up on destination chain explorer, and confirm that destination chain USDC was minted to the address associated with the private key used above.
@@ -74,7 +73,7 @@ forge script ./script/test/USDCBridgeMintTest.s.sol --private-key <ANY_PRIVATE_K
 3. Similarly, run the test script which sends 1 cent from destination chain to source chain, you need to have some bridged USDC on destination chain for this:
 
 ```
-forge script ./script/test/USDCBridgeBurnTest.s.sol --private-key <ANY_PRIVATE_KEY> --broadcast
+make usdc-bridge-burn-test
 ```
 
 4. If the script is successful, search for the `send` transaction (the other one is approval) in the output of the script on LayerZero Scan. Wait for the destination transaction hash, look it up on source chain explorer, and confirm that USDC was burned from destination chain and 1 cent was sent to the address associated with the private key used above.
@@ -84,85 +83,78 @@ forge script ./script/test/USDCBridgeBurnTest.s.sol --private-key <ANY_PRIVATE_K
 1. Upgrade the USDC bridge contracts to the Circle takeover version by running the upgrade script from respective proxy admin owners:
 
 ```
-forge script ./script/for_circle_takeover/prepare_takeover/USDCSrcBridgePrepareTakeover.s.sol --private-key <SRC_USDC_BRIDGE_PROXY_ADMIN_OWNER_PRIVATE_KEY> --broadcast
+forge script ./script/usdc/for_circle_takeover/prepare_takeover/01_USDCSrcBridgePrepareTakeover.s.sol --private-key <SRC_USDC_BRIDGE_PROXY_ADMIN_OWNER_PRIVATE_KEY> --broadcast
 
-forge script ./script/for_circle_takeover/prepare_takeover/USDCDestBridgePrepareTakeover.s.sol --private-key <DEST_USDC_BRIDGE_PROXY_ADMIN_OWNER_PRIVATE_KEY> --broadcast
+forge script ./script/usdc/for_circle_takeover/prepare_takeover/02_USDCDestBridgePrepareTakeover.s.sol --private-key <DEST_USDC_BRIDGE_PROXY_ADMIN_OWNER_PRIVATE_KEY> --broadcast
 ```
 
 2. Pause both ends of the bridge, should be called by respective bridge owners:
 
 ```
-forge script ./script/for_circle_takeover/pause/USDCSrcBridgePause.s.sol --private-key <SRC_USDC_BRIDGE_OWNER_PRIVATE_KEY> --broadcast
+forge script ./script/usdc/for_circle_takeover/pause/03_USDCSrcBridgePause.s.sol --private-key <SRC_USDC_BRIDGE_OWNER_PRIVATE_KEY> --broadcast
 
-forge script ./script/for_circle_takeover/pause/USDCDestBridgePause.s.sol --private-key <DEST_USDC_BRIDGE_OWNER_PRIVATE_KEY> --broadcast
+forge script ./script/usdc/for_circle_takeover/pause/04_USDCDestBridgePause.s.sol --private-key <DEST_USDC_BRIDGE_OWNER_PRIVATE_KEY> --broadcast
 ```
 
 3. Remove bridge's minter role from destination USDC, should be called by `MasterMinter`'s owner:
 
 ```
-forge script ./script/for_circle_takeover/USDCRemoveBridgeAsMinter.s.sol --private-key <MASTER_MINTER_OWNER_ADDRESS_PRIVATE_KEY> --broadcast
+forge script ./script/usdc/for_circle_takeover/05_USDCRemoveBridgeAsMinter.s.sol --private-key <MASTER_MINTER_OWNER_ADDRESS_PRIVATE_KEY> --broadcast
 ```
 
 4. Set Circle's address so they can perform the USDC burn action on source chain end of the bridge:
 
 ```
-SRC_BRIDGE_CIRCLE_ADDRESS=<ADDRESS_GIVEN_BY_CIRCLE> forge script ./script/for_circle_takeover/USDCSrcBridgeSetCircle.s.sol --private-key <SRC_USDC_BRIDGE_OWNER_PRIVATE_KEY> --broadcast
+SRC_BRIDGE_CIRCLE_ADDRESS=<ADDRESS_GIVEN_BY_CIRCLE> forge script ./script/usdc/for_circle_takeover/06_USDCSrcBridgeSetCircle.s.sol --private-key <SRC_USDC_BRIDGE_OWNER_PRIVATE_KEY> --broadcast
 ```
 
 5. Transfer the proxy admin of USDC to Circle's given address:
 
 ```
-CIRCLE_USDC_PROXY_ADMIN=<ADDRESS_GIVEN_BY_CIRCLE> forge script ./script/for_circle_takeover/USDCProxyAdminTransfer.s.sol --private-key <DEST_USDC_BRIDGE_PROXY_ADMIN_OWNER_PRIVATE_KEY> --broadcast
+CIRCLE_USDC_PROXY_ADMIN=<ADDRESS_GIVEN_BY_CIRCLE> forge script ./script/usdc/for_circle_takeover/07_USDCProxyAdminTransfer.s.sol --private-key <DEST_USDC_BRIDGE_PROXY_ADMIN_OWNER_PRIVATE_KEY> --broadcast
 ```
 
 6. Transfer USDC's ownership to a contract that Circle can later use to retrieve the ownership of USDC, `USDC_ROLES_HOLDER_OWNER` should be in our control:
 
 ```
-USDC_ROLES_HOLDER_OWNER=<OWNER_ADDRESS> forge script ./script/for_circle_takeover/USDCTransferOwner.s.sol --private-key <DEST_USDC_BRIDGE_OWNER_PRIVATE_KEY> --broadcast
+USDC_ROLES_HOLDER_OWNER=<OWNER_ADDRESS> forge script ./script/usdc/for_circle_takeover/08_USDCTransferOwner.s.sol --private-key <DEST_USDC_BRIDGE_OWNER_PRIVATE_KEY> --broadcast
 ```
 
 7. Set the Circle's address in `USDCRolesHolder` contract:
 
 ```
-USDC_ROLES_HOLDER_CIRCLE_ADDRESS=<ADDRESS_GIVEN_BY_CIRCLE> forge script ./script/for_circle_takeover/USDCRolesHolderSetCircle.s.sol --private-key <USDC_ROLES_HOLDER_OWNER_PRIVATE_KEY> --broadcast
+USDC_ROLES_HOLDER_CIRCLE_ADDRESS=<ADDRESS_GIVEN_BY_CIRCLE> forge script ./script/usdc/for_circle_takeover/09_USDCRolesHolderSetCircle.s.sol --private-key <USDC_ROLES_HOLDER_OWNER_PRIVATE_KEY> --broadcast
 ```
 
 ## USDT
-### 1. Deploying USDT
+### 1. Deploying both USDT and USDT Bridge
+1. Run the deployment commands after filling all `[*.usdt.*]` fields except the
+ones ending with `.deployment` in `config/<mainnet or testnet>/config.toml`:
+```
+make usdt-and-bridge
+```
+
+2. Go to section 4 to test the bridge.
+
+### 2. Deploying USDT only
 
 1. Run the USDT deployment script after filling `[dest.usdt.init]`:
 ```
-forge script ./script/USDTDeploy.s.sol --private-key <ANY_PRIVATE_KEY> --broadcast
+make usdt-deploy
 ```
 
-2. Fill the fields of `[dest.usdt.deployment]` in `config/<mainnet or testnet>/config.toml`.
-
-### 2. Deploying USDT Bridge
+### 3. Deploying USDT Bridge only
 1. Fill the fields of `[dest.usdt.bridge.init]` and `[src.usdt.bridge.init]` in `config/<mainnet or testnet>/config.toml`.
 
 2. Run the bridge deployment script:
 ```
-forge script ./script/bridge_deploy/USDTBridgeDeploy.s.sol --private-key <ANY_PRIVATE_KEY> --broadcast
+make usdt-bridge-full
 ```
 
-3. Fill the fields of `[dest.usdt.bridge.deployment]` and `[src.usdt.bridge.deployment]` in `config/<mainnet or testnet>/config.toml`.
-
-4. Set the peers for both ends of the bridge:
-```
-forge script ./script/bridge_deploy/USDTSrcBridgeSetPeer.s.sol --private-key <SRC_USDT_BRIDGE_OWNER_PRIVATE_KEY> --broadcast
-
-forge script ./script/bridge_deploy/USDTDestBridgeSetPeer.s.sol --private-key <DEST_USDT_BRIDGE_OWNER_PRIVATE_KEY> --broadcast
-```
-
-5. Set the bridge as a minter for USDT:
-```
-forge script ./script/bridge_deploy/USDTSetBridgeAsMinter.s.sol --private-key <DEST_USDT_OWNER_PRIVATE_KEY> --broadcast
-```
-
-### 3. Testing USDT Bridge
+### 4. Testing USDT Bridge
 1. Test the deployment by running the test script which sends 1 cent from source chain to destination chain, you need to have some USDT on source chain for this:
 ```
-forge script ./script/test/USDTBridgeMintTest.s.sol --private-key <ANY_PRIVATE_KEY> --broadcast
+make usdt-bridge-mint-test
 ```
 
 2. If the script is successful, search for the `send` transaction (the other one is approval) in the output of the script on LayerZero Scan. Wait for the destination transaction hash, look it up on destination chain explorer, and confirm that destination chain USDT was minted to the address associated with the private key used above.
@@ -170,7 +162,7 @@ forge script ./script/test/USDTBridgeMintTest.s.sol --private-key <ANY_PRIVATE_K
 3. Similarly, run the test script which sends 1 cent from destination chain to source chain, you need to have some bridged USDT on destination chain for this:
 
 ```
-forge script ./script/test/USDTBridgeBurnTest.s.sol --private-key <ANY_PRIVATE_KEY> --broadcast
+make usdt-bridge-burn-test
 ```
 
 4. If the script is successful, search for the `send` transaction (the other one is approval) in the output of the script on LayerZero Scan. Wait for the destination transaction hash, look it up on source chain explorer, and confirm that USDT was burned from destination chain and 1 cent was sent to the address associated with the private key used above.

@@ -19,9 +19,7 @@ contract USDTDeployTestBase is Test {
 
         // Normally this is a regular address, but in testing setup script contract itself is the caller
         // while in practice scripts are not contracts themselves but sequential calls from the sender parameter specified in the script running command.
-        deployer = address(usdtDeploy); 
-
-        usdtDeploy.setUp();
+        deployer = address(usdtDeploy);
 
         usdtProxyAdminOwner = makeAddr("USDT Proxy Admin Owner");
 

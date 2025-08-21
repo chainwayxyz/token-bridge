@@ -10,6 +10,8 @@ contract USDCProxyAdminTransferTest is USDCProxyAdminTransfer, Test {
     string public constant DEST_RPC = "https://rpc.testnet.citrea.xyz";
     bytes32 public constant FIAT_TOKEN_PROXY_ADMIN_SLOT = 0x10d6a54a4754c8869d6886b5f5d7fbfa5b4522237ea5c60d11bc4e7a1ff9390b;
 
+    function setUp() public override {}
+
     function testProxyAdminTransfer() public {
         vm.createSelectFork(DEST_RPC);
         address currentProxyAdmin = address(uint160(uint256(vm.load(address(DEST_USDC), FIAT_TOKEN_PROXY_ADMIN_SLOT))));
