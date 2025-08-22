@@ -10,10 +10,10 @@ contract ConfigSetup is Script {
 
     FiatTokenV2_2 public destUSDC;
     address public destMM;
+    address public destMMOwner;
 
     address public destUSDCBridgeOwner;
     address public destUSDCBridgeProxyAdminOwner;
-    address public destUSDCBridgeImplementation;
     address public destUSDCBridgeProxy;
 
     address public destUSDTOwner;
@@ -24,7 +24,6 @@ contract ConfigSetup is Script {
     
     address public destUSDTBridgeOwner;
     address public destUSDTBridgeProxyAdminOwner;
-    address public destUSDTBridgeImplementation;
     address public destUSDTBridgeProxy;
 
 
@@ -36,31 +35,32 @@ contract ConfigSetup is Script {
 
     address public srcUSDCBridgeOwner;
     address public srcUSDCBridgeProxyAdminOwner;
-    address public srcUSDCBridgeImplementation;
     address public srcUSDCBridgeProxy;
 
     address public srcUSDT;
 
     address public srcUSDTBridgeOwner;
     address public srcUSDTBridgeProxyAdminOwner;
-    address public srcUSDTBridgeImplementation;
     address public srcUSDTBridgeProxy;
+
+
+    string public tomlPath;
 
     function loadUSDCConfig(bool isBridgeDeployed) public {
         string memory tomlContent = _loadCommonConfig();
                 
-        destUSDC = FiatTokenV2_2(vm.parseTomlAddress(tomlContent, ".dest.usdc.proxy"));
+        destUSDC = FiatTokenV2_2(vm.parseTomlAddress(tomlContent, ".dest.usdc.deployment.proxy"));
         require(address(destUSDC) != address(0), "Destination USDC Proxy is not set in the config file");
-        destMM = vm.parseTomlAddress(tomlContent, ".dest.usdc.masterMinter");
+        destMM = vm.parseTomlAddress(tomlContent, ".dest.usdc.deployment.masterMinter");
         require(destMM != address(0), "Destination USDC Master Minter is not set in the config file");
+        destMMOwner = vm.parseTomlAddress(tomlContent, ".dest.usdc.init.masterMinterOwner");
+        require(destMMOwner != address(0), "Destination USDC Master Minter Owner is not set in the config file");
         destUSDCBridgeOwner = vm.parseTomlAddress(tomlContent, ".dest.usdc.bridge.init.owner");
         require(destUSDCBridgeOwner != address(0), "Destination USDC Bridge Owner is not set in the config file");
         destUSDCBridgeProxyAdminOwner = vm.parseTomlAddress(tomlContent, ".dest.usdc.bridge.init.proxyAdminOwner");
         require(destUSDCBridgeProxyAdminOwner != address(0), "Destination USDC Bridge Proxy Admin Owner is not set in the config file");
 
         if (isBridgeDeployed) {
-            destUSDCBridgeImplementation = vm.parseTomlAddress(tomlContent, ".dest.usdc.bridge.deployment.implementation");
-            require(destUSDCBridgeImplementation != address(0), "Destination USDC Bridge Implementation is not set in the config file");
             destUSDCBridgeProxy = vm.parseTomlAddress(tomlContent, ".dest.usdc.bridge.deployment.proxy");
             require(destUSDCBridgeProxy != address(0), "Destination USDC Bridge Proxy is not set in the config file");
         }
@@ -73,8 +73,6 @@ contract ConfigSetup is Script {
         require(srcUSDCBridgeProxyAdminOwner != address(0), "Source USDC Bridge Proxy Admin Owner is not set in the config file");
 
         if (isBridgeDeployed) {
-            srcUSDCBridgeImplementation = vm.parseTomlAddress(tomlContent, ".src.usdc.bridge.deployment.implementation");
-            require(srcUSDCBridgeImplementation != address(0), "Source USDC Bridge Implementation is not set in the config file");
             srcUSDCBridgeProxy = vm.parseTomlAddress(tomlContent, ".src.usdc.bridge.deployment.proxy");
             require(srcUSDCBridgeProxy != address(0), "Source USDC Bridge Proxy is not set in the config file");
         }
@@ -109,21 +107,20 @@ contract ConfigSetup is Script {
         }
 
         if (isBridgeDeployed) {
-            destUSDTBridgeImplementation = vm.parseTomlAddress(tomlContent, ".dest.usdt.bridge.deployment.implementation");
-            require(destUSDTBridgeImplementation != address(0), "Destination USDT Bridge Implementation is not set in the config file");
             destUSDTBridgeProxy = vm.parseTomlAddress(tomlContent, ".dest.usdt.bridge.deployment.proxy");
             require(destUSDTBridgeProxy != address(0), "Destination USDT Bridge Proxy is not set in the config file");
 
-            srcUSDTBridgeImplementation = vm.parseTomlAddress(tomlContent, ".src.usdt.bridge.deployment.implementation");
-            require(srcUSDTBridgeImplementation != address(0), "Source USDT Bridge Implementation is not set in the config file");
             srcUSDTBridgeProxy = vm.parseTomlAddress(tomlContent, ".src.usdt.bridge.deployment.proxy");
             require(srcUSDTBridgeProxy != address(0), "Source USDT Bridge Proxy is not set in the config file");
         }
     }
 
     function _loadCommonConfig() internal returns (string memory tomlContent){
-        string memory testnetConfigPath = "./config/testnet/config.toml";
-        string memory tomlPath = vm.envOr("CONFIG_PATH", testnetConfigPath);
+        string memory network = vm.envString("NETWORK");
+        require(keccak256(bytes(network)) == keccak256(bytes("mainnet")) ||
+                keccak256(bytes(network)) == keccak256(bytes("testnet")),
+                "NETWORK must be either 'mainnet' or 'testnet'");
+        tomlPath = string(abi.encodePacked("./config/", network, "/config.toml"));
         tomlContent = vm.readFile(tomlPath);
                 
         destRPC = vm.parseTomlString(tomlContent, ".dest.rpc");
@@ -139,5 +136,14 @@ contract ConfigSetup is Script {
         require(srcLzEndpoint != address(0), "Source LayerZero Endpoint is not set in the config file");
         srcEID = uint32(vm.parseTomlUint(tomlContent, ".src.lz.eid"));
         require(srcEID > 0, "Source LayerZero EID is not set or invalid in the config file");
+    }
+
+    function saveAddressToConfig(string memory key, address addr) public {
+        // Check there is no data at the key
+        string memory tomlContent = vm.readFile(tomlPath);
+        string memory existingAddress = vm.parseTomlString(tomlContent, key);
+        require(bytes(existingAddress).length == 0, "Cannot overwrite existing address. Run `CleanDeploymentsFromConfig.py <token-name>` to remove existing deployments first.");
+        string memory value = vm.toString(addr);
+        vm.writeToml(value, tomlPath, key);
     }
 }

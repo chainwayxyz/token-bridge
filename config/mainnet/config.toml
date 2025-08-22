@@ -1,78 +1,67 @@
 [dest]
-rpc = "https://rpc.mainnet.citrea.xyz"
+rpc = ""
 
-    [dest.lz]
-    endpoint = ""
-    eid =
+[dest.lz]
+endpoint = ""
+eid = 
 
-    [dest.usdc]
-    proxy = ""
-    masterMinter = ""
+[dest.usdc.init]
+owner = ""
+proxyAdmin = ""
+masterMinterOwner = ""
+name = "Bridged USDC (Citrea)"
+symbol = "USDC.e"
 
-        [dest.usdc.bridge]
+[dest.usdc.deployment]
+proxy = ""
+masterMinter = ""
 
-        [dest.usdc.bridge.init]
-        owner = ""
-        proxyAdminOwner = ""
-        
-        [dest.usdc.bridge.deployment]
-        proxyAdmin = ""
-        implementation = ""
-        proxy = ""
+[dest.usdc.bridge.init]
+owner = ""
+proxyAdminOwner = ""
 
-    [dest.usdt]
+[dest.usdc.bridge.deployment]
+proxy = ""
 
-    [dest.usdt.init]
-    owner = ""
-    proxyAdminOwner = ""
-    name = "Bridged USDT (Citrea)"
-    symbol = "USDT.e"
+[dest.usdt.init]
+owner = ""
+proxyAdminOwner = ""
+name = "Bridged USDT (Citrea)"
+symbol = "USDT.e"
 
-    [dest.usdt.deployment]
-    proxy = ""
-    # Also used for bridge
-    proxyAdmin = ""
+[dest.usdt.deployment]
+proxy = ""
 
-        [dest.usdt.bridge]
+[dest.usdt.bridge.init]
+owner = ""
+proxyAdminOwner = ""
 
-        [dest.usdt.bridge.init]
-        owner = ""
+[dest.usdt.bridge.deployment]
+proxy = ""
 
-        [dest.usdt.bridge.deployment]
-        implementation = ""
-        proxy = ""
-        
 [src]
-rpc = "https://eth.drpc.org"
+rpc = ""
 
-    [src.lz]
-    endpoint = "0x1a44076050125825900e736c501f859c50fE728c"
-    eid = 30101
+[src.lz]
+endpoint = ""
+eid = 
 
-    [src.usdc]
-    proxy = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+[src.usdc]
+proxy = ""
 
-        [src.usdc.bridge]
+[src.usdc.bridge.init]
+owner = ""
+proxyAdminOwner = ""
 
-        [src.usdc.bridge.init]
-        owner = ""
-        proxyAdminOwner = ""
-        
-        [src.usdc.bridge.deployment]
-        proxyAdmin = ""
-        implementation = ""
-        proxy = ""
+[src.usdc.bridge.deployment]
+proxy = ""
 
-    [src.usdt]
-    contract = "0xdAC17F958D2ee523a2206206994597C13D831ec7"
+[src.usdt]
+contract = ""
 
-        [src.usdt.bridge]
+[src.usdt.bridge.init]
+owner = ""
+proxyAdminOwner = ""
 
-        [src.usdt.bridge.init]
-        owner = ""
-        proxyAdminOwner = ""
-
-        [src.usdt.bridge.deployment]
-        proxyAdmin = ""
-        implementation = ""
-        proxy = ""
+[src.usdt.bridge.deployment]
+proxy = ""
