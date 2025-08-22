@@ -3,6 +3,8 @@
 # Logic is taken from the deployment section of the README of `https://github.com/circlefin/stablecoin-evm`
 # This script deploys the USDC contracts with the values from config.
 
+set -e
+
 cd "$(git rev-parse --show-toplevel)"
 source .env
 # Run foundryup to ensure keystore works
@@ -35,7 +37,7 @@ if [ "$PROXY_ADMIN_ADDRESS" == "$DEPLOYER_ADDRESS" ]; then
     echo "Error: USDC Proxy Admin cannot be the same as deployer address."
     exit 1
 fi
-git clone https://github.com/circlefin/stablecoin-evm.git
+git clone https://github.com/circlefin/stablecoin-evm.git || true
 cd stablecoin-evm
 git checkout c8c31b2
 echo "[]" > blacklist.remote.json
