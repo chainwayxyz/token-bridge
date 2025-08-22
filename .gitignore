@@ -16,3 +16,5 @@ docs/
 /stablecoin-evm
 .yarnrc
 .yarn
+.clear-usdc-deployments
+.clear-usdt-deployments
