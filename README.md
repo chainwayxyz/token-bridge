@@ -17,8 +17,13 @@ For macOS, `python3` is installed by default, and `jq` and `yq` can be installed
 brew install jq yq
 ```
 
+Install the dependencies for the contracts and scripts in this repository:
+```
+forge install
+```
+
 Circle's USDC deployment scripts may require a different `node` and `yarn` versions than the ones installed by default on your system. It is recommended to use `nvm` to set the `node` version, and `yarn set version` to set the `yarn` version. The required versions are:
-- `node`: 20.9.0
+- `node`: 20.18.0
 - `yarn`: 1.22.19
 
 ### Setting the environment variables and the deployer
@@ -37,14 +42,16 @@ cast wallet import $ACCOUNT_NAME --unsafe-password $PASSWORD --interactive
 
 ## USDC
 ### 1. Deploying both USDC and USDC Bridge
-1. Run the deployment commands after filling all `[*.usdc.*]` fields except the ones ending with `.deployment` in `config/<mainnet or testnet>/config.toml`:
+1. Fill all `[*.usdc.*]` fields except the ones ending with `.deployment` in `config/<mainnet or testnet>/config.toml`.
+
+2. Run the deployment commands:
 ```
 make usdc-and-bridge
 ```
 
-2. Save the USDC compilation output for verification. Copy the compilation outputs of the relevant contracts to this repository if canonical deployment. This step is not critical since the deployment of USDC is done through official Circle scripts, and Blockscout can automatically verify the contracts due to bytecode equivalence. You can find the compilation outputs in the created `stablecoin-evm` directory under the root level of this repository. Copying `broadcast/deploy-fiat-token.s.sol/<your-chain-id>/run-latest.json` and the `artifacts/foundry` directory is a good practice in case something goes wrong later.
+3. Save the USDC compilation output for verification. Copy the compilation outputs of the relevant contracts to this repository if canonical deployment. This step is not critical since the deployment of USDC is done through official Circle scripts, and Blockscout can automatically verify the contracts due to bytecode equivalence. You can find the compilation outputs in the created `stablecoin-evm` directory under the root level of this repository. Copying `broadcast/deploy-fiat-token.s.sol/<your-chain-id>/run-latest.json` and the `artifacts/foundry` directory is a good practice in case something goes wrong later.
 
-3. Go to section 4 to test the bridge.
+4. Go to [section 4](#4-testing-usdc-bridge) to test the bridge.
 
 ### 2. Deploying USDC only
 1. Run the USDC deployment script after filling `[dest.usdc.init]`:
@@ -128,13 +135,14 @@ USDC_ROLES_HOLDER_CIRCLE_ADDRESS=<ADDRESS_GIVEN_BY_CIRCLE> forge script ./script
 
 ## USDT
 ### 1. Deploying both USDT and USDT Bridge
-1. Run the deployment commands after filling all `[*.usdt.*]` fields except the
-ones ending with `.deployment` in `config/<mainnet or testnet>/config.toml`:
+1. Fill all `[*.usdt.*]` fields except the ones ending with `.deployment` in `config/<mainnet or testnet>/config.toml`.
+
+2. Run the deployment commands:
 ```
 make usdt-and-bridge
 ```
 
-2. Go to section 4 to test the bridge.
+3. Go to [section 4](#4-testing-usdt-bridge) to test the bridge.
 
 ### 2. Deploying USDT only
 
