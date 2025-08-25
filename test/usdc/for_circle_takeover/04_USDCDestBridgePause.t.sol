@@ -15,7 +15,7 @@ contract USDCDestBridgePauseTest is USDCDestBridgePrepareTakeoverTestBase, USDCD
 
     function testPause() public {
         vm.selectFork(destForkId);
-        vm.startPrank(mockDestUSDCBridgeOwner);
+        vm.startPrank(deployer);
         USDCDestBridgePause._run(false, address(destUSDCBridge));
         assertTrue(DestinationOUSDC(address(destUSDCBridge)).paused(), "Bridge should be paused");
     }

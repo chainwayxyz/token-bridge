@@ -6,11 +6,8 @@ import {SourceOFTAdapter} from "../../../src/SourceOFTAdapter.sol";
 import "openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
 import {MessagingFee} from "@layerzerolabs/oapp-evm/contracts/oapp/OApp.sol";
 import {SendParam} from "@layerzerolabs/oft-evm/contracts/interfaces/IOFT.sol";
-import {OptionsBuilder} from "@layerzerolabs/oapp-evm/contracts/oapp/libs/OptionsBuilder.sol";
 
 contract USDCBridgeMintTest is ConfigSetup {
-    using OptionsBuilder for bytes;
-
     function setUp() public {
         loadUSDCConfig({isBridgeDeployed: true});
     }
@@ -23,13 +20,12 @@ contract USDCBridgeMintTest is ConfigSetup {
         vm.startBroadcast();
         uint256 amount = 1 * 10 ** 4; // 1 cent
         IERC20(srcUSDCBridge.token()).approve(address(srcUSDCBridge), amount);
-        bytes memory _extraOptions = OptionsBuilder.newOptions().addExecutorLzReceiveOption(650000, 0);
         SendParam memory sendParam = SendParam({
             dstEid: destEID,
             to: bytes32(uint256(uint160(msg.sender))),
             amountLD: amount,
             minAmountLD: amount,
-            extraOptions: _extraOptions,
+            extraOptions: "",
             composeMsg: "",
             oftCmd: ""
         });

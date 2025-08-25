@@ -15,7 +15,7 @@ contract USDCSrcBridgePauseTest is USDCSrcBridgePrepareTakeoverTestBase, USDCSrc
 
     function testPause() public {
         vm.selectFork(srcForkId);
-        vm.startPrank(mockSrcUSDCBridgeOwner);
+        vm.startPrank(deployer);
         USDCSrcBridgePause._run(false, address(srcUSDCBridge));
         assertTrue(SourceOFTAdapter(address(srcUSDCBridge)).paused(), "Bridge should be paused");
     }

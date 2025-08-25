@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 import {USDCBridgeDeployTestBase, FiatTokenV2_2} from "./base/USDCBridgeDeployBase.t.sol";
-import {USDCSetBridgeAsMinter} from "../../../script/usdc/deploy/05_USDCSetBridgeAsMinter.s.sol";
+import {USDCSetBridgeAsMinter} from "../../../script/usdc/deploy/07_USDCSetBridgeAsMinter.s.sol";
 import {DestinationOUSDC} from "../../../src/DestinationOUSDC.sol";
 import {MasterMinter} from "../../../src/interfaces/IMasterMinter.sol";
 import {DestinationOUSDCHarness} from "../mock/DestionationOUSDCHarness.sol";
@@ -16,7 +16,7 @@ contract USDCSetBridgeAsMinterTest is USDCBridgeDeployTestBase, USDCSetBridgeAsM
         vm.selectFork(destForkId);
         address masterMinterOwner = MasterMinter(DEST_MM).owner();
         require(masterMinterOwner != address(0), "MasterMinter owner not set");
-        vm.startPrank(masterMinterOwner);
+        vm.startPrank(deployer);
         _run(false, masterMinterOwner, DEST_MM, address(destUSDCBridge));
         assertEq(MasterMinter(DEST_MM).getWorker(masterMinterOwner), address(destUSDCBridge), "Worker should be set to the bridge proxy");
     }
@@ -26,7 +26,7 @@ contract USDCSetBridgeAsMinterTest is USDCBridgeDeployTestBase, USDCSetBridgeAsM
         address mockUSDCBridge = address(new DestinationOUSDCHarness(DEST_LZ_ENDPOINT, FiatTokenV2_2(DEST_USDC)));
         address masterMinterOwner = MasterMinter(DEST_MM).owner();
         require(masterMinterOwner != address(0), "MasterMinter owner not set");
-        vm.startPrank(masterMinterOwner);
+        vm.startPrank(deployer);
         _run(false, masterMinterOwner, DEST_MM, mockUSDCBridge);
         uint256 amountToMint = 1000 * 10**6;
         address recipient = makeAddr("recipient");

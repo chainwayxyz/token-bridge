@@ -1,13 +1,24 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 import "forge-std/Script.sol";
+import "@openzeppelin/contracts/utils/math/SafeCast.sol";
+import {UlnConfig} from "@layerzerolabs/lz-evm-messagelib-v2/contracts/uln/UlnBase.sol";
 import {FiatTokenV2_2} from "../src/interfaces/IFiatTokenV2_2.sol";
 
 contract ConfigSetup is Script {
+    using SafeCast for uint256;
+
     string public destRPC;
     address public destLzEndpoint;
     uint32 public destEID;
 
+    address public destLzSendUlnLib;
+    UlnConfig public destLzSendUlnConfig;
+    address public destLzRecvUlnLib;
+    uint256 public destLzRecvGracePeriod;
+    UlnConfig public destLzRecvUlnConfig;
+    uint128 public destLzReceiveGas;
+    
     FiatTokenV2_2 public destUSDC;
     address public destMM;
     address public destMMOwner;
@@ -30,6 +41,13 @@ contract ConfigSetup is Script {
     string public srcRPC;
     address public srcLzEndpoint;
     uint32 public srcEID;
+
+    address public srcLzSendUlnLib;
+    UlnConfig public srcLzSendUlnConfig;
+    address public srcLzRecvUlnLib;
+    uint256 public srcLzRecvGracePeriod;
+    UlnConfig public srcLzRecvUlnConfig;
+    uint128 public srcLzReceiveGas;
 
     address public srcUSDC;
 
@@ -130,12 +148,47 @@ contract ConfigSetup is Script {
         destEID = uint32(vm.parseTomlUint(tomlContent, ".dest.lz.eid"));
         require(destEID > 0, "Destination LayerZero EID is not set or invalid in the config file");
 
+        destLzSendUlnLib = vm.parseTomlAddress(tomlContent, ".dest.lz.send.ulnLib");
+        require(destLzSendUlnLib != address(0), "Destination LayerZero Send ULN Library is not set in the config file");
+        destLzSendUlnConfig = _parseUlnConfig(".dest.lz.send");
+        destLzRecvUlnLib = vm.parseTomlAddress(tomlContent, ".dest.lz.recv.ulnLib");
+        require(destLzRecvUlnLib != address(0), "Destination LayerZero Receive ULN Library is not set in the config file");
+        destLzRecvGracePeriod = vm.parseTomlUint(tomlContent, ".dest.lz.recv.gracePeriod");
+        destLzRecvUlnConfig = _parseUlnConfig(".dest.lz.recv");
+        destLzReceiveGas = vm.parseTomlUint(tomlContent, ".dest.lz.options.receiveGas").toUint128();
+
         srcRPC = vm.parseTomlString(tomlContent, ".src.rpc");
         require(bytes(srcRPC).length > 0, "Source RPC is not set in the config file");
         srcLzEndpoint = vm.parseTomlAddress(tomlContent, ".src.lz.endpoint");
         require(srcLzEndpoint != address(0), "Source LayerZero Endpoint is not set in the config file");
         srcEID = uint32(vm.parseTomlUint(tomlContent, ".src.lz.eid"));
         require(srcEID > 0, "Source LayerZero EID is not set or invalid in the config file");
+
+        srcLzSendUlnLib = vm.parseTomlAddress(tomlContent, ".src.lz.send.ulnLib");
+        require(srcLzSendUlnLib != address(0), "Source LayerZero Send ULN Library is not set in the config file");
+        srcLzSendUlnConfig = _parseUlnConfig(".src.lz.send");
+        srcLzRecvUlnLib = vm.parseTomlAddress(tomlContent, ".src.lz.recv.ulnLib");
+        require(srcLzRecvUlnLib != address(0), "Source LayerZero Receive ULN Library is not set in the config file");
+        srcLzRecvGracePeriod = vm.parseTomlUint(tomlContent, ".src.lz.recv.gracePeriod");
+        srcLzRecvUlnConfig = _parseUlnConfig(".src.lz.recv");
+        srcLzReceiveGas = vm.parseTomlUint(tomlContent, ".src.lz.options.receiveGas").toUint128();
+
+        require(destLzSendUlnConfig.confirmations == srcLzRecvUlnConfig.confirmations, "Destination Send ULN confirmations must match Source Receive ULN confirmations");
+        require(destLzRecvUlnConfig.confirmations == srcLzSendUlnConfig.confirmations, "Destination Receive ULN confirmations must match Source Send ULN confirmations");
+        require(destLzSendUlnConfig.requiredDVNCount == srcLzRecvUlnConfig.requiredDVNCount, "Destination Send ULN required DVN count must match Source Receive ULN required DVN count");
+        require(destLzRecvUlnConfig.requiredDVNCount == srcLzSendUlnConfig.requiredDVNCount, "Destination Receive ULN required DVN count must match Source Send ULN required DVN count");
+    }
+
+    function _parseUlnConfig(string memory tableName) internal view returns (UlnConfig memory) {
+        string memory tomlContent = vm.readFile(tomlPath);
+        return UlnConfig({
+            confirmations: vm.parseTomlUint(tomlContent, string(abi.encodePacked(tableName, ".confirmations"))).toUint64(),
+            requiredDVNCount: vm.parseTomlUint(tomlContent, string(abi.encodePacked(tableName, ".requiredDVNCount"))).toUint8(),
+            optionalDVNCount: vm.parseTomlUint(tomlContent, string(abi.encodePacked(tableName, ".optionalDVNCount"))).toUint8(),
+            optionalDVNThreshold: vm.parseTomlUint(tomlContent, string(abi.encodePacked(tableName, ".optionalDVNThreshold"))).toUint8(),
+            requiredDVNs: vm.parseTomlAddressArray(tomlContent, string(abi.encodePacked(tableName, ".requiredDVNs"))),
+            optionalDVNs: vm.parseTomlAddressArray(tomlContent, string(abi.encodePacked(tableName, ".optionalDVNs")))
+        });
     }
 
     function saveAddressToConfig(string memory key, address addr) public {

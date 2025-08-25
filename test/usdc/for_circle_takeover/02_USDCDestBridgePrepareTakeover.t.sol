@@ -12,7 +12,7 @@ contract USDCDestBridgePrepareTakeoverTest is USDCDestBridgePrepareTakeoverTestB
 
     function testPrepareTakeover() public {
         vm.selectFork(destForkId);
-        vm.startPrank(mockDestUSDCBridgeOwner);
+        vm.startPrank(deployer);
         DestinationOUSDC(address(destUSDCBridge)).pause();
         assertTrue(DestinationOUSDC(address(destUSDCBridge)).paused(), "Bridge should be paused");
     }
