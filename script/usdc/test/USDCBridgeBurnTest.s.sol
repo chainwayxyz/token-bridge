@@ -12,7 +12,7 @@ contract USDCBridgeBurnTest is ConfigSetup {
         loadUSDCConfig({isBridgeDeployed: true});
     }
 
-    // Can be called by anyone with >= 1 cent Destination USDC balance
+    // Can be called by any address with >= 1 cent Destination USDC balance
     function run() public {
         DestinationOUSDC destUSDCBridge = DestinationOUSDC(destUSDCBridgeProxy);
 
