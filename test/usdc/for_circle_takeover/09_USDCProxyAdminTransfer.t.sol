@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 import "forge-std/Test.sol";
 import { FiatTokenV2_2 } from "../../../src/interfaces/IFiatTokenV2_2.sol";
-import {USDCProxyAdminTransfer} from "../../../script/usdc/for_circle_takeover/07_USDCProxyAdminTransfer.s.sol";
+import {USDCProxyAdminTransfer} from "../../../script/usdc/for_circle_takeover/09_USDCProxyAdminTransfer.s.sol";
 
 contract USDCProxyAdminTransferTest is USDCProxyAdminTransfer, Test {
     FiatTokenV2_2 public constant DEST_USDC = FiatTokenV2_2(0x06811Ab270e94c7A4E114b972b8f7B8c4dD031EA);

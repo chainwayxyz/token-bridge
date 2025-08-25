@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 import {USDCSrcBridgePrepareTakeoverTestBase, USDCSrcBridgePrepareTakeover} from "../for_circle_takeover/base/USDCSrcBridgePrepareTakeoverBase.t.sol";
 import {SourceOFTAdapter} from "../../../src/for_circle_takeover/SourceOFTAdapterForTakeover.sol";
-import {USDCSrcBridgePause} from "../../../script/usdc/for_circle_takeover/03_USDCSrcBridgePause.s.sol";
+import {USDCSrcBridgePause} from "../../../script/usdc/for_circle_takeover/05_USDCSrcBridgePause.s.sol";
 import "forge-std/console.sol";
 
 contract USDCSrcBridgePauseTest is USDCSrcBridgePrepareTakeoverTestBase, USDCSrcBridgePause {
@@ -15,7 +15,7 @@ contract USDCSrcBridgePauseTest is USDCSrcBridgePrepareTakeoverTestBase, USDCSrc
 
     function testPause() public {
         vm.selectFork(srcForkId);
-        vm.startPrank(deployer);
+        vm.startPrank(srcUSDCBridge.owner());
         USDCSrcBridgePause._run(false, address(srcUSDCBridge));
         assertTrue(SourceOFTAdapter(address(srcUSDCBridge)).paused(), "Bridge should be paused");
     }

@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 import "./base/USDCSrcBridgePrepareTakeoverBase.t.sol";
-import {USDCSrcBridgeSetCircle} from "../../../script/usdc/for_circle_takeover/06_USDCSrcBridgeSetCircle.s.sol";
+import {USDCSrcBridgeSetCircle} from "../../../script/usdc/for_circle_takeover/08_USDCSrcBridgeSetCircle.s.sol";
 import {MasterMinter} from "../../../src/interfaces/IMasterMinter.sol";
 
 contract USDCSrcBridgeSetCircleTest is USDCSrcBridgePrepareTakeoverTestBase, USDCSrcBridgeSetCircle {
