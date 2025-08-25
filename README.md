@@ -85,7 +85,7 @@ make usdc-bridge-burn-test
 
 4. If the script is successful, search for the `send` transaction (the other one is approval) in the output of the script on LayerZero Scan. Wait for the destination transaction hash, look it up on source chain explorer, and confirm that USDC was burned from destination chain and 1 cent was sent to the address associated with the private key used above.
 
-### 4. Upgrading the USDC Bridge for Circle takeover
+### 5. Upgrading the USDC Bridge for Circle takeover
 
 1. Upgrade the USDC bridge contracts to the Circle takeover version by running the upgrade script from respective proxy admin owners:
 
