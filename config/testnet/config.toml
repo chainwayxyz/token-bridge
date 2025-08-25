@@ -11,7 +11,9 @@ confirmations = 20
 requiredDVNCount = 1
 optionalDVNCount = 255
 optionalDVNThreshold = 0
-requiredDVNs = ["0xe7e778f704ebc0598902cbf96c6748f3b96bc8d1"]
+requiredDVNs = [
+    "0xe7e778f704ebc0598902cbf96c6748f3b96bc8d1",
+]
 optionalDVNs = []
 
 [dest.lz.recv]
@@ -21,7 +23,9 @@ confirmations = 20
 requiredDVNCount = 1
 optionalDVNCount = 255
 optionalDVNThreshold = 0
-requiredDVNs = ["0xe7e778f704ebc0598902cbf96c6748f3b96bc8d1"]
+requiredDVNs = [
+    "0xe7e778f704ebc0598902cbf96c6748f3b96bc8d1",
+]
 optionalDVNs = []
 
 [dest.lz.options]
@@ -35,15 +39,15 @@ name = "Bridged USDC (Citrea)"
 symbol = "USDC.e"
 
 [dest.usdc.deployment]
-proxy = "0xEA8F8d09F7c3575cD7292E109F837193e3437808"
-masterMinter = "0xCB8d3890969D8e817a845eB331Cda854D95FAFE0"
+proxy = ""
+masterMinter = ""
 
 [dest.usdc.bridge.init]
 owner = "0xDc94F4e8F84180C1E807fC4d6b43d65cb459b510"
 proxyAdminOwner = "0xDc94F4e8F84180C1E807fC4d6b43d65cb459b510"
 
 [dest.usdc.bridge.deployment]
-proxy = "0x56725cBacEcdA8cfF16c04c378e91A1242813c65"
+proxy = ""
 
 [dest.usdt.init]
 owner = "0xDc94F4e8F84180C1E807fC4d6b43d65cb459b510"
@@ -74,7 +78,9 @@ confirmations = 20
 requiredDVNCount = 1
 optionalDVNCount = 255
 optionalDVNThreshold = 0
-requiredDVNs = ["0x120be7fabde72292e2a56240610db1ca54ae4000"]
+requiredDVNs = [
+    "0x120be7fabde72292e2a56240610db1ca54ae4000",
+]
 optionalDVNs = []
 
 [src.lz.recv]
@@ -84,7 +90,9 @@ confirmations = 20
 requiredDVNCount = 1
 optionalDVNCount = 255
 optionalDVNThreshold = 0
-requiredDVNs = ["0x120be7fabde72292e2a56240610db1ca54ae4000"]
+requiredDVNs = [
+    "0x120be7fabde72292e2a56240610db1ca54ae4000",
+]
 optionalDVNs = []
 
 [src.lz.options]
@@ -98,7 +106,7 @@ owner = "0xDc94F4e8F84180C1E807fC4d6b43d65cb459b510"
 proxyAdminOwner = "0xDc94F4e8F84180C1E807fC4d6b43d65cb459b510"
 
 [src.usdc.bridge.deployment]
-proxy = "0x9574236723C73C55BcE3660C01b9Db42fc5bE767"
+proxy = ""
 
 [src.usdt]
 contract = "0x7169D38820dfd117C3FA1f22a697dBA58d90BA06"
