@@ -90,9 +90,9 @@ make usdc-bridge-burn-test
 1. Upgrade the USDC bridge contracts to the Circle takeover version by running the upgrade script from respective proxy admin owners:
 
 ```
-forge script ./script/usdc/for_circle_takeover/prepare_takeover/01_USDCSrcBridgePrepareTakeover.s.sol --private-key <SRC_USDC_BRIDGE_PROXY_ADMIN_OWNER_PRIVATE_KEY> --broadcast
+forge script ./script/usdc/for_circle_takeover/01_USDCSrcBridgePrepareTakeover.s.sol --private-key <SRC_USDC_BRIDGE_PROXY_ADMIN_OWNER_PRIVATE_KEY> --broadcast
 
-forge script ./script/usdc/for_circle_takeover/prepare_takeover/02_USDCDestBridgePrepareTakeover.s.sol --private-key <DEST_USDC_BRIDGE_PROXY_ADMIN_OWNER_PRIVATE_KEY> --broadcast
+forge script ./script/usdc/for_circle_takeover/02_USDCDestBridgePrepareTakeover.s.sol --private-key <DEST_USDC_BRIDGE_PROXY_ADMIN_OWNER_PRIVATE_KEY> --broadcast
 ```
 
 2. Set the `BlockedMsgLib` as the send library of both ends of the bridge, should be called by respective bridge owners:
@@ -108,9 +108,9 @@ This is done to prevent messages being sent out so that they do not get stuck af
 3. Pause both ends of the bridge, should be called by respective bridge owners:
 
 ```
-forge script ./script/usdc/for_circle_takeover/pause/05_USDCSrcBridgePause.s.sol --private-key <SRC_USDC_BRIDGE_OWNER_PRIVATE_KEY> --broadcast
+forge script ./script/usdc/for_circle_takeover/05_USDCSrcBridgePause.s.sol --private-key <SRC_USDC_BRIDGE_OWNER_PRIVATE_KEY> --broadcast
 
-forge script ./script/usdc/for_circle_takeover/pause/06_USDCDestBridgePause.s.sol --private-key <DEST_USDC_BRIDGE_OWNER_PRIVATE_KEY> --broadcast
+forge script ./script/usdc/for_circle_takeover/06_USDCDestBridgePause.s.sol --private-key <DEST_USDC_BRIDGE_OWNER_PRIVATE_KEY> --broadcast
 ```
 
 4. Remove bridge's minter role from destination USDC, should be called by `MasterMinter`'s owner:
