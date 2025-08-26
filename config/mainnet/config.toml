@@ -5,6 +5,28 @@ rpc = ""
 endpoint = ""
 eid = 
 
+[dest.lz.send]
+ulnLib = ""
+confirmations = 
+requiredDVNCount = 
+optionalDVNCount = 
+optionalDVNThreshold = 
+requiredDVNs = []
+optionalDVNs = []
+
+[dest.lz.recv]
+ulnLib = ""
+gracePeriod = 
+confirmations = 
+requiredDVNCount = 
+optionalDVNCount = 
+optionalDVNThreshold = 
+requiredDVNs = []
+optionalDVNs = []
+
+[dest.lz.options]
+receiveGas = 
+
 [dest.usdc.init]
 owner = ""
 proxyAdmin = ""
@@ -45,6 +67,28 @@ rpc = ""
 [src.lz]
 endpoint = ""
 eid = 
+
+[src.lz.send]
+ulnLib = ""
+confirmations = 
+requiredDVNCount = 
+optionalDVNCount = 
+optionalDVNThreshold = 
+requiredDVNs = []
+optionalDVNs = []
+
+[src.lz.recv]
+ulnLib = ""
+gracePeriod = 
+confirmations = 
+requiredDVNCount = 
+optionalDVNCount = 
+optionalDVNThreshold = 
+requiredDVNs = []
+optionalDVNs = []
+
+[src.lz.options]
+receiveGas = 
 
 [src.usdc]
 proxy = ""

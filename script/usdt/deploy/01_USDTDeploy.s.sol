@@ -12,7 +12,7 @@ contract USDTDeploy is ConfigSetup {
         loadUSDTConfig({isUSDTDeployed: false, isBridgeDeployed: false});
     }
 
-    // Can be called by anyone
+    // Can be called by any address
     function run() public {
         vm.createSelectFork(destRPC);
         address usdt = _run(true, destUSDTProxyAdminOwner, destUSDTName, destUSDTSymbol);

@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 import "./base/USDCTransferOwnerBase.t.sol";
-import {USDCRolesHolderSetCircle} from "../../../script/usdc/for_circle_takeover/09_USDCRolesHolderSetCircle.s.sol";
+import {USDCRolesHolderSetCircle} from "../../../script/usdc/for_circle_takeover/11_USDCRolesHolderSetCircle.s.sol";
 import {USDCRolesHolder} from "../../../src/USDCRolesHolder.sol";
 
 contract USDCRolesHolderSetCircleTest is USDCTransferOwnerTestBase, USDCRolesHolderSetCircle {

@@ -19,24 +19,32 @@ usdt-deploy: clear-usdt-deployments
 usdt-bridge-deploy:
 	forge script ./script/usdt/deploy/02_USDTBridgeDeploy.s.sol --sender $(DEPLOYER_ADDRESS) --account $(ACCOUNT_NAME) --password $(PASSWORD) --broadcast
 
+.PHONY: usdt-src-bridge-set-lz-config
+usdt-src-bridge-set-lz-config:
+	forge script ./script/usdt/deploy/03_USDTSrcBridgeSetLzConfig.s.sol --sender $(DEPLOYER_ADDRESS) --account $(ACCOUNT_NAME) --password $(PASSWORD) --broadcast
+
+.PHONY: usdt-dest-bridge-set-lz-config
+usdt-dest-bridge-set-lz-config:
+	forge script ./script/usdt/deploy/04_USDTDestBridgeSetLzConfig.s.sol --sender $(DEPLOYER_ADDRESS) --account $(ACCOUNT_NAME) --password $(PASSWORD) --broadcast
+
 .PHONY: usdt-src-bridge-set-peer
 usdt-src-bridge-set-peer:
-	forge script ./script/usdt/deploy/03_USDTSrcBridgeSetPeer.s.sol --sender $(DEPLOYER_ADDRESS) --account $(ACCOUNT_NAME) --password $(PASSWORD) --broadcast
+	forge script ./script/usdt/deploy/05_USDTSrcBridgeSetPeer.s.sol --sender $(DEPLOYER_ADDRESS) --account $(ACCOUNT_NAME) --password $(PASSWORD) --broadcast
 
 .PHONY: usdt-dest-bridge-set-peer
 usdt-dest-bridge-set-peer:
-	forge script ./script/usdt/deploy/04_USDTDestBridgeSetPeer.s.sol --sender $(DEPLOYER_ADDRESS) --account $(ACCOUNT_NAME) --password $(PASSWORD) --broadcast
+	forge script ./script/usdt/deploy/06_USDTDestBridgeSetPeer.s.sol --sender $(DEPLOYER_ADDRESS) --account $(ACCOUNT_NAME) --password $(PASSWORD) --broadcast
 
 .PHONY: usdt-set-bridge-as-minter
 usdt-set-bridge-as-minter:
-	forge script ./script/usdt/deploy/05_USDTSetBridgeAsMinter.s.sol --sender $(DEPLOYER_ADDRESS) --account $(ACCOUNT_NAME) --password $(PASSWORD) --broadcast
+	forge script ./script/usdt/deploy/07_USDTSetBridgeAsMinter.s.sol --sender $(DEPLOYER_ADDRESS) --account $(ACCOUNT_NAME) --password $(PASSWORD) --broadcast
 
 .PHONY: usdt-and-bridge-assign-roles
 usdt-and-bridge-assign-roles:
-	forge script ./script/usdt/deploy/06_USDTAndBridgeAssignRoles.s.sol --sender $(DEPLOYER_ADDRESS) --account $(ACCOUNT_NAME) --password $(PASSWORD) --broadcast
+	forge script ./script/usdt/deploy/08_USDTAndBridgeAssignRoles.s.sol --sender $(DEPLOYER_ADDRESS) --account $(ACCOUNT_NAME) --password $(PASSWORD) --broadcast
 
 .PHONY: usdt-bridge-full
-usdt-bridge-full: usdt-bridge-deploy usdt-src-bridge-set-peer usdt-dest-bridge-set-peer usdt-set-bridge-as-minter usdt-and-bridge-assign-roles
+usdt-bridge-full: usdt-bridge-deploy usdt-src-bridge-set-lz-config usdt-dest-bridge-set-lz-config usdt-src-bridge-set-peer usdt-dest-bridge-set-peer usdt-set-bridge-as-minter usdt-and-bridge-assign-roles
 	@echo "✅ All USDT bridge deployment steps completed successfully!"
 
 usdt-and-bridge: usdt-deploy usdt-bridge-full
@@ -64,24 +72,32 @@ usdc-deploy: clear-usdc-deployments
 usdc-bridge-deploy:
 	forge script ./script/usdc/deploy/02_USDCBridgeDeploy.s.sol --sender $(DEPLOYER_ADDRESS) --account $(ACCOUNT_NAME) --password $(PASSWORD) --broadcast
 
+.PHONY: usdc-src-bridge-set-lz-config
+usdc-src-bridge-set-lz-config:
+	forge script ./script/usdc/deploy/03_USDCSrcBridgeSetLzConfig.s.sol --sender $(DEPLOYER_ADDRESS) --account $(ACCOUNT_NAME) --password $(PASSWORD) --broadcast
+
+.PHONY: usdc-dest-bridge-set-lz-config
+usdc-dest-bridge-set-lz-config:
+	forge script ./script/usdc/deploy/04_USDCDestBridgeSetLzConfig.s.sol --sender $(DEPLOYER_ADDRESS) --account $(ACCOUNT_NAME) --password $(PASSWORD) --broadcast
+
 .PHONY: usdc-src-bridge-set-peer
 usdc-src-bridge-set-peer:
-	forge script ./script/usdc/deploy/03_USDCSrcBridgeSetPeer.s.sol --sender $(DEPLOYER_ADDRESS) --account $(ACCOUNT_NAME) --password $(PASSWORD) --broadcast
+	forge script ./script/usdc/deploy/05_USDCSrcBridgeSetPeer.s.sol --sender $(DEPLOYER_ADDRESS) --account $(ACCOUNT_NAME) --password $(PASSWORD) --broadcast
 
 .PHONY: usdc-dest-bridge-set-peer
 usdc-dest-bridge-set-peer:
-	forge script ./script/usdc/deploy/04_USDCDestBridgeSetPeer.s.sol --sender $(DEPLOYER_ADDRESS) --account $(ACCOUNT_NAME) --password $(PASSWORD) --broadcast
+	forge script ./script/usdc/deploy/06_USDCDestBridgeSetPeer.s.sol --sender $(DEPLOYER_ADDRESS) --account $(ACCOUNT_NAME) --password $(PASSWORD) --broadcast
 
 .PHONY: usdc-set-bridge-as-minter
 usdc-set-bridge-as-minter:
-	forge script ./script/usdc/deploy/05_USDCSetBridgeAsMinter.s.sol --sender $(DEPLOYER_ADDRESS) --account $(ACCOUNT_NAME) --password $(PASSWORD) --broadcast
+	forge script ./script/usdc/deploy/07_USDCSetBridgeAsMinter.s.sol --sender $(DEPLOYER_ADDRESS) --account $(ACCOUNT_NAME) --password $(PASSWORD) --broadcast
 
 .PHONY: usdc-and-bridge-assign-roles
 usdc-and-bridge-assign-roles:
-	forge script ./script/usdc/deploy/06_USDCAndBridgeAssignRoles.s.sol --sender $(DEPLOYER_ADDRESS) --account $(ACCOUNT_NAME) --password $(PASSWORD) --broadcast
+	forge script ./script/usdc/deploy/08_USDCAndBridgeAssignRoles.s.sol --sender $(DEPLOYER_ADDRESS) --account $(ACCOUNT_NAME) --password $(PASSWORD) --broadcast
 
 .PHONY: usdc-bridge-full
-usdc-bridge-full: usdc-bridge-deploy usdc-src-bridge-set-peer usdc-dest-bridge-set-peer usdc-set-bridge-as-minter usdc-and-bridge-assign-roles
+usdc-bridge-full: usdc-bridge-deploy usdc-src-bridge-set-lz-config usdc-dest-bridge-set-lz-config usdc-src-bridge-set-peer usdc-dest-bridge-set-peer usdc-set-bridge-as-minter usdc-and-bridge-assign-roles
 	@echo "✅ All USDC bridge deployment steps completed successfully!"
 
 usdc-and-bridge: usdc-deploy usdc-bridge-full

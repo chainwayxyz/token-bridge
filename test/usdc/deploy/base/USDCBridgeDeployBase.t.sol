@@ -6,9 +6,9 @@ import {USDCBridgeDeploy, FiatTokenV2_2} from "../../../../script/usdc/deploy/02
 import {SourceOFTAdapter} from "../../../../src/SourceOFTAdapter.sol";
 import {DestinationOUSDC} from "../../../../src/DestinationOUSDC.sol";
 import {Initializable} from "@openzeppelin/contracts/proxy/utils/Initializable.sol";
+import "openzeppelin-contracts/contracts/access/Ownable.sol";
 
 contract USDCBridgeDeployTestBase is Test {
-    USDCBridgeDeploy public usdcBridgeDeploy;
     SourceOFTAdapter public srcUSDCBridge;
     DestinationOUSDC public destUSDCBridge;
 
@@ -19,6 +19,8 @@ contract USDCBridgeDeployTestBase is Test {
     address public mockSrcUSDCBridgeProxyAdminOwner;
     address public mockDestUSDCBridgeOwner;
     address public mockDestUSDCBridgeProxyAdminOwner;
+
+    address public deployer;
 
     string public constant SRC_RPC = "https://sepolia.drpc.org";
     address public constant SRC_USDC = 0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238;
@@ -32,18 +34,21 @@ contract USDCBridgeDeployTestBase is Test {
     uint32 public constant DEST_EID = 40344;
 
     function setUp() public virtual {
-        usdcBridgeDeploy = new USDCBridgeDeploy();
+        vm.createSelectFork(DEST_RPC);
+        // Setting the deployer to be the owner of the MasterMinter contract as in regular flow USDC contracts
+        // are deployed through Circle's own scripts, thus for the scripts to work we need to make this assumption.
+        deployer = Ownable(DEST_MM).owner();
 
         mockSrcUSDCBridgeProxyAdminOwner = makeAddr("Src USDC Bridge Proxy Admin Owner");
-        mockSrcUSDCBridgeOwner = makeAddr("Src USDC Bridge Owner");
 
         srcForkId = vm.createSelectFork(SRC_RPC);
-        srcUSDCBridge = SourceOFTAdapter(usdcBridgeDeploy._runSrc(false, SRC_USDC, SRC_LZ_ENDPOINT, mockSrcUSDCBridgeProxyAdminOwner, mockSrcUSDCBridgeOwner));
+        USDCBridgeDeploy usdcBridgeDeploySrc = new USDCBridgeDeploy();
+        srcUSDCBridge = SourceOFTAdapter(usdcBridgeDeploySrc._runSrc(false, SRC_USDC, SRC_LZ_ENDPOINT, mockSrcUSDCBridgeProxyAdminOwner, deployer));
 
         mockDestUSDCBridgeProxyAdminOwner = makeAddr("Dest USDC Bridge Proxy Admin Owner");
-        mockDestUSDCBridgeOwner = makeAddr("Dest USDC Bridge Owner");
 
         destForkId = vm.createSelectFork(DEST_RPC);
-        destUSDCBridge = DestinationOUSDC(usdcBridgeDeploy._runDest(false, FiatTokenV2_2(DEST_USDC), DEST_LZ_ENDPOINT, mockDestUSDCBridgeProxyAdminOwner, mockDestUSDCBridgeOwner));
+        USDCBridgeDeploy usdcBridgeDeployDest = new USDCBridgeDeploy();
+        destUSDCBridge = DestinationOUSDC(usdcBridgeDeployDest._runDest(false, FiatTokenV2_2(DEST_USDC), DEST_LZ_ENDPOINT, mockDestUSDCBridgeProxyAdminOwner, deployer));
     }
 }

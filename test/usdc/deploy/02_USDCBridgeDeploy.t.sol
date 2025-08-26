@@ -11,10 +11,10 @@ contract USDCBridgeDeployTest is USDCBridgeDeployTestBase {
 
     function testBridgeOwner() public {
         vm.selectFork(srcForkId);
-        assertEq(srcUSDCBridge.owner(), mockSrcUSDCBridgeOwner, "Owner should be set correctly");
+        assertEq(srcUSDCBridge.owner(), deployer, "Owner should be set correctly");
 
         vm.selectFork(destForkId);
-        assertEq(destUSDCBridge.owner(), mockDestUSDCBridgeOwner, "Owner should be set correctly");
+        assertEq(destUSDCBridge.owner(), deployer, "Owner should be set correctly");
     }
 
     function testCannotReinitialize() public {

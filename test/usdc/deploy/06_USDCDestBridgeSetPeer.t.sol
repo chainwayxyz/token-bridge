@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 import {USDCBridgeDeployTestBase} from "./base/USDCBridgeDeployBase.t.sol";
-import {USDCDestBridgeSetPeer} from "../../../script/usdc/deploy/04_USDCDestBridgeSetPeer.s.sol";
+import {USDCDestBridgeSetPeer} from "../../../script/usdc/deploy/06_USDCDestBridgeSetPeer.s.sol";
 import {DestinationOUSDC} from "../../../src/DestinationOUSDC.sol";
 
 contract USDCDestBridgeSetPeerTest is USDCBridgeDeployTestBase, USDCDestBridgeSetPeer {
@@ -12,7 +12,7 @@ contract USDCDestBridgeSetPeerTest is USDCBridgeDeployTestBase, USDCDestBridgeSe
 
     function testSetPeer() public {
         vm.selectFork(destForkId);
-        vm.startPrank(destUSDCBridge.owner());
+        vm.startPrank(deployer);
         _run(false, address(srcUSDCBridge), address(destUSDCBridge), SRC_EID);
         bytes32 expectedPeer = _addressToPeer(address(srcUSDCBridge));
         assertTrue(destUSDCBridge.isPeer(SRC_EID, expectedPeer), "Peer should be set correctly");

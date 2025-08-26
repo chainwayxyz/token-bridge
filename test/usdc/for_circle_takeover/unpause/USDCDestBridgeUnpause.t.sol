@@ -15,7 +15,7 @@ contract USDCDestBridgeUnpauseTest is USDCDestBridgePrepareTakeoverTestBase, USD
 
     function testUnpause() public {
         vm.selectFork(destForkId);
-        vm.startPrank(mockDestUSDCBridgeOwner);
+        vm.startPrank(destUSDCBridge.owner());
         DestinationOUSDC(address(destUSDCBridge)).pause();
         assertTrue(DestinationOUSDC(address(destUSDCBridge)).paused(), "Bridge should be paused");
         USDCDestBridgeUnpause._run(false, address(destUSDCBridge));

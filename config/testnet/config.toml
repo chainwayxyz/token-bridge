@@ -5,6 +5,32 @@ rpc = "https://rpc.testnet.citrea.xyz"
 endpoint = "0x6C7Ab2202C98C4227C5c46f1417D81144DA716Ff"
 eid = 40344
 
+[dest.lz.send]
+ulnLib = "0xd682ECF100f6F4284138AA925348633B0611Ae21"
+confirmations = 20
+requiredDVNCount = 1
+optionalDVNCount = 255
+optionalDVNThreshold = 0
+requiredDVNs = [
+    "0xe7e778f704ebc0598902cbf96c6748f3b96bc8d1",
+]
+optionalDVNs = []
+
+[dest.lz.recv]
+ulnLib = "0xcF1B0F4106B0324F96fEfcC31bA9498caa80701C"
+gracePeriod = 0
+confirmations = 20
+requiredDVNCount = 1
+optionalDVNCount = 255
+optionalDVNThreshold = 0
+requiredDVNs = [
+    "0xe7e778f704ebc0598902cbf96c6748f3b96bc8d1",
+]
+optionalDVNs = []
+
+[dest.lz.options]
+receiveGas = 650000
+
 [dest.usdc.init]
 owner = "0xDc94F4e8F84180C1E807fC4d6b43d65cb459b510"
 proxyAdmin = "0x69646c37092166B89E880e38f6F345c5d4B3b99B"
@@ -45,6 +71,32 @@ rpc = "https://sepolia.drpc.org"
 [src.lz]
 endpoint = "0x6EDCE65403992e310A62460808c4b910D972f10f"
 eid = 40161
+
+[src.lz.send]
+ulnLib = "0xcc1ae8Cf5D3904Cef3360A9532B477529b177cCE"
+confirmations = 20
+requiredDVNCount = 1
+optionalDVNCount = 255
+optionalDVNThreshold = 0
+requiredDVNs = [
+    "0x120be7fabde72292e2a56240610db1ca54ae4000",
+]
+optionalDVNs = []
+
+[src.lz.recv]
+ulnLib = "0xdAf00F5eE2158dD58E0d3857851c432E34A3A851"
+gracePeriod = 0
+confirmations = 20
+requiredDVNCount = 1
+optionalDVNCount = 255
+optionalDVNThreshold = 0
+requiredDVNs = [
+    "0x120be7fabde72292e2a56240610db1ca54ae4000",
+]
+optionalDVNs = []
+
+[src.lz.options]
+receiveGas = 650000
 
 [src.usdc]
 proxy = "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238"
