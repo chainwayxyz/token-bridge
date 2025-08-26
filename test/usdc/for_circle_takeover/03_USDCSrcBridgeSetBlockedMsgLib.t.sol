@@ -8,6 +8,7 @@ import {ILayerZeroEndpointV2} from "@layerzerolabs/lz-evm-protocol-v2/contracts/
 import {SendParam} from "@layerzerolabs/oft-evm/contracts/interfaces/IOFT.sol";
 import {MessagingFee} from "@layerzerolabs/oapp-evm/contracts/oapp/OApp.sol";
 import {OptionsBuilder} from "@layerzerolabs/oapp-evm/contracts/oapp/libs/OptionsBuilder.sol";
+import "openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
 import "forge-std/console.sol";
 
 contract USDCSrcBridgeSetBlockedMsgLibTest is USDCSrcBridgePrepareTakeoverTestBase, USDCSrcBridgeSetBlockedMsgLib {
@@ -28,9 +29,9 @@ contract USDCSrcBridgeSetBlockedMsgLibTest is USDCSrcBridgePrepareTakeoverTestBa
         vm.stopPrank();
         user = makeAddr("user");
         vm.deal(user, 1 ether);
-
-        vm.startPrank(srcUSDCBridge.owner());
-        srcUSDCBridge.setPeer(DEST_EID, _addressToPeer(address(destUSDCBridge)));
+        deal(srcUSDCBridge.token(), user, 1e6);
+        vm.startPrank(user);
+        IERC20(srcUSDCBridge.token()).approve(address(srcUSDCBridge), 1e6);
         vm.stopPrank();
     }
 
@@ -67,7 +68,7 @@ contract USDCSrcBridgeSetBlockedMsgLibTest is USDCSrcBridgePrepareTakeoverTestBa
             SendParam({
                 dstEid: DEST_EID,
                 to: bytes32(uint256(uint160(to))),
-                amountLD: 0,
+                amountLD: 1,
                 minAmountLD: 0,
                 extraOptions: OptionsBuilder.newOptions().addExecutorLzReceiveOption(650000, 0),
                 composeMsg: "",
