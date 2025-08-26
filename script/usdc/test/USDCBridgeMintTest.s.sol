@@ -12,7 +12,7 @@ contract USDCBridgeMintTest is ConfigSetup {
         loadUSDCConfig({isBridgeDeployed: true});
     }
 
-    // Can be called by anyone with >= 1 cent Source USDC balance
+    // Can be called by any address with >= 1 cent Source USDC balance
     function run() public {
         SourceOFTAdapter srcUSDCBridge = SourceOFTAdapter(srcUSDCBridgeProxy);
 

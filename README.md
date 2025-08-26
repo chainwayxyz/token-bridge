@@ -85,7 +85,7 @@ make usdc-bridge-burn-test
 
 4. If the script is successful, search for the `send` transaction (the other one is approval) in the output of the script on LayerZero Scan. Wait for the destination transaction hash, look it up on source chain explorer, and confirm that USDC was burned from destination chain and 1 cent was sent to the address associated with the private key used above.
 
-### 4. Upgrading the USDC Bridge for Circle takeover
+### 5. Upgrading the USDC Bridge for Circle takeover
 
 1. Upgrade the USDC bridge contracts to the Circle takeover version by running the upgrade script from respective proxy admin owners:
 
@@ -95,42 +95,52 @@ forge script ./script/usdc/for_circle_takeover/prepare_takeover/01_USDCSrcBridge
 forge script ./script/usdc/for_circle_takeover/prepare_takeover/02_USDCDestBridgePrepareTakeover.s.sol --private-key <DEST_USDC_BRIDGE_PROXY_ADMIN_OWNER_PRIVATE_KEY> --broadcast
 ```
 
-2. Pause both ends of the bridge, should be called by respective bridge owners:
+2. Set the `BlockedMsgLib` as the send library of both ends of the bridge, should be called by respective bridge owners:
 
 ```
-forge script ./script/usdc/for_circle_takeover/pause/03_USDCSrcBridgePause.s.sol --private-key <SRC_USDC_BRIDGE_OWNER_PRIVATE_KEY> --broadcast
+SRC_LZ_BLOCKED_MSG_LIB=<BLOCKED_MSG_LIB_ON_SRC> forge script ./script/usdc/for_circle_takeover/03_USDCSrcBridgeSetBlockedMsgLib.s.sol --private-key <SRC_USDC_BRIDGE_OWNER_PRIVATE_KEY> --broadcast
 
-forge script ./script/usdc/for_circle_takeover/pause/04_USDCDestBridgePause.s.sol --private-key <DEST_USDC_BRIDGE_OWNER_PRIVATE_KEY> --broadcast
+DEST_LZ_BLOCKED_MSG_LIB=<BLOCKED_MSG_LIB_ON_DEST> forge script ./script/usdc/for_circle_takeover/04_USDCDestBridgeSetBlockedMsgLib.s.sol --private-key <DEST_USDC_BRIDGE_OWNER_PRIVATE_KEY> --broadcast
 ```
 
-3. Remove bridge's minter role from destination USDC, should be called by `MasterMinter`'s owner:
+This is done to prevent messages being sent out so that they do not get stuck after the bridge is paused in the next step. Wait for a while after this step and ensure there are no messages inflight by checking LayerZero Scan before proceeding with pausing the bridge.
+
+3. Pause both ends of the bridge, should be called by respective bridge owners:
 
 ```
-forge script ./script/usdc/for_circle_takeover/05_USDCRemoveBridgeAsMinter.s.sol --private-key <MASTER_MINTER_OWNER_ADDRESS_PRIVATE_KEY> --broadcast
+forge script ./script/usdc/for_circle_takeover/pause/05_USDCSrcBridgePause.s.sol --private-key <SRC_USDC_BRIDGE_OWNER_PRIVATE_KEY> --broadcast
+
+forge script ./script/usdc/for_circle_takeover/pause/06_USDCDestBridgePause.s.sol --private-key <DEST_USDC_BRIDGE_OWNER_PRIVATE_KEY> --broadcast
 ```
 
-4. Set Circle's address so they can perform the USDC burn action on source chain end of the bridge:
+4. Remove bridge's minter role from destination USDC, should be called by `MasterMinter`'s owner:
 
 ```
-SRC_BRIDGE_CIRCLE_ADDRESS=<ADDRESS_GIVEN_BY_CIRCLE> forge script ./script/usdc/for_circle_takeover/06_USDCSrcBridgeSetCircle.s.sol --private-key <SRC_USDC_BRIDGE_OWNER_PRIVATE_KEY> --broadcast
+forge script ./script/usdc/for_circle_takeover/07_USDCRemoveBridgeAsMinter.s.sol --private-key <MASTER_MINTER_OWNER_ADDRESS_PRIVATE_KEY> --broadcast
 ```
 
-5. Transfer the proxy admin of USDC to Circle's given address:
+5. Set Circle's address so they can perform the USDC burn action on source chain end of the bridge:
 
 ```
-CIRCLE_USDC_PROXY_ADMIN=<ADDRESS_GIVEN_BY_CIRCLE> forge script ./script/usdc/for_circle_takeover/07_USDCProxyAdminTransfer.s.sol --private-key <DEST_USDC_BRIDGE_PROXY_ADMIN_OWNER_PRIVATE_KEY> --broadcast
+SRC_BRIDGE_CIRCLE_ADDRESS=<ADDRESS_GIVEN_BY_CIRCLE> forge script ./script/usdc/for_circle_takeover/08_USDCSrcBridgeSetCircle.s.sol --private-key <SRC_USDC_BRIDGE_OWNER_PRIVATE_KEY> --broadcast
 ```
 
-6. Transfer USDC's ownership to a contract that Circle can later use to retrieve the ownership of USDC, `USDC_ROLES_HOLDER_OWNER` should be in our control:
+6. Transfer the proxy admin of USDC to Circle's given address:
 
 ```
-USDC_ROLES_HOLDER_OWNER=<OWNER_ADDRESS> forge script ./script/usdc/for_circle_takeover/08_USDCTransferOwner.s.sol --private-key <DEST_USDC_BRIDGE_OWNER_PRIVATE_KEY> --broadcast
+CIRCLE_USDC_PROXY_ADMIN=<ADDRESS_GIVEN_BY_CIRCLE> forge script ./script/usdc/for_circle_takeover/09_USDCProxyAdminTransfer.s.sol --private-key <DEST_USDC_BRIDGE_PROXY_ADMIN_OWNER_PRIVATE_KEY> --broadcast
 ```
 
-7. Set the Circle's address in `USDCRolesHolder` contract:
+7. Transfer USDC's ownership to a contract that Circle can later use to retrieve the ownership of USDC, `USDC_ROLES_HOLDER_OWNER` should be in our control:
 
 ```
-USDC_ROLES_HOLDER_CIRCLE_ADDRESS=<ADDRESS_GIVEN_BY_CIRCLE> forge script ./script/usdc/for_circle_takeover/09_USDCRolesHolderSetCircle.s.sol --private-key <USDC_ROLES_HOLDER_OWNER_PRIVATE_KEY> --broadcast
+USDC_ROLES_HOLDER_OWNER=<OWNER_ADDRESS> forge script ./script/usdc/for_circle_takeover/10_USDCTransferOwner.s.sol --private-key <DEST_USDC_BRIDGE_OWNER_PRIVATE_KEY> --broadcast
+```
+
+8. Set the Circle's address in `USDCRolesHolder` contract:
+
+```
+USDC_ROLES_HOLDER_CIRCLE_ADDRESS=<ADDRESS_GIVEN_BY_CIRCLE> forge script ./script/usdc/for_circle_takeover/11_USDCRolesHolderSetCircle.s.sol --private-key <USDC_ROLES_HOLDER_OWNER_PRIVATE_KEY> --broadcast
 ```
 
 ## USDT

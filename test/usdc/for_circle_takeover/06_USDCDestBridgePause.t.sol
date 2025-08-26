@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 import {USDCDestBridgePrepareTakeoverTestBase, USDCDestBridgePrepareTakeover} from "./base/USDCDestBridgePrepareTakeoverBase.t.sol";
 import {DestinationOUSDC} from "../../../src/for_circle_takeover/DestinationOUSDCForTakeover.sol";
-import {USDCDestBridgePause} from "../../../script/usdc/for_circle_takeover/04_USDCDestBridgePause.s.sol";
+import {USDCDestBridgePause} from "../../../script/usdc/for_circle_takeover/06_USDCDestBridgePause.s.sol";
 import "forge-std/console.sol";
 
 contract USDCDestBridgePauseTest is USDCDestBridgePrepareTakeoverTestBase, USDCDestBridgePause {
@@ -15,7 +15,7 @@ contract USDCDestBridgePauseTest is USDCDestBridgePrepareTakeoverTestBase, USDCD
 
     function testPause() public {
         vm.selectFork(destForkId);
-        vm.startPrank(deployer);
+        vm.startPrank(destUSDCBridge.owner());
         USDCDestBridgePause._run(false, address(destUSDCBridge));
         assertTrue(DestinationOUSDC(address(destUSDCBridge)).paused(), "Bridge should be paused");
     }
