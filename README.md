@@ -53,7 +53,7 @@ make usdc-and-bridge
 
 4. Save the USDC compilation output for verification. Copy the compilation outputs of the relevant contracts to this repository if canonical deployment. This step is not critical since the deployment of USDC is done through official Circle scripts, and Blockscout can automatically verify the contracts due to bytecode equivalence. You can find the compilation outputs in the created `stablecoin-evm` directory under the root level of this repository. Copying `broadcast/deploy-fiat-token.s.sol/<your-chain-id>/run-latest.json` and the `artifacts/foundry` directory is a good practice in case something goes wrong later.
 
-4. Go to [section 4](#4-testing-usdc-bridge) to test the bridge.
+5. Go to [section 4](#4-testing-usdc-bridge) to test the bridge.
 
 ### 2. Deploying USDC only
 1. Run the USDC deployment script after filling `[dest.usdc.init]`:
@@ -61,9 +61,9 @@ make usdc-and-bridge
 make usdc-deploy
 ```
 
-2. Verify that `make` exited successfully.
+2. Verify that `make` exited successfully, you should see a message with the ✅ emoji if all steps are completed without errors.
 
-2. Save the compilation output for verification. Copy the compilation outputs of the relevant contracts to this repository if canonical deployment. This step is not critical since the deployment of USDC is done through official Circle scripts, and Blockscout can automatically verify the contracts due to bytecode equivalence. You can find the compilation outputs in the created `stablecoin-evm` directory under the root level of this repository. Copying `broadcast/deploy-fiat-token.s.sol/<your-chain-id>/run-latest.json` and the `artifacts/foundry` directory is a good practice in case something goes wrong later.
+3. Save the compilation output for verification. Copy the compilation outputs of the relevant contracts to this repository if canonical deployment. This step is not critical since the deployment of USDC is done through official Circle scripts, and Blockscout can automatically verify the contracts due to bytecode equivalence. You can find the compilation outputs in the created `stablecoin-evm` directory under the root level of this repository. Copying `broadcast/deploy-fiat-token.s.sol/<your-chain-id>/run-latest.json` and the `artifacts/foundry` directory is a good practice in case something goes wrong later.
 
 ### 3. Deploying USDC Bridge only
 1. Fill the fields of `[dest.usdc.bridge.init]` and `[src.usdc.bridge.init]` in `config/<mainnet or testnet>/config.toml`.
@@ -169,7 +169,7 @@ make usdt-and-bridge
 make usdt-deploy
 ```
 
-2. Verify that `make` exited successfully.
+2. Verify that `make` exited successfully, you should see a message with the ✅ emoji if all steps are completed without errors.
 
 ### 3. Deploying USDT Bridge only
 1. Fill the fields of `[dest.usdt.bridge.init]` and `[src.usdt.bridge.init]` in `config/<mainnet or testnet>/config.toml`.

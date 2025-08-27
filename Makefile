@@ -14,6 +14,7 @@ clear-usdt-deployments:
 .PHONY: usdt-deploy
 usdt-deploy: clear-usdt-deployments
 	forge script ./script/usdt/deploy/01_USDTDeploy.s.sol --sender $(DEPLOYER_ADDRESS) --account $(ACCOUNT_NAME) --password $(PASSWORD) --broadcast
+	@echo "✅ USDT deployment steps completed successfully!"
 
 .PHONY: usdt-bridge-deploy
 usdt-bridge-deploy:
@@ -71,6 +72,7 @@ clear-usdc-deployments:
 .PHONY: usdc-deploy
 usdc-deploy: clear-usdc-deployments
 	./script/usdc/deploy/01_USDCDeploy.sh
+	@echo "✅ USDC deployment steps completed successfully!"
 
 .PHONY: usdc-bridge-deploy
 usdc-bridge-deploy:
