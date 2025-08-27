@@ -43,8 +43,12 @@ usdt-set-bridge-as-minter:
 usdt-and-bridge-assign-roles:
 	forge script ./script/usdt/deploy/08_USDTAndBridgeAssignRoles.s.sol --sender $(DEPLOYER_ADDRESS) --account $(ACCOUNT_NAME) --password $(PASSWORD) --broadcast
 
+.PHONY: usdt-bridge-post-deployment-test
+usdt-bridge-post-deployment-test:
+	IS_POST_DEPLOYMENT=true forge test --match-path test/usdt/post_deployment/USDTPostDeployment.t.sol
+
 .PHONY: usdt-bridge-full
-usdt-bridge-full: usdt-bridge-deploy usdt-src-bridge-set-lz-config usdt-dest-bridge-set-lz-config usdt-src-bridge-set-peer usdt-dest-bridge-set-peer usdt-set-bridge-as-minter usdt-and-bridge-assign-roles
+usdt-bridge-full: usdt-bridge-deploy usdt-src-bridge-set-lz-config usdt-dest-bridge-set-lz-config usdt-src-bridge-set-peer usdt-dest-bridge-set-peer usdt-set-bridge-as-minter usdt-and-bridge-assign-roles usdt-bridge-post-deployment-test
 	@echo "✅ All USDT bridge deployment steps completed successfully!"
 
 usdt-and-bridge: usdt-deploy usdt-bridge-full
@@ -96,8 +100,12 @@ usdc-set-bridge-as-minter:
 usdc-and-bridge-assign-roles:
 	forge script ./script/usdc/deploy/08_USDCAndBridgeAssignRoles.s.sol --sender $(DEPLOYER_ADDRESS) --account $(ACCOUNT_NAME) --password $(PASSWORD) --broadcast
 
+.PHONY: usdc-bridge-post-deployment-test
+usdc-bridge-post-deployment-test:
+	IS_POST_DEPLOYMENT=true forge test --match-path test/usdc/post_deployment/USDCPostDeployment.t.sol
+
 .PHONY: usdc-bridge-full
-usdc-bridge-full: usdc-bridge-deploy usdc-src-bridge-set-lz-config usdc-dest-bridge-set-lz-config usdc-src-bridge-set-peer usdc-dest-bridge-set-peer usdc-set-bridge-as-minter usdc-and-bridge-assign-roles
+usdc-bridge-full: usdc-bridge-deploy usdc-src-bridge-set-lz-config usdc-dest-bridge-set-lz-config usdc-src-bridge-set-peer usdc-dest-bridge-set-peer usdc-set-bridge-as-minter usdc-and-bridge-assign-roles usdc-bridge-post-deployment-test
 	@echo "✅ All USDC bridge deployment steps completed successfully!"
 
 usdc-and-bridge: usdc-deploy usdc-bridge-full
