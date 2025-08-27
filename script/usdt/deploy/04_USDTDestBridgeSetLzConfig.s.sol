@@ -13,9 +13,6 @@ import "forge-std/console.sol";
 contract USDTDestBridgeSetLzConfig is ConfigSetup {
     using OptionsBuilder for bytes;
 
-    uint32 public constant ULN_CONFIG_TYPE = 2;
-    uint16 public constant SEND = 1;
-
     function setUp() public virtual {
         loadUSDTConfig({isUSDTDeployed: true, isBridgeDeployed: true});
     }

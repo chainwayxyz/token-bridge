@@ -8,6 +8,9 @@ import {FiatTokenV2_2} from "../src/interfaces/IFiatTokenV2_2.sol";
 contract ConfigSetup is Script {
     using SafeCast for uint256;
 
+    uint32 public constant ULN_CONFIG_TYPE = 2;
+    uint16 public constant SEND = 1;
+
     string public destRPC;
     address public destLzEndpoint;
     uint32 public destEID;
@@ -19,7 +22,11 @@ contract ConfigSetup is Script {
     UlnConfig public destLzRecvUlnConfig;
     uint128 public destLzReceiveGas;
     
-    FiatTokenV2_2 public destUSDC;
+    address public destUSDCOwner;
+    address public destUSDCProxyAdmin;
+    string public destUSDCName;
+    string public destUSDCSymbol;
+    address public destUSDC;
     address public destMM;
     address public destMMOwner;
 
@@ -67,8 +74,16 @@ contract ConfigSetup is Script {
     function loadUSDCConfig(bool isBridgeDeployed) public {
         string memory tomlContent = _loadCommonConfig();
                 
-        destUSDC = FiatTokenV2_2(vm.parseTomlAddress(tomlContent, ".dest.usdc.deployment.proxy"));
-        require(address(destUSDC) != address(0), "Destination USDC Proxy is not set in the config file");
+        destUSDC = vm.parseTomlAddress(tomlContent, ".dest.usdc.deployment.proxy");
+        require(destUSDC != address(0), "Destination USDC Proxy is not set in the config file");
+        destUSDCOwner = vm.parseTomlAddress(tomlContent, ".dest.usdc.init.owner");
+        require(destUSDCOwner != address(0), "Destination USDC Owner is not set in the config file");
+        destUSDCProxyAdmin = vm.parseTomlAddress(tomlContent, ".dest.usdc.init.proxyAdmin");
+        require(destUSDCProxyAdmin != address(0), "Destination USDC Proxy Admin is not set in the config file");
+        destUSDCName = vm.parseTomlString(tomlContent, ".dest.usdc.init.name");
+        require(bytes(destUSDCName).length > 0, "Destination USDC Name is not set in the config file");
+        destUSDCSymbol = vm.parseTomlString(tomlContent, ".dest.usdc.init.symbol");
+        require(bytes(destUSDCSymbol).length > 0, "Destination USDC Symbol is not set in the config file");
         destMM = vm.parseTomlAddress(tomlContent, ".dest.usdc.deployment.masterMinter");
         require(destMM != address(0), "Destination USDC Master Minter is not set in the config file");
         destMMOwner = vm.parseTomlAddress(tomlContent, ".dest.usdc.init.masterMinterOwner");

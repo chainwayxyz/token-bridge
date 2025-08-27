@@ -45,13 +45,13 @@ contract USDCBridgeDeploy is ConfigSetup {
 
     function _runDest(
         bool broadcast, 
-        FiatTokenV2_2 _destUSDC, 
+        address _destUSDC, 
         address _destLzEndpoint, 
         address _destUSDCBridgeProxyAdminOwner, 
         address _destUSDCBridgeOwner
     ) public returns (address) {
         if (broadcast) vm.startBroadcast();
-        DestinationOUSDC destBridgeImpl = new DestinationOUSDC(_destLzEndpoint, _destUSDC);
+        DestinationOUSDC destBridgeImpl = new DestinationOUSDC(_destLzEndpoint, FiatTokenV2_2(_destUSDC));
         console.log("Destination USDC Bridge Implementation:", address(destBridgeImpl));
         TransparentUpgradeableProxy destBridgeProxy = new TransparentUpgradeableProxy(
             address(destBridgeImpl),
