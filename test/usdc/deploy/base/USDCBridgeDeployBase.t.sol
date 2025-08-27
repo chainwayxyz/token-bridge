@@ -49,6 +49,6 @@ contract USDCBridgeDeployTestBase is Test {
 
         destForkId = vm.createSelectFork(DEST_RPC);
         USDCBridgeDeploy usdcBridgeDeployDest = new USDCBridgeDeploy();
-        destUSDCBridge = DestinationOUSDC(usdcBridgeDeployDest._runDest(false, FiatTokenV2_2(DEST_USDC), DEST_LZ_ENDPOINT, mockDestUSDCBridgeProxyAdminOwner, deployer));
+        destUSDCBridge = DestinationOUSDC(usdcBridgeDeployDest._runDest(false, DEST_USDC, DEST_LZ_ENDPOINT, mockDestUSDCBridgeProxyAdminOwner, deployer));
     }
 }

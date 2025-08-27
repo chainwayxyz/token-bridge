@@ -3,6 +3,7 @@ pragma solidity ^0.8.0;
 
 import "forge-std/Test.sol";
 import {ConfigSetup} from "../../../script/ConfigSetup.s.sol";
+import {FiatTokenV2_2} from "../../../src/interfaces/IFiatTokenV2_2.sol";
 import {MasterMinter} from "../../../src/interfaces/IMasterMinter.sol";
 import {DestinationOUSDC} from "../../../src/DestinationOUSDC.sol";
 import {SourceOFTAdapter} from "../../../src/SourceOFTAdapter.sol";
@@ -46,38 +47,39 @@ contract USDCPostDeploymentTest is ConfigSetup, Test {
     }
 
     function _assertUSDCProperties() internal {
-        assertEq(destUSDC.owner(), destUSDCOwner, "Destination USDC owner is not set correctly");
-        assertEq(destUSDC.pauser(), destUSDCOwner, "Destination USDC pauser is not set correctly");
-        assertEq(destUSDC.blacklister(), destUSDCOwner, "Destination USDC blacklister is not set correctly");
-        assertEq(destUSDC.name(), destUSDCName, "Destination USDC name is not set correctly");
-        assertEq(destUSDC.symbol(), destUSDCSymbol, "Destination USDC symbol is not set correctly");
-        assertEq(destUSDC.decimals(), 6, "Destination USDC decimals should be 6");
-        address proxyAdminAddress = address(uint160(uint256(vm.load(address(destUSDC), USDC_PROXY_ADMIN_SLOT))));
+        FiatTokenV2_2 usdc = FiatTokenV2_2(destUSDC);
+        assertEq(usdc.owner(), destUSDCOwner, "Destination USDC owner is not set correctly");
+        assertEq(usdc.pauser(), destUSDCOwner, "Destination USDC pauser is not set correctly");
+        assertEq(usdc.blacklister(), destUSDCOwner, "Destination USDC blacklister is not set correctly");
+        assertEq(usdc.name(), destUSDCName, "Destination USDC name is not set correctly");
+        assertEq(usdc.symbol(), destUSDCSymbol, "Destination USDC symbol is not set correctly");
+        assertEq(usdc.decimals(), 6, "Destination USDC decimals should be 6");
+        address proxyAdminAddress = address(uint160(uint256(vm.load(address(usdc), USDC_PROXY_ADMIN_SLOT))));
         assertEq(proxyAdminAddress, destUSDCProxyAdmin, "Destination USDC proxy admin is not set correctly");
-        assertEq(destUSDC.masterMinter(), destMM, "Destination USDC MasterMinter is not set correctly");
+        assertEq(usdc.masterMinter(), destMM, "Destination USDC MasterMinter is not set correctly");
         assertEq(MasterMinter(destMM).owner(), destMMOwner, "Destination USDC MasterMinter owner is not set correctly");
-        _assertUSDCBlacklistAbility();
+        _assertUSDCBlacklistAbility(usdc);
     }
 
-    function _assertUSDCBlacklistAbility() internal {
+    function _assertUSDCBlacklistAbility(FiatTokenV2_2 usdc) internal {
         address userToBlacklist = makeAddr("userToBlacklist");
-        uint256 initialBalance = 1000 * (10 ** destUSDC.decimals());
-        deal(address(destUSDC), userToBlacklist, initialBalance);
-        assertEq(destUSDC.balanceOf(userToBlacklist), initialBalance, "User should have initial balance");
-        
+        uint256 initialBalance = 1000 * (10 ** usdc.decimals());
+        deal(address(usdc), userToBlacklist, initialBalance);
+        assertEq(usdc.balanceOf(userToBlacklist), initialBalance, "User should have initial balance");
+
         vm.prank(userToBlacklist);
         // Verify user can transfer tokens before being blacklisted
-        destUSDC.transfer(address(1), 1);
+        usdc.transfer(address(1), 1);
 
         vm.prank(destUSDCOwner);
-        destUSDC.blacklist(userToBlacklist);
-        assertTrue(destUSDC.isBlacklisted(userToBlacklist), "User should be blacklisted");
+        usdc.blacklist(userToBlacklist);
+        assertTrue(usdc.isBlacklisted(userToBlacklist), "User should be blacklisted");
 
         vm.startPrank(userToBlacklist);
         vm.expectRevert("Blacklistable: account is blacklisted");
-        destUSDC.transfer(address(1), 1);
+        usdc.transfer(address(1), 1);
         vm.expectRevert("Blacklistable: account is blacklisted");
-        destUSDC.transferFrom(userToBlacklist, address(1), 1);
+        usdc.transferFrom(userToBlacklist, address(1), 1);
         vm.stopPrank();
     }
 

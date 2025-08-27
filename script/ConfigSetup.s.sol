@@ -26,7 +26,7 @@ contract ConfigSetup is Script {
     address public destUSDCProxyAdmin;
     string public destUSDCName;
     string public destUSDCSymbol;
-    FiatTokenV2_2 public destUSDC;
+    address public destUSDC;
     address public destMM;
     address public destMMOwner;
 
@@ -74,8 +74,8 @@ contract ConfigSetup is Script {
     function loadUSDCConfig(bool isBridgeDeployed) public {
         string memory tomlContent = _loadCommonConfig();
                 
-        destUSDC = FiatTokenV2_2(vm.parseTomlAddress(tomlContent, ".dest.usdc.deployment.proxy"));
-        require(address(destUSDC) != address(0), "Destination USDC Proxy is not set in the config file");
+        destUSDC = vm.parseTomlAddress(tomlContent, ".dest.usdc.deployment.proxy");
+        require(destUSDC != address(0), "Destination USDC Proxy is not set in the config file");
         destUSDCOwner = vm.parseTomlAddress(tomlContent, ".dest.usdc.init.owner");
         require(destUSDCOwner != address(0), "Destination USDC Owner is not set in the config file");
         destUSDCProxyAdmin = vm.parseTomlAddress(tomlContent, ".dest.usdc.init.proxyAdmin");
