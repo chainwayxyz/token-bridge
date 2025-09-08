@@ -5,7 +5,7 @@ import "openzeppelin-contracts/contracts/access/Ownable.sol";
 import "../src/interfaces/IFiatTokenV2_2.sol";
 
 contract USDCRolesHolder is Ownable {
-    FiatTokenV2_2 public usdc;
+    FiatTokenV2_2 public immutable usdc;
     address public circle;
 
     event CircleSet(address circle);
