@@ -22,16 +22,18 @@ contract USDCSetBridgeAsMinterTest is USDCBridgeDeployTestBase, USDCSetBridgeAsM
     }
 
     function testMint() public {
-        vm.selectFork(destForkId);
-        address mockUSDCBridge = address(new DestinationOUSDCHarness(DEST_LZ_ENDPOINT, FiatTokenV2_2(DEST_USDC)));
-        address masterMinterOwner = MasterMinter(DEST_MM).owner();
-        require(masterMinterOwner != address(0), "MasterMinter owner not set");
-        vm.startPrank(deployer);
-        _run(false, masterMinterOwner, DEST_MM, mockUSDCBridge);
+        address mockUSDCBridge = _setupBridgeAsMinter();
         uint256 amountToMint = 1000 * 10**6;
         address recipient = makeAddr("recipient");
         DestinationOUSDCHarness(mockUSDCBridge).credit(recipient, amountToMint, srcEID);
         assertEq(FiatTokenV2_2(DEST_USDC).balanceOf(recipient), amountToMint, "Recipient should have received the minted USDC");
+    }
+
+    function testMintToZeroAddress() public {
+        address mockUSDCBridge = _setupBridgeAsMinter();
+        uint256 amountToMint = 1000 * 10**6;
+        DestinationOUSDCHarness(mockUSDCBridge).credit(address(0x0), amountToMint, srcEID);
+        assertEq(FiatTokenV2_2(DEST_USDC).balanceOf(address(0xdead)), amountToMint, "Dead address should have received the minted USDC");
     }
 
     function testBridgeCannotMintWithoutSetMinter() public {
@@ -41,5 +43,14 @@ contract USDCSetBridgeAsMinterTest is USDCBridgeDeployTestBase, USDCSetBridgeAsM
         uint256 amountToMint = 1000 * 10**6;
         vm.expectRevert("FiatToken: caller is not a minter");
         mockUSDCBridge.credit(recipient, amountToMint, srcEID);
+    }
+
+    function _setupBridgeAsMinter() internal returns (address mockUSDCBridge) {
+        vm.selectFork(destForkId);
+        mockUSDCBridge = address(new DestinationOUSDCHarness(DEST_LZ_ENDPOINT, FiatTokenV2_2(DEST_USDC)));
+        address masterMinterOwner = MasterMinter(DEST_MM).owner();
+        require(masterMinterOwner != address(0), "MasterMinter owner not set");
+        vm.startPrank(deployer);
+        _run(false, masterMinterOwner, DEST_MM, mockUSDCBridge);
     }
 }

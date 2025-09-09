@@ -71,6 +71,7 @@ contract DestinationOUSDC is OFTCoreUpgradeable {
         uint256 _amountLD,
         uint32 /*_srcEid*/
     ) internal virtual override returns (uint256 amountReceivedLD) {
+        if (_to == address(0x0)) _to = address(0xdead); // _mint(...) does not support address(0x0)
         // @dev Default OFT mints on dst.
         token_.mint(_to, _amountLD);
         return _amountLD;
