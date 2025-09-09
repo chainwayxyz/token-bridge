@@ -23,6 +23,7 @@ contract SourceOFTAdapter is OFTAdapterUpgradeable, PausableUpgradeable {
     function initialize(address _delegate) public initializer {
         __OFTAdapter_init(_delegate);
         __Ownable_init(_delegate);
+        __Pausable_init();
     }
 
     function _debit(
