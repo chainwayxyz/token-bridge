@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 import {USDTBridgeDeployTestBase} from "./base/USDTBridgeDeployBase.t.sol";
-import {USDTSetBridgeAsMinter} from "../../../script/usdt/deploy/07_USDTSetBridgeAsMinter.s.sol";
+import {USDTSetBridgeAsMinter} from "../../../script/usdt/deploy/05_USDTSetBridgeAsMinter.s.sol";
 import {DestinationOUSDT, IOFTToken} from "../../../src/DestinationOUSDT.sol";
 import {TetherTokenOFTExtension} from "../../../src/interfaces/IOFTExtension.sol";
 import {DestinationOUSDTHarness} from "../mock/DestinationOUSDTHarness.sol";

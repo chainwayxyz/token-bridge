@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 import {USDTBridgeDeployTestBase} from "./base/USDTBridgeDeployBase.t.sol";
-import {USDTSrcBridgeSetPeer} from "../../../script/usdt/deploy/05_USDTSrcBridgeSetPeer.s.sol";
+import {USDTSrcBridgeSetPeer} from "../../../script/usdt/deploy/07_USDTSrcBridgeSetPeer.s.sol";
 import {SourceOFTAdapter} from "../../../src/SourceOFTAdapter.sol";
 
 contract USDTSrcBridgeSetPeerTest is USDTBridgeDeployTestBase, USDTSrcBridgeSetPeer {
