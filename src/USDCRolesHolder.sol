@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.22;
 
-import "openzeppelin-contracts/contracts/access/Ownable.sol";
+import "openzeppelin-contracts/contracts/access/Ownable2Step.sol";
 import "../src/interfaces/IFiatTokenV2_2.sol";
 
-contract USDCRolesHolder is Ownable {
+contract USDCRolesHolder is Ownable2Step {
     FiatTokenV2_2 public immutable usdc;
     address public circle;
 

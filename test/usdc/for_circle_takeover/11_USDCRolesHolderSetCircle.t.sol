@@ -20,6 +20,20 @@ contract USDCRolesHolderSetCircleTest is USDCTransferOwnerTestBase, USDCRolesHol
         assertEq(USDCRolesHolder(usdcRolesHolder).circle(), circle, "Circle address should be set correctly");
     }
 
+    function testSetCircleAfterOwnershipChange() public {
+        vm.selectFork(destForkId);
+        vm.startPrank(USDCRolesHolder(usdcRolesHolder).owner());
+        address newOwner = makeAddr("NEW_OWNER");
+        USDCRolesHolder(usdcRolesHolder).transferOwnership(newOwner);
+        vm.stopPrank();
+        vm.startPrank(newOwner);
+        USDCRolesHolder(usdcRolesHolder).acceptOwnership();
+        address circle = makeAddr("CIRCLE_ADDRESS");
+        _run(false, address(DEST_USDC), circle);
+        assertEq(USDCRolesHolder(usdcRolesHolder).circle(), circle, "Circle address should be set correctly");
+        vm.stopPrank();
+    }
+
     function testCircleCanAssumeUSDCOwnership() public {
         vm.selectFork(destForkId);
         vm.startPrank(USDCRolesHolder(usdcRolesHolder).owner());
