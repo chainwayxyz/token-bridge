@@ -7,12 +7,21 @@ import { FiatTokenV2_2 } from "../interfaces/IFiatTokenV2_2.sol";
 
 contract SourceOFTAdapter is OFTAdapterUpgradeable, PausableUpgradeable {
     address public circle;
+    address public destUSDCSupplySetter;
+    uint256 public destUSDCSupply;
 
     event CircleSet(address circle);
+    event DestUSDCSupplySetterSet(address destUSDCSupplySetter);
+    event DestUSDCSupplySet(uint256 supply);
     event BurnedLockedUSDC(address circle, uint256 amount);
 
     modifier onlyCircle() {
         require(msg.sender == circle, "SourceOFTAdapter: Caller is not Circle");
+        _;
+    }
+
+    modifier onlyDestUSDCSupplySetter() {
+        require(msg.sender == destUSDCSupplySetter, "SourceOFTAdapter: Caller is not destUSDCSupplySetter");
         _;
     }
 
@@ -45,14 +54,29 @@ contract SourceOFTAdapter is OFTAdapterUpgradeable, PausableUpgradeable {
 
     function burnLockedUSDC() external onlyCircle {
         uint256 balance = innerToken.balanceOf(address(this));
-        FiatTokenV2_2(address(innerToken)).burn(balance);
-        emit BurnedLockedUSDC(msg.sender, balance);
+        // If somehow reported `destUSDCSupply` is more than the actual balance, just burn the balance
+        // This can happen in the edge case of destination USDC having an additional minter that is not the bridge
+        uint256 balanceToBurn = destUSDCSupply > balance ? balance : destUSDCSupply;
+
+        FiatTokenV2_2(address(innerToken)).burn(balanceToBurn);
+        emit BurnedLockedUSDC(msg.sender, balanceToBurn);
     }
 
     function setCircle(address _circle) external onlyOwner {
         require(_circle != address(0), "SourceOFTAdapter: Circle address cannot be zero");
         circle = _circle;
         emit CircleSet(_circle);
+    }
+
+    function setDestUSDCSupplySetter(address _destUSDCSupplySetter) external onlyOwner {
+        require(_destUSDCSupplySetter != address(0), "SourceOFTAdapter: destUSDCSupplySetter address cannot be zero");
+        destUSDCSupplySetter = _destUSDCSupplySetter;
+        emit DestUSDCSupplySetterSet(_destUSDCSupplySetter);
+    }
+
+    function setDestUSDCSupply(uint256 _destUSDCSupply) external whenPaused onlyDestUSDCSupplySetter {
+        destUSDCSupply = _destUSDCSupply;
+        emit DestUSDCSupplySet(_destUSDCSupply);
     }
 
     function pause() external onlyOwner {
