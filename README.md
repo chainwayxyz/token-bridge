@@ -132,7 +132,7 @@ SRC_BRIDGE_CIRCLE_ADDRESS=<ADDRESS_GIVEN_BY_CIRCLE> forge script ./script/usdc/f
 ```
 
 > [!WARNING]
-> Make sure reported destination USDC total supply in logs of the above script matches with the actual value by checking it on destination chain explorer. If the value is incorrect, do not proceed with the next steps and investigate the issue.In this script, total supply of USDC on destination chain is read directly from destination RPC. If RPC is not reliable, you may consider deploying a cross-chain reader contract utilizing `lzRead` and use that contract as the `destUSDCSupplySetter` instead.
+> Make sure reported destination USDC total supply in logs of the above script matches with the actual value by checking it on destination chain explorer. If the value is incorrect, do not proceed with the next steps and investigate the issue. In this script, total supply of USDC on destination chain is read directly from destination RPC. If RPC is not reliable, you may consider deploying a cross-chain reader contract utilizing `lzRead` and use that contract as the `destUSDCSupplySetter` instead.
 
 6. Transfer the proxy admin of USDC to Circle's given address:
 
