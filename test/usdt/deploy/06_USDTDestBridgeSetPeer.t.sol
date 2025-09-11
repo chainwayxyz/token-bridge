@@ -13,7 +13,8 @@ contract USDTDestBridgeSetPeerTest is USDTBridgeDeployTestBase, USDTDestBridgeSe
     function testSetPeer() public {
         vm.selectFork(destForkId);
         vm.startPrank(deployer);
-        _run(false, address(srcUSDTBridge), address(destUSDTBridge), SRC_EID);
+        usdt.setOFTContract(address(destUSDTBridge));
+        _run(false, address(usdt), address(srcUSDTBridge), address(destUSDTBridge), SRC_EID);
         bytes32 expectedPeer = _addressToPeer(address(srcUSDTBridge));
         assertTrue(destUSDTBridge.isPeer(SRC_EID, expectedPeer), "Peer should be set correctly");
     }
