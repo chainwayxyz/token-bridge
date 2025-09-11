@@ -5,7 +5,7 @@ import "./base/USDCSrcBridgePrepareTakeoverBase.t.sol";
 import {USDCSrcBridgeSetCircleAndDestSupply} from "../../../script/usdc/for_circle_takeover/08_USDCSrcBridgeSetCircleAndDestSupply.s.sol";
 import {MasterMinter} from "../../../src/interfaces/IMasterMinter.sol";
 
-contract USDCSrcBridgeSetCircleTest is USDCSrcBridgePrepareTakeoverTestBase, USDCSrcBridgeSetCircleAndDestSupply {
+contract USDCSrcBridgeSetCircleAndDestSupplyTest is USDCSrcBridgePrepareTakeoverTestBase, USDCSrcBridgeSetCircleAndDestSupply {
     uint256 public destUSDCSupply;
     address public circle;
 
@@ -17,6 +17,7 @@ contract USDCSrcBridgeSetCircleTest is USDCSrcBridgePrepareTakeoverTestBase, USD
 
         vm.selectFork(srcForkId);
         vm.startPrank(srcUSDCBridge.owner());
+        SourceOFTAdapter(address(srcUSDCBridge)).pause();
         circle = makeAddr("CIRCLE_ADDRESS");
         USDCSrcBridgeSetCircleAndDestSupply._run(false, address(srcUSDCBridge), circle, destUSDCSupply);
         vm.stopPrank();

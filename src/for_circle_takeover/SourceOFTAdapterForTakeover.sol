@@ -74,7 +74,7 @@ contract SourceOFTAdapter is OFTAdapterUpgradeable, PausableUpgradeable {
         emit DestUSDCSupplySetterSet(_destUSDCSupplySetter);
     }
 
-    function setDestUSDCSupply(uint256 _destUSDCSupply) external onlyDestUSDCSupplySetter {
+    function setDestUSDCSupply(uint256 _destUSDCSupply) external whenPaused onlyDestUSDCSupplySetter {
         destUSDCSupply = _destUSDCSupply;
         emit DestUSDCSupplySet(_destUSDCSupply);
     }
