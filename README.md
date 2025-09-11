@@ -125,11 +125,17 @@ forge script ./script/usdc/for_circle_takeover/06_USDCDestBridgePause.s.sol --pr
 forge script ./script/usdc/for_circle_takeover/07_USDCRemoveBridgeAsMinter.s.sol --private-key <MASTER_MINTER_OWNER_ADDRESS_PRIVATE_KEY> --broadcast
 ```
 
-5. Set Circle's address so they can perform the USDC burn action on source chain end of the bridge:
+5. Set Circle's address so they can perform the USDC burn action on source chain end of the bridge. This script also sets the destination USDC total supply by reading from the destination chain so that Circle can burn the correct amount of USDC on source chain. This script should be called by the source USDC bridge owner:
 
 ```
-SRC_BRIDGE_CIRCLE_ADDRESS=<ADDRESS_GIVEN_BY_CIRCLE> forge script ./script/usdc/for_circle_takeover/08_USDCSrcBridgeSetCircle.s.sol --private-key <SRC_USDC_BRIDGE_OWNER_PRIVATE_KEY> --broadcast
+SRC_BRIDGE_CIRCLE_ADDRESS=<ADDRESS_GIVEN_BY_CIRCLE> forge script ./script/usdc/for_circle_takeover/08_USDCSrcBridgeSetCircleAndDestSupply.s.sol --private-key <SRC_USDC_BRIDGE_OWNER_PRIVATE_KEY> --broadcast
 ```
+
+> [!WARNING]
+> Make sure reported destination USDC total supply in logs of the above script matches with the actual value by checking it on destination chain explorer. If the value is incorrect, do not proceed with the next steps and investigate the issue.
+
+> [!NOTE]
+> In this script total supply of USDC on destination chain is read directly from destination RPC. If you do not trust the RPC, you may consider deploying a cross-chain reader contract utilizing `lzRead` and use that contract as the `destUSDCSupplySetter` instead.
 
 6. Transfer the proxy admin of USDC to Circle's given address:
 
