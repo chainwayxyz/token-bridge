@@ -153,6 +153,10 @@ USDC_ROLES_HOLDER_CIRCLE_ADDRESS=<ADDRESS_GIVEN_BY_CIRCLE> forge script ./script
 ```
 
 ## USDT
+
+> [!NOTE]
+> Bridge logic in this protocol assumes lossless 1:1 transfers. If USDT on your source chain has fee-on-transfer enabled, you may need to adjust the logic accordingly. See [line 131 of the USDT contract on Ethereum Mainnet](https://etherscan.io/token/0xdac17f958d2ee523a2206206994597c13d831ec7#code#L131) as reference for the fee-on-transfer logic.
+
 ### 1. Deploying both USDT and USDT Bridge
 1. Fill all `[*.usdt.*]` fields except the ones ending with `.deployment` in `config/<mainnet or testnet>/config.toml`.
 
