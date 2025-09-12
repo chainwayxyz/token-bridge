@@ -154,7 +154,7 @@ USDC_ROLES_HOLDER_CIRCLE_ADDRESS=<ADDRESS_GIVEN_BY_CIRCLE> forge script ./script
 
 ## USDT
 
-> ![NOTE]
+> [!NOTE]
 > Bridge logic in this protocol assumes lossless 1:1 transfers. If USDT on your source chain has fee-on-transfer enabled, you may need to adjust the logic accordingly.
 
 ### 1. Deploying both USDT and USDT Bridge
