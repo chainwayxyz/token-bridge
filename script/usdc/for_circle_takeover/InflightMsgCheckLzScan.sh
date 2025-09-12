@@ -25,9 +25,9 @@ check_status() {
     local eid=$1
     local address=$2
     local name=$3
-    
+
     response=$(curl -s "$BASE_URL/messages/oapp/$eid/$address")
-    if echo "$response" | jq -e '.data[] | select(.status.name == "INFLIGHT" or .status.name == "CONFIRMING")' > /dev/null; then
+    if echo "$response" | jq -e '.data[]? | select(.status.name == "INFLIGHT" or .status.name == "CONFIRMING")' > /dev/null; then
         return 1
     else
         return 0
