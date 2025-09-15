@@ -114,10 +114,13 @@ This is done to prevent messages being sent out so that they do not get stuck af
 3. Pause both ends of the bridge, should be called by respective bridge owners:
 
 ```
-forge script ./script/usdc/for_circle_takeover/05_USDCSrcBridgePause.s.sol --private-key <SRC_USDC_BRIDGE_OWNER_PRIVATE_KEY> --broadcast
+forge script ./script/usdc/for_circle_takeover/05_USDCSrcBridgePause.s.sol --private-key <SRC_USDC_BRIDGE_OWNER_PRIVATE_KEY> --broadcast --ffi
 
-forge script ./script/usdc/for_circle_takeover/06_USDCDestBridgePause.s.sol --private-key <DEST_USDC_BRIDGE_OWNER_PRIVATE_KEY> --broadcast
+forge script ./script/usdc/for_circle_takeover/06_USDCDestBridgePause.s.sol --private-key <DEST_USDC_BRIDGE_OWNER_PRIVATE_KEY> --broadcast --ffi
 ```
+
+> [!NOTE]
+> Both of these scripts need the `ffi` flag as they check if there any inflight messages by running `InflightMsgCheckLzScan.sh` before pausing the bridges. If you want to force pausing even though there are messages with `INFLIGHT` or `CONFIRMING` status, simply comment out `_checkInflightMessages()` line and re-run the scripts.
 
 4. Remove bridge's minter role from destination USDC, should be called by `MasterMinter`'s owner:
 

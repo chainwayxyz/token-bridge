@@ -12,6 +12,8 @@ contract USDCSrcBridgePause is ConfigSetup {
 
     // Should be called by `src.usdc.bridge.deployment.init.owner` address
     function run() public virtual {
+        // Call InflightMsgCheckLzScan.sh to ensure there are no `INFLIGHT` or `CONFIRMING` messages
+        _checkInflightMessages();
         vm.createSelectFork(srcRPC);
         _run(true, srcUSDCBridgeProxy);
     }
@@ -22,5 +24,14 @@ contract USDCSrcBridgePause is ConfigSetup {
         srcUSDCBridge.pause();
         console.log("Paused Source USDC Bridge at:", address(srcUSDCBridge));
         if (broadcast) vm.stopBroadcast();
+    }
+
+    function _checkInflightMessages() internal {
+        string[] memory cmd = new string[](2);
+        cmd[0] = "sh";
+        cmd[1] = "script/usdc/for_circle_takeover/InflightMsgCheckLzScan.sh";
+        bytes memory res = vm.ffi(cmd);
+        string memory output = string(res);
+        require(keccak256(abi.encodePacked(output)) == keccak256(abi.encodePacked("SUCCESS: All checks passed.")));
     }
 }
