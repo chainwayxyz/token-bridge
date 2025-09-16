@@ -2,6 +2,27 @@ include .env
 export
 
 DEPLOYER_ADDRESS := $(shell cast wallet address --account ${ACCOUNT_NAME} --password ${PASSWORD})
+DEST_VERIFIER := $(shell \
+	value=$$(yq '.dest.verifier' "./config/${NETWORK}/config.toml"); \
+	if [ "$$value" = "etherscan" ]; then \
+		echo "custom"; \
+	else \
+		echo "$$value"; \
+	fi)
+
+SRC_VERIFIER := $(shell \
+	value=$$(yq '.src.verifier' "./config/${NETWORK}/config.toml"); \
+	if [ "$$value" = "etherscan" ]; then \
+		echo "custom"; \
+	else \
+		echo "$$value"; \
+	fi)
+
+DEST_VERIFIER_URL = $(shell yq '.dest.verifierUrl' "./config/${NETWORK}/config.toml")
+SRC_VERIFIER_URL := $(shell yq '.src.verifierUrl' "./config/${NETWORK}/config.toml")
+
+DEST_VERIFIER_API_KEY_FLAG := $(if $(DEST_VERIFIER_API_KEY),--verifier-api-key $(DEST_VERIFIER_API_KEY))
+SRC_VERIFIER_API_KEY_FLAG := $(if $(SRC_VERIFIER_API_KEY),--verifier-api-key $(SRC_VERIFIER_API_KEY))
 
 .PHONY: clear-usdt-deployments
 clear-usdt-deployments:
@@ -13,16 +34,16 @@ clear-usdt-deployments:
 
 .PHONY: usdt-deploy
 usdt-deploy: clear-usdt-deployments
-	forge script ./script/usdt/deploy/01_USDTDeploy.s.sol --sender $(DEPLOYER_ADDRESS) --account $(ACCOUNT_NAME) --password $(PASSWORD) --broadcast
+	forge script ./script/usdt/deploy/01_USDTDeploy.s.sol --sender $(DEPLOYER_ADDRESS) --account $(ACCOUNT_NAME) --password $(PASSWORD) --broadcast --verify --verifier $(DEST_VERIFIER) --verifier-url $(DEST_VERIFIER_URL) $(DEST_VERIFIER_API_KEY_FLAG)
 	@echo "✅ USDT deployment steps completed successfully!"
 
 .PHONY: usdt-src-bridge-deploy
 usdt-src-bridge-deploy:
-	forge script ./script/usdt/deploy/02_USDTSrcBridgeDeploy.s.sol --sender $(DEPLOYER_ADDRESS) --account $(ACCOUNT_NAME) --password $(PASSWORD) --broadcast
+	forge script ./script/usdt/deploy/02_USDTSrcBridgeDeploy.s.sol --sender $(DEPLOYER_ADDRESS) --account $(ACCOUNT_NAME) --password $(PASSWORD) --broadcast --verify --verifier $(SRC_VERIFIER) --verifier-url $(SRC_VERIFIER_URL) $(SRC_VERIFIER_API_KEY_FLAG)
 
 .PHONY: usdt-dest-bridge-deploy
 usdt-dest-bridge-deploy:
-	forge script ./script/usdt/deploy/03_USDTDestBridgeDeploy.s.sol --sender $(DEPLOYER_ADDRESS) --account $(ACCOUNT_NAME) --password $(PASSWORD) --broadcast
+	forge script ./script/usdt/deploy/03_USDTDestBridgeDeploy.s.sol --sender $(DEPLOYER_ADDRESS) --account $(ACCOUNT_NAME) --password $(PASSWORD) --broadcast --verify --verifier $(DEST_VERIFIER) --verifier-url $(DEST_VERIFIER_URL) $(DEST_VERIFIER_API_KEY_FLAG)
 
 .PHONY: usdt-src-bridge-set-lz-config
 usdt-src-bridge-set-lz-config:
@@ -80,11 +101,11 @@ usdc-deploy: clear-usdc-deployments
 
 .PHONY: usdc-src-bridge-deploy
 usdc-src-bridge-deploy:
-	forge script ./script/usdc/deploy/02_USDCSrcBridgeDeploy.s.sol --sender $(DEPLOYER_ADDRESS) --account $(ACCOUNT_NAME) --password $(PASSWORD) --broadcast
+	forge script ./script/usdc/deploy/02_USDCSrcBridgeDeploy.s.sol --sender $(DEPLOYER_ADDRESS) --account $(ACCOUNT_NAME) --password $(PASSWORD) --broadcast  --verify --verifier $(SRC_VERIFIER) --verifier-url $(SRC_VERIFIER_URL) $(SRC_VERIFIER_API_KEY_FLAG)
 
 .PHONY: usdc-dest-bridge-deploy
 usdc-dest-bridge-deploy:
-	forge script ./script/usdc/deploy/03_USDCDestBridgeDeploy.s.sol --sender $(DEPLOYER_ADDRESS) --account $(ACCOUNT_NAME) --password $(PASSWORD) --broadcast
+	forge script ./script/usdc/deploy/03_USDCDestBridgeDeploy.s.sol --sender $(DEPLOYER_ADDRESS) --account $(ACCOUNT_NAME) --password $(PASSWORD) --broadcast --verify --verifier $(DEST_VERIFIER) --verifier-url $(DEST_VERIFIER_URL) $(DEST_VERIFIER_API_KEY_FLAG)
 
 .PHONY: usdc-src-bridge-set-lz-config
 usdc-src-bridge-set-lz-config:
