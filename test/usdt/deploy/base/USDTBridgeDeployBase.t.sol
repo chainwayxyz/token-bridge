@@ -2,13 +2,13 @@
 pragma solidity ^0.8.0;
 
 import "forge-std/Test.sol";
-import {USDTBridgeDeploy} from "../../../../script/usdt/deploy/02_USDTBridgeDeploy.s.sol";
+import {USDTSrcBridgeDeploy} from "../../../../script/usdt/deploy/02_USDTSrcBridgeDeploy.s.sol";
+import {USDTDestBridgeDeploy} from "../../../../script/usdt/deploy/03_USDTDestBridgeDeploy.s.sol";
 import {USDTDeployTestBase} from "./USDTDeployBase.t.sol";
 import {SourceOFTAdapter} from "../../../../src/SourceOFTAdapter.sol";
 import {DestinationOUSDT} from "../../../../src/DestinationOUSDT.sol";
 
 contract USDTBridgeDeployTestBase is USDTDeployTestBase {
-    USDTBridgeDeploy public usdtBridgeDeploy;
     SourceOFTAdapter public srcUSDTBridge;
     DestinationOUSDT public destUSDTBridge;
 
@@ -27,16 +27,16 @@ contract USDTBridgeDeployTestBase is USDTDeployTestBase {
     function setUp() public virtual override {
         USDTDeployTestBase.setUp();
 
-        usdtBridgeDeploy = new USDTBridgeDeploy();
-
         address srcUSDTBridgeProxyAdminOwner = makeAddr("Src USDT Bridge Proxy Admin Owner");
 
         srcForkId = vm.createSelectFork(SRC_RPC);
-        srcUSDTBridge = SourceOFTAdapter(usdtBridgeDeploy._runSrc(false, SRC_USDT, SRC_LZ_ENDPOINT, srcUSDTBridgeProxyAdminOwner, deployer));
+        USDTSrcBridgeDeploy usdtSrcBridgeDeploy = new USDTSrcBridgeDeploy();
+        srcUSDTBridge = SourceOFTAdapter(usdtSrcBridgeDeploy._run(false, SRC_USDT, SRC_LZ_ENDPOINT, srcUSDTBridgeProxyAdminOwner, deployer));
 
         address destUSDTBridgeProxyAdminOwner = makeAddr("Dest USDT Bridge Proxy Admin Owner");
 
         destForkId = vm.createSelectFork(DEST_RPC);
-        destUSDTBridge = DestinationOUSDT(usdtBridgeDeploy._runDest(false, address(usdt), DEST_LZ_ENDPOINT, destUSDTBridgeProxyAdminOwner, deployer));
+        USDTDestBridgeDeploy usdtDestBridgeDeploy = new USDTDestBridgeDeploy();
+        destUSDTBridge = DestinationOUSDT(usdtDestBridgeDeploy._run(false, address(usdt), DEST_LZ_ENDPOINT, destUSDTBridgeProxyAdminOwner, deployer));
     }
 }

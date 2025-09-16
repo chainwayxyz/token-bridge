@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 import {USDCBridgeDeployTestBase} from "./base/USDCBridgeDeployBase.t.sol";
-import {USDCAndBridgeAssignRoles} from "../../../script/usdc/deploy/08_USDCAndBridgeAssignRoles.s.sol";
+import {USDCAndBridgeAssignRoles} from "../../../script/usdc/deploy/09_USDCAndBridgeAssignRoles.s.sol";
 import {DestinationOUSDC} from "../../../src/DestinationOUSDC.sol";
 import {SourceOFTAdapter} from "../../../src/SourceOFTAdapter.sol";
 import "openzeppelin-contracts/contracts/access/Ownable.sol";
