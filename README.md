@@ -40,6 +40,11 @@ cast wallet import $ACCOUNT_NAME --unsafe-password $PASSWORD --interactive
 
 3. Fund this address with some native assets on both `src` and `dest` chains to pay for gas. Also fund it with USDC and USDT on `src` chain if you are going to test the bridge. 1 cent of each stablecoin is enough for testing.
 
+4. Set `SRC_VERIFIER_API_KEY` and `DEST_VERIFIER_API_KEY` if there is an API key for verification in the chain explorer used for the respective chain. You can remove the relevant variable if an API key is not necessary for verification.
+
+> [!NOTE]
+> Verification logic uses Foundry underneath, see `forge verify-contract -h` for the possible `verifier` (in `config.toml`) options. `etherscan` type is remapped to `custom` to standardize the commands being run.
+
 ## USDC
 ### 1. Deploying both USDC and USDC Bridge
 1. Fill all `[*.usdc.*]` fields except the ones ending with `.deployment` in `config/<mainnet or testnet>/config.toml`.

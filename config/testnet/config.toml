@@ -1,5 +1,7 @@
 [dest]
 rpc = "https://rpc.testnet.citrea.xyz"
+verifier = "blockscout"
+verifierUrl = "https://explorer.testnet.citrea.xyz/api?"
 
 [dest.lz]
 endpoint = "0x6C7Ab2202C98C4227C5c46f1417D81144DA716Ff"
@@ -67,6 +69,8 @@ proxy = ""
 
 [src]
 rpc = "https://sepolia.drpc.org"
+verifier = "etherscan"
+verifierUrl = "https://api-sepolia.etherscan.io/api"
 
 [src.lz]
 endpoint = "0x6EDCE65403992e310A62460808c4b910D972f10f"

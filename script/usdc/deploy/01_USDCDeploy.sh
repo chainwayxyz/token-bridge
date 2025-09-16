@@ -31,6 +31,8 @@ export MASTER_MINTER_OWNER_ADDRESS=$DEPLOYER_ADDRESS
 export GAS_MULTIPLIER=110
 export BLACKLIST_FILE_NAME=blacklist.remote.json
 RPC_URL=$(yq '.dest.rpc' $CONFIG_PATH)
+DEST_VERIFIER=$(yq '.dest.verifier' $CONFIG_PATH)
+DEST_VERIFIER_URL=$(yq '.dest.verifierUrl' $CONFIG_PATH)
 
 # Assert PROXY_ADMIN_ADDRESS is not equal to DEPLOYER_ADDRESS
 if [ "$PROXY_ADMIN_ADDRESS" == "$DEPLOYER_ADDRESS" ]; then
@@ -86,3 +88,6 @@ deactivate
 
 # Above commands downgrades foundry to 0.2.0, so we need to run foundryup again
 foundryup
+# Verify deployed contracts
+VERIFIER_API_KEY_FLAG="${DEST_VERIFIER_API_KEY:+--verifier-api-key $DEST_VERIFIER_API_KEY}"
+yarn forge:simulate scripts/deploy/deploy-fiat-token.s.sol --rpc-url $RPC_URL --verify --verifier $DEST_VERIFIER --verifier-url $DEST_VERIFIER_URL $VERIFIER_API_KEY_FLAG --resume --private-key $DEPLOYER_PRIVATE_KEY
