@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 import {UlnConfig} from "@layerzerolabs/lz-evm-messagelib-v2/contracts/uln/UlnBase.sol";
 import {ILayerZeroEndpointV2} from "@layerzerolabs/lz-evm-protocol-v2/contracts/interfaces/ILayerZeroEndpointV2.sol";
 import {USDTBridgeDeployTestBase} from "./base/USDTBridgeDeployBase.t.sol";
-import {USDTSrcBridgeSetLzConfig} from "../../../script/usdt/deploy/03_USDTSrcBridgeSetLzConfig.s.sol";
+import {USDTSrcBridgeSetLzConfig} from "../../../script/usdt/deploy/04_USDTSrcBridgeSetLzConfig.s.sol";
 import {SourceOFTAdapter} from "../../../src/SourceOFTAdapter.sol";
 import {OptionsBuilder} from "@layerzerolabs/oapp-evm/contracts/oapp/libs/OptionsBuilder.sol";
 

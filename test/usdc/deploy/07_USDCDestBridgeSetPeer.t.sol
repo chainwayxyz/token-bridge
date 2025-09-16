@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 import {USDCBridgeDeployTestBase} from "./base/USDCBridgeDeployBase.t.sol";
-import {USDCDestBridgeSetPeer} from "../../../script/usdc/deploy/06_USDCDestBridgeSetPeer.s.sol";
+import {USDCDestBridgeSetPeer} from "../../../script/usdc/deploy/07_USDCDestBridgeSetPeer.s.sol";
 import {DestinationOUSDC} from "../../../src/DestinationOUSDC.sol";
 import {MasterMinter} from "../../../src/interfaces/IMasterMinter.sol";
 

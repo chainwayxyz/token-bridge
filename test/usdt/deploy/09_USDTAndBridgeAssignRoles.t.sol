@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 import {USDTBridgeDeployTestBase} from "./base/USDTBridgeDeployBase.t.sol";
-import {USDTAndBridgeAssignRoles} from "../../../script/usdt/deploy/08_USDTAndBridgeAssignRoles.s.sol";
+import {USDTAndBridgeAssignRoles} from "../../../script/usdt/deploy/09_USDTAndBridgeAssignRoles.s.sol";
 import {DestinationOUSDT} from "../../../src/DestinationOUSDT.sol";
 import {SourceOFTAdapter} from "../../../src/SourceOFTAdapter.sol";
 

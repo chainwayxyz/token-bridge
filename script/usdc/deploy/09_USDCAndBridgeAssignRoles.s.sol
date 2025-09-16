@@ -13,7 +13,7 @@ contract USDCAndBridgeAssignRoles is ConfigSetup {
         loadUSDCConfig({isBridgeDeployed: true});
     }
 
-    // Can be called by any address
+    // Should be called by deployer
     function run() public {
         vm.createSelectFork(srcRPC);
         _runSrc(true, srcUSDCBridgeProxy, srcUSDCBridgeOwner);

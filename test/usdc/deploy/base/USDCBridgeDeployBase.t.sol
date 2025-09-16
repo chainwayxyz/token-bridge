@@ -2,7 +2,8 @@
 pragma solidity ^0.8.0;
 
 import "forge-std/Test.sol";
-import {USDCBridgeDeploy, FiatTokenV2_2} from "../../../../script/usdc/deploy/02_USDCBridgeDeploy.s.sol";
+import {USDCSrcBridgeDeploy} from "../../../../script/usdc/deploy/02_USDCSrcBridgeDeploy.s.sol";
+import {USDCDestBridgeDeploy, FiatTokenV2_2} from "../../../../script/usdc/deploy/03_USDCDestBridgeDeploy.s.sol";
 import {SourceOFTAdapter} from "../../../../src/SourceOFTAdapter.sol";
 import {DestinationOUSDC} from "../../../../src/DestinationOUSDC.sol";
 import {Initializable} from "@openzeppelin/contracts/proxy/utils/Initializable.sol";
@@ -42,13 +43,13 @@ contract USDCBridgeDeployTestBase is Test {
         mockSrcUSDCBridgeProxyAdminOwner = makeAddr("Src USDC Bridge Proxy Admin Owner");
 
         srcForkId = vm.createSelectFork(SRC_RPC);
-        USDCBridgeDeploy usdcBridgeDeploySrc = new USDCBridgeDeploy();
-        srcUSDCBridge = SourceOFTAdapter(usdcBridgeDeploySrc._runSrc(false, SRC_USDC, SRC_LZ_ENDPOINT, mockSrcUSDCBridgeProxyAdminOwner, deployer));
+        USDCSrcBridgeDeploy usdcSrcBridgeDeploy = new USDCSrcBridgeDeploy();
+        srcUSDCBridge = SourceOFTAdapter(usdcSrcBridgeDeploy._run(false, SRC_USDC, SRC_LZ_ENDPOINT, mockSrcUSDCBridgeProxyAdminOwner, deployer));
 
         mockDestUSDCBridgeProxyAdminOwner = makeAddr("Dest USDC Bridge Proxy Admin Owner");
 
         destForkId = vm.createSelectFork(DEST_RPC);
-        USDCBridgeDeploy usdcBridgeDeployDest = new USDCBridgeDeploy();
-        destUSDCBridge = DestinationOUSDC(usdcBridgeDeployDest._runDest(false, DEST_USDC, DEST_LZ_ENDPOINT, mockDestUSDCBridgeProxyAdminOwner, deployer));
+        USDCDestBridgeDeploy usdcDestBridgeDeploy = new USDCDestBridgeDeploy();
+        destUSDCBridge = DestinationOUSDC(usdcDestBridgeDeploy._run(false, DEST_USDC, DEST_LZ_ENDPOINT, mockDestUSDCBridgeProxyAdminOwner, deployer));
     }
 }
