@@ -46,6 +46,10 @@ cast wallet import $ACCOUNT_NAME --unsafe-password $PASSWORD --interactive
 > Verification logic uses Foundry underneath, see `forge verify-contract -h` for the possible `verifier` (in `config.toml`) options. `etherscan` type is remapped to `custom` to standardize the commands being run.
 
 ## USDC
+
+> [!NOTE]
+> Throughout the codebase, all upgradeable contract deployments and initializations are done atomically except the USDC token deployment as Circle's own scripts are used for that purpose. This means a malicious actor can frontrun the USDC initialization transaction, which would lead to the USDC deployment script reverting during the initialization stage. If that happens, discard that deployment and consider using a private mempool for the re-deployment. As Circle's script atomically sets the implementation during the proxy deployment, the process is not susceptible to the [CPIMP attack](https://dedaub.com/blog/the-cpimp-attack-an-insanely-far-reaching-vulnerability-successfully-mitigated/), griefing is the only possible impact.
+
 ### 1. Deploying both USDC and USDC Bridge
 1. Fill all `[*.usdc.*]` fields except the ones ending with `.deployment` in `config/<mainnet or testnet>/config.toml`.
 
