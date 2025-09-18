@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: Apache-2.0
 pragma solidity ^0.8.4;
 // Generated with running `cast interface MasterMinter` in `stablecoin-evm` repo.
 interface MasterMinter {
