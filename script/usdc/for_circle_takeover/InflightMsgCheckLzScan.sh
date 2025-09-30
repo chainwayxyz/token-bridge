@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -euo pipefail
+
 cd "$(git rev-parse --show-toplevel)"
 source .env
 CURRENT_DIR=$(pwd)
@@ -26,9 +28,19 @@ check_status() {
     local address=$2
     local name=$3
 
-    response=$(curl -s "$BASE_URL/messages/oapp/$eid/$address")
-    if echo "$response" | jq -e '.data[]? | select(.status.name == "INFLIGHT" or .status.name == "CONFIRMING")' > /dev/null; then
-        return 1
+    if ! response=$(curl -s "$BASE_URL/messages/oapp/$eid/$address" 2>&1); then
+        echo "ERROR: Failed to fetch data from LayerZero Scan for $name."
+        exit 1
+    fi
+    
+    if ! inflight_messages=$(echo "$response" | jq -r '.data[]? | select(.status.name == "INFLIGHT" or .status.name == "CONFIRMING")' 2>&1); then
+        echo "ERROR: Failed to parse response JSON for $name."
+        exit 1
+    fi
+    
+    if [ -n "$inflight_messages" ]; then
+        echo "ERROR: There is an INFLIGHT or CONFIRMING message."
+        exit 1
     else
         return 0
     fi
@@ -36,16 +48,5 @@ check_status() {
 
 # Check both dest and src
 check_status "$DEST_EID" "$DEST_ADDRESS" "DEST"
-dest_result=$?
-
 check_status "$SRC_EID" "$SRC_ADDRESS" "SRC"
-src_result=$?
-
-# Exit successfully only if both checks passed
-if [ $dest_result -eq 0 ] && [ $src_result -eq 0 ]; then
-    echo "SUCCESS: All checks passed."
-    exit 0
-else
-    echo "ERROR: There is an inflight message either at source or destination."
-    exit 1
-fi
+echo "SUCCESS: All checks passed."
