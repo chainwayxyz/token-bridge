@@ -9,7 +9,7 @@ eid = 40344
 
 [dest.lz.send]
 ulnLib = "0xd682ECF100f6F4284138AA925348633B0611Ae21"
-confirmations = 20
+confirmations = 15
 requiredDVNCount = 1
 optionalDVNCount = 255
 optionalDVNThreshold = 0
@@ -21,7 +21,7 @@ optionalDVNs = []
 [dest.lz.recv]
 ulnLib = "0xcF1B0F4106B0324F96fEfcC31bA9498caa80701C"
 gracePeriod = 0
-confirmations = 20
+confirmations = 15
 requiredDVNCount = 1
 optionalDVNCount = 255
 optionalDVNThreshold = 0
@@ -78,7 +78,7 @@ eid = 40161
 
 [src.lz.send]
 ulnLib = "0xcc1ae8Cf5D3904Cef3360A9532B477529b177cCE"
-confirmations = 20
+confirmations = 15
 requiredDVNCount = 1
 optionalDVNCount = 255
 optionalDVNThreshold = 0
@@ -90,7 +90,7 @@ optionalDVNs = []
 [src.lz.recv]
 ulnLib = "0xdAf00F5eE2158dD58E0d3857851c432E34A3A851"
 gracePeriod = 0
-confirmations = 20
+confirmations = 15
 requiredDVNCount = 1
 optionalDVNCount = 255
 optionalDVNThreshold = 0
