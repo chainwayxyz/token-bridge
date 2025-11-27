@@ -147,3 +147,53 @@ usdc-bridge-mint-test:
 
 usdc-bridge-burn-test:
 	forge script ./script/usdc/test/USDCBridgeBurnTest.s.sol  --sender $(DEPLOYER_ADDRESS) --account $(ACCOUNT_NAME) --password $(PASSWORD) --broadcast
+
+.PHONY: clear-wbtc-deployments
+clear-wbtc-deployments:
+	python3 -m venv ".clear-wbtc-deployments"
+	./.clear-wbtc-deployments/bin/python -m pip install --upgrade pip
+	./.clear-wbtc-deployments/bin/python -m pip install tomli tomli-w dotenv
+	./.clear-wbtc-deployments/bin/python ./script/ClearDeploymentsFromConfig.py wbtc
+	rm -rf ./.clear-wbtc-deployments
+
+.PHONY: wbtc-src-bridge-deploy
+wbtc-src-bridge-deploy: clear-wbtc-deployments
+	forge script ./script/wbtc/deploy/01_WBTCSrcBridgeDeploy.s.sol --sender $(DEPLOYER_ADDRESS) --account $(ACCOUNT_NAME) --password $(PASSWORD) --broadcast --verify --verifier $(SRC_VERIFIER) --verifier-url $(SRC_VERIFIER_URL) $(SRC_VERIFIER_API_KEY_FLAG)
+
+.PHONY: wbtc-dest-bridge-deploy
+wbtc-dest-bridge-deploy:
+	forge script ./script/wbtc/deploy/02_WBTCDestBridgeDeploy.s.sol --sender $(DEPLOYER_ADDRESS) --account $(ACCOUNT_NAME) --password $(PASSWORD) --broadcast --verify --verifier $(DEST_VERIFIER) --verifier-url $(DEST_VERIFIER_URL) $(DEST_VERIFIER_API_KEY_FLAG)
+
+.PHONY: wbtc-src-bridge-set-lz-config
+wbtc-src-bridge-set-lz-config:
+	forge script ./script/wbtc/deploy/03_WBTCSrcBridgeSetLzConfig.s.sol --sender $(DEPLOYER_ADDRESS) --account $(ACCOUNT_NAME) --password $(PASSWORD) --broadcast
+
+.PHONY: wbtc-dest-bridge-set-lz-config
+wbtc-dest-bridge-set-lz-config:
+	forge script ./script/wbtc/deploy/04_WBTCDestBridgeSetLzConfig.s.sol --sender $(DEPLOYER_ADDRESS) --account $(ACCOUNT_NAME) --password $(PASSWORD) --broadcast
+
+.PHONY: wbtc-dest-bridge-set-peer
+wbtc-dest-bridge-set-peer:
+	forge script ./script/wbtc/deploy/05_WBTCDestBridgeSetPeer.s.sol --sender $(DEPLOYER_ADDRESS) --account $(ACCOUNT_NAME) --password $(PASSWORD) --broadcast
+
+.PHONY: wbtc-src-bridge-set-peer
+wbtc-src-bridge-set-peer:
+	forge script ./script/wbtc/deploy/06_WBTCSrcBridgeSetPeer.s.sol --sender $(DEPLOYER_ADDRESS) --account $(ACCOUNT_NAME) --password $(PASSWORD) --broadcast
+
+.PHONY: wbtc-and-bridge-assign-roles
+wbtc-and-bridge-assign-roles:
+	forge script ./script/wbtc/deploy/07_WBTCAndBridgeAssignRoles.s.sol --sender $(DEPLOYER_ADDRESS) --account $(ACCOUNT_NAME) --password $(PASSWORD) --broadcast
+
+.PHONY: wbtc-bridge-post-deployment-test
+wbtc-bridge-post-deployment-test:
+	IS_POST_DEPLOYMENT=true forge test --match-path test/wbtc/post_deployment/WBTCPostDeployment.t.sol
+
+.PHONY: wbtc-bridge-full
+wbtc-bridge-full: wbtc-src-bridge-deploy wbtc-dest-bridge-deploy wbtc-src-bridge-set-lz-config wbtc-dest-bridge-set-lz-config wbtc-dest-bridge-set-peer wbtc-src-bridge-set-peer wbtc-and-bridge-assign-roles wbtc-bridge-post-deployment-test
+	@echo "✅ All WBTC bridge deployment steps completed successfully!"
+
+wbtc-bridge-mint-test:
+	forge script ./script/wbtc/test/WBTCBridgeMintTest.s.sol --sender $(DEPLOYER_ADDRESS) --account $(ACCOUNT_NAME) --password $(PASSWORD) --broadcast
+
+wbtc-bridge-burn-test:
+	forge script ./script/wbtc/test/WBTCBridgeBurnTest.s.sol --sender $(DEPLOYER_ADDRESS) --account $(ACCOUNT_NAME) --password $(PASSWORD) --broadcast

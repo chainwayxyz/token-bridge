@@ -13,9 +13,7 @@ confirmations = 15
 requiredDVNCount = 1
 optionalDVNCount = 255
 optionalDVNThreshold = 0
-requiredDVNs = [
-    "0xe7e778f704ebc0598902cbf96c6748f3b96bc8d1",
-]
+requiredDVNs = ["0xe7e778f704ebc0598902cbf96c6748f3b96bc8d1"]
 optionalDVNs = []
 
 [dest.lz.recv]
@@ -25,9 +23,7 @@ confirmations = 15
 requiredDVNCount = 1
 optionalDVNCount = 255
 optionalDVNThreshold = 0
-requiredDVNs = [
-    "0xe7e778f704ebc0598902cbf96c6748f3b96bc8d1",
-]
+requiredDVNs = ["0xe7e778f704ebc0598902cbf96c6748f3b96bc8d1"]
 optionalDVNs = []
 
 [dest.lz.options]
@@ -67,10 +63,18 @@ proxyAdminOwner = "0xDc94F4e8F84180C1E807fC4d6b43d65cb459b510"
 [dest.usdt.bridge.deployment]
 proxy = ""
 
+[dest.wbtc.bridge.init]
+owner = "0xDc94F4e8F84180C1E807fC4d6b43d65cb459b510"
+name = "Bridged WBTC (Citrea)"
+symbol = "WBTC.e"
+
+[dest.wbtc.bridge.deployment]
+contract = ""
+
 [src]
 rpc = "https://sepolia.drpc.org"
 verifier = "etherscan"
-verifierUrl = "https://api-sepolia.etherscan.io/api"
+verifierUrl = "https://api.etherscan.io/v2/api?chainid=11155111"
 
 [src.lz]
 endpoint = "0x6EDCE65403992e310A62460808c4b910D972f10f"
@@ -82,9 +86,7 @@ confirmations = 15
 requiredDVNCount = 1
 optionalDVNCount = 255
 optionalDVNThreshold = 0
-requiredDVNs = [
-    "0x120be7fabde72292e2a56240610db1ca54ae4000",
-]
+requiredDVNs = ["0x120be7fabde72292e2a56240610db1ca54ae4000"]
 optionalDVNs = []
 
 [src.lz.recv]
@@ -94,9 +96,7 @@ confirmations = 15
 requiredDVNCount = 1
 optionalDVNCount = 255
 optionalDVNThreshold = 0
-requiredDVNs = [
-    "0x120be7fabde72292e2a56240610db1ca54ae4000",
-]
+requiredDVNs = ["0x120be7fabde72292e2a56240610db1ca54ae4000"]
 optionalDVNs = []
 
 [src.lz.options]
@@ -121,3 +121,12 @@ proxyAdminOwner = "0xDc94F4e8F84180C1E807fC4d6b43d65cb459b510"
 
 [src.usdt.bridge.deployment]
 proxy = ""
+
+[src.wbtc]
+contract = "0x29f2D40B0605204364af54EC677bD022dA425d03"
+
+[src.wbtc.bridge.init]
+owner = "0xDc94F4e8F84180C1E807fC4d6b43d65cb459b510"
+
+[src.wbtc.bridge.deployment]
+contract = ""

@@ -44,6 +44,11 @@ contract ConfigSetup is Script {
     address public destUSDTBridgeProxyAdminOwner;
     address public destUSDTBridgeProxy;
 
+    address public destWBTCBridgeOwner;
+    string public destWBTCName;
+    string public destWBTCSymbol;
+    address public destWBTCBridge;
+
 
     string public srcRPC;
     address public srcLzEndpoint;
@@ -67,6 +72,10 @@ contract ConfigSetup is Script {
     address public srcUSDTBridgeOwner;
     address public srcUSDTBridgeProxyAdminOwner;
     address public srcUSDTBridgeProxy;
+
+    address public srcWBTC;
+    address public srcWBTCBridge;
+    address public srcWBTCBridgeOwner;
 
 
     string public tomlPath;
@@ -145,6 +154,29 @@ contract ConfigSetup is Script {
 
             srcUSDTBridgeProxy = vm.parseTomlAddress(tomlContent, ".src.usdt.bridge.deployment.proxy");
             require(srcUSDTBridgeProxy != address(0), "Source USDT Bridge Proxy is not set in the config file");
+        }
+    }
+
+    function loadWBTCConfig(bool isBridgeDeployed) public {
+        string memory tomlContent = _loadCommonConfig();
+
+        destWBTCBridgeOwner = vm.parseTomlAddress(tomlContent, ".dest.wbtc.bridge.init.owner");
+        require(destWBTCBridgeOwner != address(0), "Destination WBTC Bridge Owner is not set in the config file");
+        destWBTCName = vm.parseTomlString(tomlContent, ".dest.wbtc.bridge.init.name");
+        require(bytes(destWBTCName).length > 0, "Destination WBTC Name is not set in the config file");
+        destWBTCSymbol = vm.parseTomlString(tomlContent, ".dest.wbtc.bridge.init.symbol");
+        require(bytes(destWBTCSymbol).length > 0, "Destination WBTC Symbol is not set in the config file");
+
+        srcWBTC = vm.parseTomlAddress(tomlContent, ".src.wbtc.contract");
+        require(srcWBTC != address(0), "Source WBTC Contract is not set in the config file");
+        srcWBTCBridgeOwner = vm.parseTomlAddress(tomlContent, ".src.wbtc.bridge.init.owner");
+        require(srcWBTCBridgeOwner != address(0), "Source WBTC Bridge Owner is not set in the config file");
+
+        if (isBridgeDeployed) {
+            srcWBTCBridge = vm.parseTomlAddress(tomlContent, ".src.wbtc.bridge.deployment.contract");
+            require(srcWBTCBridge != address(0), "Source WBTC Bridge is not set in the config file");
+            destWBTCBridge = vm.parseTomlAddress(tomlContent, ".dest.wbtc.bridge.deployment.contract");
+            require(destWBTCBridge != address(0), "Destination WBTC Bridge is not set in the config file");
         }
     }
 

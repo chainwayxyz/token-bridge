@@ -215,3 +215,31 @@ make usdt-bridge-burn-test
 ```
 
 4. If the script is successful, search for the `send` transaction (the other one is approval) in the output of the script on LayerZero Scan. Wait for the destination transaction hash, look it up on source chain explorer, and confirm that USDT was burned from destination chain and 1 cent was sent to the address associated with the private key used above.
+
+## WBTC
+
+### 1. Deploying WBTC Bridge
+1. Fill all `[*.wbtc.*]` fields except the ones ending with `.deployment` in `config/<mainnet or testnet>/config.toml`.
+
+2. Run the bridge deployment script, this includes the WBTC token on the destination chain as the bridge acts as a token contract as well:
+```
+make wbtc-bridge-full
+```
+
+3. Verify that `make` exited successfully, you should see a message with the ✅ emoji if all steps are completed without errors.
+
+### 2. Testing WBTC Bridge
+1. Test the deployment by running the test script which sends 1 satoshi from source chain to destination chain, you need to have some WBTC on source chain for this:
+```
+make wbtc-bridge-mint-test
+```
+
+2. If the script is successful, search for the `send` transaction (the other one is approval) in the output of the script on LayerZero Scan. Wait for the destination transaction hash, look it up on destination chain explorer, and confirm that destination chain WBTC was minted to the address associated with the private key used above.
+
+3. Similarly, run the test script which sends 1 satoshi from destination chain to source chain, you need to have some bridged WBTC on destination chain for this:
+
+```
+make wbtc-bridge-burn-test
+```
+
+4. If the script is successful, search for the `send` transaction (the other one is approval) in the output of the script on LayerZero Scan. Wait for the destination transaction hash, look it up on source chain explorer, and confirm that WBTC was burned from destination chain and 1 satoshi was sent to the address associated with the private key used above.
