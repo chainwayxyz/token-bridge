@@ -33,7 +33,6 @@ contract WBTCBridgeDeployTestBase is Test {
         srcWBTCBridge_ = WBTCOFTAdapter(wbtcSrcBridgeDeploy._run(false, SRC_WBTC, SRC_LZ_ENDPOINT, deployer));
 
         destForkId = vm.createSelectFork(DEST_RPC);
-        
         WBTCDestBridgeDeploy wbtcDestBridgeDeploy = new WBTCDestBridgeDeploy();
 
         string memory wbtcName = "Bridged WBTC (Dest)";
