@@ -1,10 +1,10 @@
-- This repository is for achieving a stablecoin bridge between two EVM chains using LayerZero. USDC and USDT are supported at the moment.
+- This repository is for achieving a token bridge between two EVM chains using LayerZero. USDC, USDT and WBTC are supported at the moment.
 
 - USDC bridge aims to fully conform to the [bridged USDC standard](https://github.com/circlefin/stablecoin-evm/blob/master/doc/bridged_USDC_standard.md) set by Circle.
 
-- The code is relatively simple, thus the primary focus for internal and external auditors is to ensure full match against the specification of the bridged USDC standard and equivalence with USDT0 for USDT side. Regardless, especially the scripts under `/script` except the ones for testing should be thoroughly inspected for security issues. A full understanding of the contracts under `/src` can be obtained without much effort. The contracts under `/for_circle_takeover` are different versions of the USDC bridge contracts for the both ends of the bridge to be used for upgrading the bridge according to the bridged USDC standard. These add the functionality of pausing the bridge, and burning the accumulated USDC for the source chain end of the bridge.
+- The code is relatively simple, thus the primary focus for internal and external auditors is to ensure full match against the specification of the bridged USDC standard and equivalence with USDT0 for USDT side. For WBTC, WBTCOFT code is verbatim used except the version of imported LayerZero contracts. Regardless, especially the scripts under `/script` except the ones for testing should be thoroughly inspected for security issues. A full understanding of the contracts under `/src` can be obtained without much effort. The contracts under `/for_circle_takeover` are different versions of the USDC bridge contracts for the both ends of the bridge to be used for upgrading the bridge according to the bridged USDC standard. These add the functionality of pausing the bridge, and burning the accumulated USDC for the source chain end of the bridge.
 
-- In both USDC and USDT deployment scripts, necessary privileged roles are first assigned to the deployer, then transferred to respective addresses so that the scripts can be run smoothly. Please ensure that the deployer address does not have any privileged roles after the deployment is complete.
+- In all deployment scripts, necessary privileged roles are first assigned to the deployer, then transferred to respective addresses so that the scripts can be run smoothly. Please ensure that the deployer address does not have any privileged roles after the deployment is complete.
 
 - Any on-chain actions described in the bridged USDC standard should have a corresponding script in the `/script` directory. So if you encounter such an action without a script, no matter how trivial it seems, please notify the author(s).
 
@@ -19,3 +19,7 @@
     - `DestinationOUSDT` is equivalent to `OUpgradeable` above.
 
     - `DestinationOUSDC` aims to be similar as much as possible to `DestinationOUSDT` with minimal changes to adapt to USDC's requirements regarding minting and burning.
+
+- For WBTC, the code is mostly a verbatim copy of the WBTCOFT code. The only change is the version of LayerZero contracts being imported as the instances listed below are using an older version of LayerZero contracts. But the changes are minimal and do not affect the logic.
+    - Use the implementation of [`WBTCOFT`](https://snowtrace.io/token/0x0555E30da8f98308EdB960aa94C0Db47230d2B9c/contract/code?type=erc20&chainid=43114) on Avalanche as a reference for this codebase's `WBTCOFT` contract.
+    - Use the implementation of [`WBTCOFTAdapter`](https://etherscan.io/address/0x0555e30da8f98308edb960aa94c0db47230d2b9c#code) on Ethereum mainnet as a reference for this codebase's `WBTCOFTAdapter` contract.
