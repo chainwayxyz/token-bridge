@@ -13,7 +13,9 @@ confirmations = 15
 requiredDVNCount = 1
 optionalDVNCount = 255
 optionalDVNThreshold = 0
-requiredDVNs = ["0xe7e778f704ebc0598902cbf96c6748f3b96bc8d1"]
+requiredDVNs = [
+    "0xe7e778f704ebc0598902cbf96c6748f3b96bc8d1",
+]
 optionalDVNs = []
 
 [dest.lz.recv]
@@ -23,7 +25,9 @@ confirmations = 15
 requiredDVNCount = 1
 optionalDVNCount = 255
 optionalDVNThreshold = 0
-requiredDVNs = ["0xe7e778f704ebc0598902cbf96c6748f3b96bc8d1"]
+requiredDVNs = [
+    "0xe7e778f704ebc0598902cbf96c6748f3b96bc8d1",
+]
 optionalDVNs = []
 
 [dest.lz.options]
@@ -86,7 +90,9 @@ confirmations = 15
 requiredDVNCount = 1
 optionalDVNCount = 255
 optionalDVNThreshold = 0
-requiredDVNs = ["0x120be7fabde72292e2a56240610db1ca54ae4000"]
+requiredDVNs = [
+    "0x120be7fabde72292e2a56240610db1ca54ae4000",
+]
 optionalDVNs = []
 
 [src.lz.recv]
@@ -96,7 +102,9 @@ confirmations = 15
 requiredDVNCount = 1
 optionalDVNCount = 255
 optionalDVNThreshold = 0
-requiredDVNs = ["0x120be7fabde72292e2a56240610db1ca54ae4000"]
+requiredDVNs = [
+    "0x120be7fabde72292e2a56240610db1ca54ae4000",
+]
 optionalDVNs = []
 
 [src.lz.options]
