@@ -5,7 +5,7 @@ import "forge-std/Test.sol";
 import {WBTCSrcBridgeDeploy} from "../../../../script/wbtc/deploy/01_WBTCSrcBridgeDeploy.s.sol";
 import {WBTCDestBridgeDeploy} from "../../../../script/wbtc/deploy/02_WBTCDestBridgeDeploy.s.sol";
 import {WBTCOFTAdapter} from "../../../../src/wbtc/WBTCOFTAdapter.sol";
-import {WBTCOFT} from "../../../../src/wbtc/WBTCOFT.sol"; 
+import {WBTCOFT} from "../../../../src/wbtc/WBTCOFT.sol";
 
 contract WBTCBridgeDeployTestBase is Test {
     WBTCOFTAdapter public srcWBTCBridge_;
