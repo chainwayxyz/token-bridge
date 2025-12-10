@@ -63,6 +63,14 @@ proxyAdminOwner = ""
 [dest.usdt.bridge.deployment]
 proxy = ""
 
+[dest.wbtc.bridge.init]
+owner = ""
+name = "Bridged WBTC (Citrea)"
+symbol = "WBTC.e"
+
+[dest.wbtc.bridge.deployment]
+contract = ""
+
 [src]
 rpc = ""
 verifier = ""
@@ -113,3 +121,12 @@ proxyAdminOwner = ""
 
 [src.usdt.bridge.deployment]
 proxy = ""
+
+[src.wbtc]
+contract = ""
+
+[src.wbtc.bridge.init]
+owner = ""
+
+[src.wbtc.bridge.deployment]
+contract = ""

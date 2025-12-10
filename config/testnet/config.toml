@@ -67,10 +67,18 @@ proxyAdminOwner = "0xDc94F4e8F84180C1E807fC4d6b43d65cb459b510"
 [dest.usdt.bridge.deployment]
 proxy = ""
 
+[dest.wbtc.bridge.init]
+owner = "0xDc94F4e8F84180C1E807fC4d6b43d65cb459b510"
+name = "Bridged WBTC (Citrea)"
+symbol = "WBTC.e"
+
+[dest.wbtc.bridge.deployment]
+contract = ""
+
 [src]
 rpc = "https://sepolia.drpc.org"
 verifier = "etherscan"
-verifierUrl = "https://api-sepolia.etherscan.io/api"
+verifierUrl = "https://api.etherscan.io/v2/api?chainid=11155111"
 
 [src.lz]
 endpoint = "0x6EDCE65403992e310A62460808c4b910D972f10f"
@@ -121,3 +129,12 @@ proxyAdminOwner = "0xDc94F4e8F84180C1E807fC4d6b43d65cb459b510"
 
 [src.usdt.bridge.deployment]
 proxy = ""
+
+[src.wbtc]
+contract = "0x29f2D40B0605204364af54EC677bD022dA425d03"
+
+[src.wbtc.bridge.init]
+owner = "0xDc94F4e8F84180C1E807fC4d6b43d65cb459b510"
+
+[src.wbtc.bridge.deployment]
+contract = ""
