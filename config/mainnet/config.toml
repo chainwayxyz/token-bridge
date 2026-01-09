@@ -1,132 +1,138 @@
 [dest]
-rpc = ""
-verifier = ""
-verifierUrl = ""
+rpc = "https://rpc.mainnet.citrea.xyz"
+verifier = "blockscout"
+verifierUrl = "https://explorer.mainnet.citrea.xyz/api?"
 
 [dest.lz]
-endpoint = ""
-eid = 
+endpoint = "0x6F475642a6e85809B1c36Fa62763669b1b48DD5B"
+eid = 30403
 
 [dest.lz.send]
-ulnLib = ""
-confirmations = 
-requiredDVNCount = 
-optionalDVNCount = 
-optionalDVNThreshold = 
-requiredDVNs = []
+ulnLib = "0xC39161c743D0307EB9BCc9FEF03eeb9Dc4802de7"
+confirmations = 15
+requiredDVNCount = 1
+optionalDVNCount = 255
+optionalDVNThreshold = 0
+requiredDVNs = ["0x6788f52439aca6bff597d3eec2dc9a44b8fee842"]
 optionalDVNs = []
 
 [dest.lz.recv]
-ulnLib = ""
-gracePeriod = 
-confirmations = 
-requiredDVNCount = 
-optionalDVNCount = 
-optionalDVNThreshold = 
-requiredDVNs = []
+ulnLib = "0xc1B621b18187F74c8F6D52a6F709Dd2780C09821"
+gracePeriod = 0
+confirmations = 15
+requiredDVNCount = 1
+optionalDVNCount = 255
+optionalDVNThreshold = 0
+requiredDVNs = ["0x6788f52439aca6bff597d3eec2dc9a44b8fee842"]
 optionalDVNs = []
 
 [dest.lz.options]
-receiveGas = 
+receiveGas = 120000
 
 [dest.usdc.init]
-owner = ""
-proxyAdmin = ""
-masterMinterOwner = ""
+owner = "0x31BCa5bc5F91cA8b99f802BcBa96DA90772f10D4"
+# proxyAdmin was initially set to 0x31BCa5bc5F91cA8b99f802BcBa96DA90772f10D4,
+# however, after deployment, ownership was transferred to another address
+# as owner and proxyAdminOwner couldn't be the same address
+proxyAdmin = "0x71Ef56215dFB2D5382939F5759Ed5fE226634FfF"
+masterMinterOwner = "0x31BCa5bc5F91cA8b99f802BcBa96DA90772f10D4"
 name = "Bridged USDC (Citrea)"
 symbol = "USDC.e"
 
 [dest.usdc.deployment]
-proxy = ""
-masterMinter = ""
+proxy = "0xE045e6c36cF77FAA2CfB54466D71A3aEF7bbE839"
+masterMinter = "0x3B035A24c49Bf7100897b3D0C0A6CEe4044a8bee"
 
 [dest.usdc.bridge.init]
-owner = ""
-proxyAdminOwner = ""
+owner = "0x31BCa5bc5F91cA8b99f802BcBa96DA90772f10D4"
+proxyAdminOwner = "0x31BCa5bc5F91cA8b99f802BcBa96DA90772f10D4"
 
 [dest.usdc.bridge.deployment]
-proxy = ""
+proxy = "0x41710804caB0974638E1504DB723D7bddec22e30"
 
 [dest.usdt.init]
-owner = ""
-proxyAdminOwner = ""
+owner = "0x31BCa5bc5F91cA8b99f802BcBa96DA90772f10D4"
+proxyAdminOwner = "0x31BCa5bc5F91cA8b99f802BcBa96DA90772f10D4"
 name = "Bridged USDT (Citrea)"
 symbol = "USDT.e"
 
 [dest.usdt.deployment]
-proxy = ""
+proxy = "0x9f3096Bac87e7F03DC09b0B416eB0DF837304dc4"
 
 [dest.usdt.bridge.init]
-owner = ""
-proxyAdminOwner = ""
+owner = "0x31BCa5bc5F91cA8b99f802BcBa96DA90772f10D4"
+proxyAdminOwner = "0x31BCa5bc5F91cA8b99f802BcBa96DA90772f10D4"
 
 [dest.usdt.bridge.deployment]
-proxy = ""
+proxy = "0xF8b5983BFa11dc763184c96065D508AE1502C030"
 
 [dest.wbtc.bridge.init]
-owner = ""
+owner = "0x31BCa5bc5F91cA8b99f802BcBa96DA90772f10D4"
 name = "Bridged WBTC (Citrea)"
 symbol = "WBTC.e"
 
 [dest.wbtc.bridge.deployment]
-contract = ""
+contract = "0xDF240DC08B0FdaD1d93b74d5048871232f6BEA3d"
 
 [src]
-rpc = ""
-verifier = ""
-verifierUrl = ""
+rpc = "https://lb.drpc.live/ethereum/AlRLXHcZ4UxVvJNK3Ut8bZiiWyL12ygR8JDChrytwc4x"
+verifier = "etherscan"
+verifierUrl = "https://api.etherscan.io/v2/api?chainid=1"
 
 [src.lz]
-endpoint = ""
-eid = 
+endpoint = "0x1a44076050125825900e736c501f859c50fE728c"
+eid = 30101
 
 [src.lz.send]
-ulnLib = ""
-confirmations = 
-requiredDVNCount = 
-optionalDVNCount = 
-optionalDVNThreshold = 
-requiredDVNs = []
+ulnLib = "0xbB2Ea70C9E858123480642Cf96acbcCE1372dCe1"
+confirmations = 15
+requiredDVNCount = 1
+optionalDVNCount = 255
+optionalDVNThreshold = 0
+requiredDVNs = ["0x589dedbd617e0cbcb916a9223f4d1300c294236b"]
 optionalDVNs = []
 
 [src.lz.recv]
-ulnLib = ""
-gracePeriod = 
-confirmations = 
-requiredDVNCount = 
-optionalDVNCount = 
-optionalDVNThreshold = 
-requiredDVNs = []
+ulnLib = "0xc02Ab410f0734EFa3F14628780e6e695156024C2"
+gracePeriod = 0
+confirmations = 15
+requiredDVNCount = 1
+optionalDVNCount = 255
+optionalDVNThreshold = 0
+requiredDVNs = ["0x589dedbd617e0cbcb916a9223f4d1300c294236b"]
 optionalDVNs = []
 
 [src.lz.options]
-receiveGas = 
+# used 120000 in some of the deployments initially,
+# but later increased to 136000 for USDC after deployment
+# by doing necessary txs, decided to leave it as 136000 here
+receiveGas = 136000
 
 [src.usdc]
-proxy = ""
+proxy = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
 
 [src.usdc.bridge.init]
-owner = ""
-proxyAdminOwner = ""
+owner = "0x31BCa5bc5F91cA8b99f802BcBa96DA90772f10D4"
+proxyAdminOwner = "0x31BCa5bc5F91cA8b99f802BcBa96DA90772f10D4"
 
 [src.usdc.bridge.deployment]
-proxy = ""
+proxy = "0xdaa289CC487Cf95Ba99Db62f791c7E2d2a4b868E"
 
 [src.usdt]
-contract = ""
+contract = "0xdac17f958d2ee523a2206206994597c13d831ec7"
 
 [src.usdt.bridge.init]
-owner = ""
-proxyAdminOwner = ""
+owner = "0x31BCa5bc5F91cA8b99f802BcBa96DA90772f10D4"
+proxyAdminOwner = "0x31BCa5bc5F91cA8b99f802BcBa96DA90772f10D4"
 
 [src.usdt.bridge.deployment]
-proxy = ""
+proxy = "0x6925ccD29e3993c82a574CED4372d8737C6dbba6"
 
 [src.wbtc]
-contract = ""
+contract = "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599"
 
 [src.wbtc.bridge.init]
-owner = ""
+owner = "0x31BCa5bc5F91cA8b99f802BcBa96DA90772f10D4"
 
 [src.wbtc.bridge.deployment]
-contract = ""
+contract = "0x2c01390E10e44C968B73A7BcFF7E4b4F50ba76Ed"
