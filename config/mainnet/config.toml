@@ -75,7 +75,7 @@ symbol = "WBTC.e"
 contract = "0xDF240DC08B0FdaD1d93b74d5048871232f6BEA3d"
 
 [src]
-rpc = "https://lb.drpc.live/ethereum/AlRLXHcZ4UxVvJNK3Ut8bZiiWyL12ygR8JDChrytwc4x"
+rpc = "https://eth.llamarpc.com"
 verifier = "etherscan"
 verifierUrl = "https://api.etherscan.io/v2/api?chainid=1"
 
