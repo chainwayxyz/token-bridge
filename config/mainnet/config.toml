@@ -34,8 +34,8 @@ owner = "0x31BCa5bc5F91cA8b99f802BcBa96DA90772f10D4"
 # proxyAdmin was initially set to 0x31BCa5bc5F91cA8b99f802BcBa96DA90772f10D4,
 # however, after deployment, ownership was transferred to another address
 # as owner and proxyAdminOwner couldn't be the same address
-proxyAdmin = "0x71Ef56215dFB2D5382939F5759Ed5fE226634FfF"
-masterMinterOwner = "0x31BCa5bc5F91cA8b99f802BcBa96DA90772f10D4"
+proxyAdmin = "0x04d3558d4D06bDbBbf7946f4EF295b8CBc668665"
+masterMinterOwner = "0xC85c827133913ddA49f642eC9100F5B6B2cd2bb3"
 name = "Bridged USDC (Citrea)"
 symbol = "USDC.e"
 
@@ -44,15 +44,15 @@ proxy = "0xE045e6c36cF77FAA2CfB54466D71A3aEF7bbE839"
 masterMinter = "0x3B035A24c49Bf7100897b3D0C0A6CEe4044a8bee"
 
 [dest.usdc.bridge.init]
-owner = "0x31BCa5bc5F91cA8b99f802BcBa96DA90772f10D4"
-proxyAdminOwner = "0x31BCa5bc5F91cA8b99f802BcBa96DA90772f10D4"
+owner = "0xC85c827133913ddA49f642eC9100F5B6B2cd2bb3"
+proxyAdminOwner = "0xC85c827133913ddA49f642eC9100F5B6B2cd2bb3"
 
 [dest.usdc.bridge.deployment]
 proxy = "0x41710804caB0974638E1504DB723D7bddec22e30"
 
 [dest.usdt.init]
-owner = "0x31BCa5bc5F91cA8b99f802BcBa96DA90772f10D4"
-proxyAdminOwner = "0x31BCa5bc5F91cA8b99f802BcBa96DA90772f10D4"
+owner = "0xC85c827133913ddA49f642eC9100F5B6B2cd2bb3"
+proxyAdminOwner = "0xC85c827133913ddA49f642eC9100F5B6B2cd2bb3"
 name = "Bridged USDT (Citrea)"
 symbol = "USDT.e"
 
@@ -60,14 +60,14 @@ symbol = "USDT.e"
 proxy = "0x9f3096Bac87e7F03DC09b0B416eB0DF837304dc4"
 
 [dest.usdt.bridge.init]
-owner = "0x31BCa5bc5F91cA8b99f802BcBa96DA90772f10D4"
-proxyAdminOwner = "0x31BCa5bc5F91cA8b99f802BcBa96DA90772f10D4"
+owner = "0xC85c827133913ddA49f642eC9100F5B6B2cd2bb3"
+proxyAdminOwner = "0xC85c827133913ddA49f642eC9100F5B6B2cd2bb3"
 
 [dest.usdt.bridge.deployment]
 proxy = "0xF8b5983BFa11dc763184c96065D508AE1502C030"
 
 [dest.wbtc.bridge.init]
-owner = "0x31BCa5bc5F91cA8b99f802BcBa96DA90772f10D4"
+owner = "0xC85c827133913ddA49f642eC9100F5B6B2cd2bb3"
 name = "Bridged WBTC (Citrea)"
 symbol = "WBTC.e"
 
@@ -112,8 +112,8 @@ receiveGas = 136000
 proxy = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
 
 [src.usdc.bridge.init]
-owner = "0x31BCa5bc5F91cA8b99f802BcBa96DA90772f10D4"
-proxyAdminOwner = "0x31BCa5bc5F91cA8b99f802BcBa96DA90772f10D4"
+owner = "0xC85c827133913ddA49f642eC9100F5B6B2cd2bb3"
+proxyAdminOwner = "0xC85c827133913ddA49f642eC9100F5B6B2cd2bb3"
 
 [src.usdc.bridge.deployment]
 proxy = "0xdaa289CC487Cf95Ba99Db62f791c7E2d2a4b868E"
@@ -122,8 +122,8 @@ proxy = "0xdaa289CC487Cf95Ba99Db62f791c7E2d2a4b868E"
 contract = "0xdac17f958d2ee523a2206206994597c13d831ec7"
 
 [src.usdt.bridge.init]
-owner = "0x31BCa5bc5F91cA8b99f802BcBa96DA90772f10D4"
-proxyAdminOwner = "0x31BCa5bc5F91cA8b99f802BcBa96DA90772f10D4"
+owner = "0xC85c827133913ddA49f642eC9100F5B6B2cd2bb3"
+proxyAdminOwner = "0xC85c827133913ddA49f642eC9100F5B6B2cd2bb3"
 
 [src.usdt.bridge.deployment]
 proxy = "0x6925ccD29e3993c82a574CED4372d8737C6dbba6"
@@ -132,7 +132,7 @@ proxy = "0x6925ccD29e3993c82a574CED4372d8737C6dbba6"
 contract = "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599"
 
 [src.wbtc.bridge.init]
-owner = "0x31BCa5bc5F91cA8b99f802BcBa96DA90772f10D4"
+owner = "0xC85c827133913ddA49f642eC9100F5B6B2cd2bb3"
 
 [src.wbtc.bridge.deployment]
 contract = "0x2c01390E10e44C968B73A7BcFF7E4b4F50ba76Ed"
