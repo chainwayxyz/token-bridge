@@ -10,21 +10,34 @@ eid = 30403
 [dest.lz.send]
 ulnLib = "0xC39161c743D0307EB9BCc9FEF03eeb9Dc4802de7"
 confirmations = 15
-requiredDVNCount = 1
-optionalDVNCount = 255
-optionalDVNThreshold = 0
-requiredDVNs = ["0x6788f52439aca6bff597d3eec2dc9a44b8fee842"]
-optionalDVNs = []
+requiredDVNCount = 2
+optionalDVNCount = 2
+optionalDVNThreshold = 1
+requiredDVNs = [
+    "0x6788f52439aca6bff597d3eec2dc9a44b8fee842", # LayerZero Labs
+    "0xf0a5c5306adbfd4e3dfd5d4b148b451c411d3878", # Citrea
+]
+optionalDVNs = [
+    "0x27a6190176567940812061627864137bd79e9801", # Nethermind
+    "0x711d49fe2f96ee300c3025e6997872e62fdb7519", # Horizen
+]
 
 [dest.lz.recv]
 ulnLib = "0xc1B621b18187F74c8F6D52a6F709Dd2780C09821"
 gracePeriod = 0
 confirmations = 15
-requiredDVNCount = 1
-optionalDVNCount = 255
-optionalDVNThreshold = 0
-requiredDVNs = ["0x6788f52439aca6bff597d3eec2dc9a44b8fee842"]
-optionalDVNs = []
+requiredDVNCount = 2
+optionalDVNCount = 2
+optionalDVNThreshold = 1
+requiredDVNs = [
+    "0x6788f52439aca6bff597d3eec2dc9a44b8fee842", # LayerZero Labs
+    "0xf0a5c5306adbfd4e3dfd5d4b148b451c411d3878", # Citrea
+]
+optionalDVNs = [
+    "0x27a6190176567940812061627864137bd79e9801", # Nethermind
+    "0x711d49fe2f96ee300c3025e6997872e62fdb7519", # Horizen
+]
+
 
 [dest.lz.options]
 receiveGas = 120000
@@ -86,21 +99,33 @@ eid = 30101
 [src.lz.send]
 ulnLib = "0xbB2Ea70C9E858123480642Cf96acbcCE1372dCe1"
 confirmations = 15
-requiredDVNCount = 1
-optionalDVNCount = 255
-optionalDVNThreshold = 0
-requiredDVNs = ["0x589dedbd617e0cbcb916a9223f4d1300c294236b"]
-optionalDVNs = []
+requiredDVNCount = 2
+optionalDVNCount = 2
+optionalDVNThreshold = 1
+requiredDVNs = [
+    "0x3f965b507a3ab2dd945c1796c973b206af4e5fcb", # Citrea
+    "0x589dedbd617e0cbcb916a9223f4d1300c294236b", # LayerZero Labs
+]
+optionalDVNs = [
+    "0x2f0ba3dbb93cf087e32c15aab46726fdb4fb24cf", # Horizen
+    "0xf4064220871e3b94ca6ab3b0cee8e29178bf47de", # Nethermind
+]
 
 [src.lz.recv]
 ulnLib = "0xc02Ab410f0734EFa3F14628780e6e695156024C2"
 gracePeriod = 0
 confirmations = 15
-requiredDVNCount = 1
-optionalDVNCount = 255
-optionalDVNThreshold = 0
-requiredDVNs = ["0x589dedbd617e0cbcb916a9223f4d1300c294236b"]
-optionalDVNs = []
+requiredDVNCount = 2
+optionalDVNCount = 2
+optionalDVNThreshold = 1
+requiredDVNs = [
+    "0x3f965b507a3ab2dd945c1796c973b206af4e5fcb", # Citrea
+    "0x589dedbd617e0cbcb916a9223f4d1300c294236b", # LayerZero Labs
+]
+optionalDVNs = [
+    "0x2f0ba3dbb93cf087e32c15aab46726fdb4fb24cf", # Horizen
+    "0xf4064220871e3b94ca6ab3b0cee8e29178bf47de", # Nethermind
+]
 
 [src.lz.options]
 # used 120000 in some of the deployments initially,
