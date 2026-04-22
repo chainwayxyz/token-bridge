@@ -107,8 +107,8 @@ requiredDVNs = [
     "0x589dedbd617e0cbcb916a9223f4d1300c294236b", # LayerZero Labs
 ]
 optionalDVNs = [
-    "0x2f0ba3dbb93cf087e32c15aab46726fdb4fb24cf", # Horizen
-    "0xf4064220871e3b94ca6ab3b0cee8e29178bf47de", # Nethermind
+    "0x380275805876ff19055ea900cdb2b46a94ecf20d", # Horizen
+    "0xa59ba433ac34d2927232918ef5b2eaafcf130ba5", # Nethermind
 ]
 
 [src.lz.recv]
@@ -123,8 +123,8 @@ requiredDVNs = [
     "0x589dedbd617e0cbcb916a9223f4d1300c294236b", # LayerZero Labs
 ]
 optionalDVNs = [
-    "0x2f0ba3dbb93cf087e32c15aab46726fdb4fb24cf", # Horizen
-    "0xf4064220871e3b94ca6ab3b0cee8e29178bf47de", # Nethermind
+    "0x380275805876ff19055ea900cdb2b46a94ecf20d", # Horizen
+    "0xa59ba433ac34d2927232918ef5b2eaafcf130ba5", # Nethermind
 ]
 
 [src.lz.options]
