@@ -197,3 +197,9 @@ wbtc-bridge-mint-test:
 
 wbtc-bridge-burn-test:
 	forge script ./script/wbtc/test/WBTCBridgeBurnTest.s.sol --sender $(DEPLOYER_ADDRESS) --account $(ACCOUNT_NAME) --password $(PASSWORD) --broadcast
+
+pause-calldata-src-bridges:
+	NETWORK=mainnet forge script ./script/pause/PauseCalldataSrcBridges.s.sol
+
+pause-calldata-dest-bridges:
+	NETWORK=mainnet forge script ./script/pause/PauseCalldataDestBridges.s.sol
