@@ -213,12 +213,18 @@ This codebase's LayerZero integration is nearly identical to [USDT0](https://usd
 - Post-deployment tests verify the complete setup using `IS_POST_DEPLOYMENT=true`
 - For Circle takeover scripts, see `test/usdc/for_circle_takeover/`
 
+## Directory Conventions
+
+- `script/`: Solidity Foundry scripts (`*.s.sol`) and their config-reading helpers only.
+- `scripts/`: Standalone Python/shell utilities (e.g. `scripts/verify_on_blockscout.py`, `scripts/foundry_to_safe_batch.py`). Put new tooling here, not under `script/`.
+
 ## Important Files
 
 - `script/ConfigSetup.s.sol`: Base contract that reads TOML config for all scripts
 - `foundry.toml`: Solidity compiler settings, remappings, and file system permissions
 - `Makefile`: Orchestrates multi-step deployments
 - `script/ClearDeploymentsFromConfig.py`: Python utility to reset deployment addresses
+- `scripts/foundry_to_safe_batch.py`: Converts a `forge script` broadcast artifact into a Safe Transaction Builder JSON batch (skips deployments; review/import only — no signing/broadcasting)
 - `bridged_USDC_standard.md`: Circle's specification (with code annotations in commit history)
 - `auditors_guide.md`: Guide for auditors reviewing the codebase
 

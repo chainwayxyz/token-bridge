@@ -18,3 +18,10 @@ docs/
 .yarn
 .clear-usdc-deployments
 .clear-usdt-deployments
+
+# Python artifacts
+__pycache__/
+*.pyc
+
+# MacOS files
+.DS_Store
